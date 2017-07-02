@@ -13,18 +13,21 @@ namespace BS.Api.Services
 
         public LicenseService() 
         {
-            licenses.Add("b0d8dc9d86384b519beb97ae09e39053", new LicenseModel() 
+            var license = new LicenseModel() 
             {
+                Id = Guid.Parse("9e35c57e-eecc-4123-a5dc-f914ccb89545"),
                 ValidTo = DateTime.Now.AddDays(30)
-            });
-            licenses.Add("a8650fa262b74405b3329b6d989fbd3e", new LicenseModel()
-            {
-                ValidTo = DateTime.Now.AddDays(45)
-            });
-            licenses.Add("f7fee614689641f0ba9eb64c3976d51e", new LicenseModel()
-            {
-                ValidTo = DateTime.Now.AddDays(60)
-            });
+            };
+
+            licenses.Add(license.Id.ToString().Replace("-", ""), license);
+            //licenses.Add("a8650fa262b74405b3329b6d989fbd3e", new LicenseModel()
+            //{
+            //    ValidTo = DateTime.Now.AddDays(45)
+            //});
+            //licenses.Add("f7fee614689641f0ba9eb64c3976d51e", new LicenseModel()
+            //{
+            //    ValidTo = DateTime.Now.AddDays(60)
+            //});
         }
 
         public LicenseModel Get(string id)

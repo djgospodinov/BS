@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BS.LicenseServer", "BS.Lice
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BS.Common", "BS.Common\BS.Common.csproj", "{5C6EAC12-009B-4F53-9141-2C857E51CE55}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BS.Client", "BS.Client\BS.Client.csproj", "{29B5A23F-AC26-4A95-AF1A-C4AD84F5B6A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5C6EAC12-009B-4F53-9141-2C857E51CE55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C6EAC12-009B-4F53-9141-2C857E51CE55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C6EAC12-009B-4F53-9141-2C857E51CE55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29B5A23F-AC26-4A95-AF1A-C4AD84F5B6A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29B5A23F-AC26-4A95-AF1A-C4AD84F5B6A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29B5A23F-AC26-4A95-AF1A-C4AD84F5B6A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29B5A23F-AC26-4A95-AF1A-C4AD84F5B6A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
