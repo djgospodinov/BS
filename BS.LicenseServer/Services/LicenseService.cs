@@ -20,14 +20,6 @@ namespace BS.Api.Services
             };
 
             _licenses.Add(license.Id.ToString().Replace("-", ""), license);
-            //licenses.Add("a8650fa262b74405b3329b6d989fbd3e", new LicenseModel()
-            //{
-            //    ValidTo = DateTime.Now.AddDays(45)
-            //});
-            //licenses.Add("f7fee614689641f0ba9eb64c3976d51e", new LicenseModel()
-            //{
-            //    ValidTo = DateTime.Now.AddDays(60)
-            //});
         }
 
         public LicenseModel Get(string id)

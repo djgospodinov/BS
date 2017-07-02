@@ -43,7 +43,7 @@ namespace BS.Client
             }
 
             LicenseModel result = null;
-            HttpResponseMessage response = await _client.GetAsync(string.Format("/v1/license/{0}", licenseId));
+            HttpResponseMessage response = await _client.GetAsync(string.Format("/api/license/{0}", licenseId));
             if (response.IsSuccessStatusCode)
             {
                 result = await response.Content.ReadAsAsync<LicenseModel>();
@@ -60,7 +60,7 @@ namespace BS.Client
         {
             var result = new LicenseModel { ValidTo = DateTime.Now.AddDays(30) };
 
-            HttpResponseMessage response = await _client.PostAsJsonAsync("/v1/license/{0}", result);
+            HttpResponseMessage response = await _client.PostAsJsonAsync("/api/license", result);
             if (response.IsSuccessStatusCode)
             {
                 string id = await response.Content.ReadAsStringAsync();
