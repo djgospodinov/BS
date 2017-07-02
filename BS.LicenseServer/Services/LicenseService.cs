@@ -9,9 +9,9 @@ namespace BS.Api.Services
 {
     public class LicenseService : ILicenseService
     {
-        protected Dictionary<string, LicenseModel> licenses = new Dictionary<string, LicenseModel>();
+        protected static readonly Dictionary<string, LicenseModel> _licenses = new Dictionary<string, LicenseModel>();
 
-        public LicenseService() 
+        static LicenseService() 
         {
             var license = new LicenseModel() 
             {
@@ -19,7 +19,7 @@ namespace BS.Api.Services
                 ValidTo = DateTime.Now.AddDays(30)
             };
 
-            licenses.Add(license.Id.ToString().Replace("-", ""), license);
+            _licenses.Add(license.Id.ToString().Replace("-", ""), license);
             //licenses.Add("a8650fa262b74405b3329b6d989fbd3e", new LicenseModel()
             //{
             //    ValidTo = DateTime.Now.AddDays(45)
@@ -33,7 +33,7 @@ namespace BS.Api.Services
         public LicenseModel Get(string id)
         {
             LicenseModel result;
-            if (licenses.TryGetValue(id, out result))
+            if (_licenses.TryGetValue(id, out result))
             {
                 return result;
             }
@@ -43,7 +43,12 @@ namespace BS.Api.Services
 
         public string Create(Models.LicenseModel model)
         {
-            throw new NotImplementedException();
+            model.Id = Guid.NewGuid();
+
+            string id = model.Id.ToString().Replace("-", "");
+            _licenses.Add(id, model);
+
+            return id;
         }
 
         public bool Update(Models.LicenseModel model)
