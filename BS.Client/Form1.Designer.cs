@@ -33,63 +33,190 @@
             this.txtCreatedLicenseId = new System.Windows.Forms.TextBox();
             this.txtLicenseId = new System.Windows.Forms.TextBox();
             this.txtInfo = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.checkedListModules = new System.Windows.Forms.CheckedListBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.chkIsCompany = new System.Windows.Forms.CheckBox();
+            this.txtPhone = new System.Windows.Forms.TextBox();
+            this.txtEmail = new System.Windows.Forms.TextBox();
+            this.txtContactPerson = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCreateLicense
             // 
-            this.btnCreateLicense.Location = new System.Drawing.Point(25, 12);
+            this.btnCreateLicense.Location = new System.Drawing.Point(52, 153);
             this.btnCreateLicense.Name = "btnCreateLicense";
-            this.btnCreateLicense.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateLicense.Size = new System.Drawing.Size(205, 23);
             this.btnCreateLicense.TabIndex = 0;
-            this.btnCreateLicense.Text = "Create";
+            this.btnCreateLicense.Text = "Създай лиценз";
             this.btnCreateLicense.UseVisualStyleBackColor = true;
             this.btnCreateLicense.Click += new System.EventHandler(this.btnCreateLicense_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(25, 54);
+            this.button2.Location = new System.Drawing.Point(25, 250);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(205, 23);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Get License";
+            this.button2.Text = "Информация за лиценз";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // txtCreatedLicenseId
             // 
-            this.txtCreatedLicenseId.Location = new System.Drawing.Point(136, 15);
+            this.txtCreatedLicenseId.Location = new System.Drawing.Point(368, 156);
             this.txtCreatedLicenseId.Name = "txtCreatedLicenseId";
             this.txtCreatedLicenseId.Size = new System.Drawing.Size(230, 20);
             this.txtCreatedLicenseId.TabIndex = 2;
             // 
             // txtLicenseId
             // 
-            this.txtLicenseId.Location = new System.Drawing.Point(136, 56);
+            this.txtLicenseId.Location = new System.Drawing.Point(261, 253);
             this.txtLicenseId.Name = "txtLicenseId";
             this.txtLicenseId.Size = new System.Drawing.Size(230, 20);
             this.txtLicenseId.TabIndex = 3;
             // 
             // txtInfo
             // 
-            this.txtInfo.Location = new System.Drawing.Point(25, 103);
+            this.txtInfo.Location = new System.Drawing.Point(25, 299);
             this.txtInfo.Multiline = true;
             this.txtInfo.Name = "txtInfo";
-            this.txtInfo.Size = new System.Drawing.Size(341, 112);
+            this.txtInfo.Size = new System.Drawing.Size(814, 112);
             this.txtInfo.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(291, 156);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Лиценз ID";
+            // 
+            // checkedListModules
+            // 
+            this.checkedListModules.FormattingEnabled = true;
+            this.checkedListModules.Location = new System.Drawing.Point(510, 19);
+            this.checkedListModules.Name = "checkedListModules";
+            this.checkedListModules.Size = new System.Drawing.Size(307, 109);
+            this.checkedListModules.TabIndex = 6;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.txtContactPerson);
+            this.groupBox1.Controls.Add(this.txtEmail);
+            this.groupBox1.Controls.Add(this.txtPhone);
+            this.groupBox1.Controls.Add(this.chkIsCompany);
+            this.groupBox1.Controls.Add(this.txtName);
+            this.groupBox1.Controls.Add(this.checkedListModules);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.btnCreateLicense);
+            this.groupBox1.Controls.Add(this.txtCreatedLicenseId);
+            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(836, 195);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Създаване";
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(140, 18);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(210, 20);
+            this.txtName.TabIndex = 7;
+            // 
+            // chkIsCompany
+            // 
+            this.chkIsCompany.AutoSize = true;
+            this.chkIsCompany.Location = new System.Drawing.Point(363, 21);
+            this.chkIsCompany.Name = "chkIsCompany";
+            this.chkIsCompany.Size = new System.Drawing.Size(63, 17);
+            this.chkIsCompany.TabIndex = 8;
+            this.chkIsCompany.Text = "Фирма";
+            this.chkIsCompany.UseVisualStyleBackColor = true;
+            // 
+            // txtPhone
+            // 
+            this.txtPhone.Location = new System.Drawing.Point(140, 44);
+            this.txtPhone.Name = "txtPhone";
+            this.txtPhone.Size = new System.Drawing.Size(210, 20);
+            this.txtPhone.TabIndex = 9;
+            // 
+            // txtEmail
+            // 
+            this.txtEmail.Location = new System.Drawing.Point(140, 70);
+            this.txtEmail.Name = "txtEmail";
+            this.txtEmail.Size = new System.Drawing.Size(210, 20);
+            this.txtEmail.TabIndex = 10;
+            // 
+            // txtContactPerson
+            // 
+            this.txtContactPerson.Location = new System.Drawing.Point(140, 96);
+            this.txtContactPerson.Name = "txtContactPerson";
+            this.txtContactPerson.Size = new System.Drawing.Size(210, 20);
+            this.txtContactPerson.TabIndex = 11;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(27, 25);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Име/Фирма";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(27, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(52, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Телефон";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(27, 78);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "E-mail";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(27, 103);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(97, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Лице за контакти";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(460, 261);
+            this.ClientSize = new System.Drawing.Size(874, 420);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtInfo);
             this.Controls.Add(this.txtLicenseId);
-            this.Controls.Add(this.txtCreatedLicenseId);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.btnCreateLicense);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -102,6 +229,18 @@
         private System.Windows.Forms.TextBox txtCreatedLicenseId;
         private System.Windows.Forms.TextBox txtLicenseId;
         private System.Windows.Forms.TextBox txtInfo;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckedListBox checkedListModules;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox chkIsCompany;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.TextBox txtEmail;
+        private System.Windows.Forms.TextBox txtPhone;
+        private System.Windows.Forms.TextBox txtContactPerson;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using BS.Api.Models;
+using BS.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,11 @@ namespace BS.Client
         private void Form1_Load(object sender, EventArgs e)
         {
             txtLicenseId.Text = "9e35c57e-eecc-4123-a5dc-f914ccb89545".Replace("-", "");
+
+            foreach(var m in Enum.GetValues(typeof(LicenseModules)))
+            {
+                //checkedListModules.Items.Add(new ListBoxItem);
+            }
 
             _client.BaseAddress = new Uri(_apiUrl);
             _client.DefaultRequestHeaders.Accept.Clear();

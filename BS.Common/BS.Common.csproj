@@ -40,7 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\LicenseNotFoundException.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Models\LicenseModel.cs" />
+    <Compile Include="Models\LicenseModules.cs" />
+    <Compile Include="Models\LicenserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
