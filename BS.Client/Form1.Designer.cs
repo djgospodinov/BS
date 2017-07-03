@@ -36,15 +36,15 @@
             this.label1 = new System.Windows.Forms.Label();
             this.checkedListModules = new System.Windows.Forms.CheckedListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.chkIsCompany = new System.Windows.Forms.CheckBox();
-            this.txtPhone = new System.Windows.Forms.TextBox();
-            this.txtEmail = new System.Windows.Forms.TextBox();
-            this.txtContactPerson = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtContactPerson = new System.Windows.Forms.TextBox();
+            this.txtEmail = new System.Windows.Forms.TextBox();
+            this.txtPhone = new System.Windows.Forms.TextBox();
+            this.chkCompany = new System.Windows.Forms.CheckBox();
+            this.txtName = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +87,8 @@
             this.txtInfo.Location = new System.Drawing.Point(25, 299);
             this.txtInfo.Multiline = true;
             this.txtInfo.Name = "txtInfo";
-            this.txtInfo.Size = new System.Drawing.Size(814, 112);
+            this.txtInfo.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtInfo.Size = new System.Drawing.Size(814, 163);
             this.txtInfo.TabIndex = 4;
             // 
             // label1
@@ -116,7 +117,7 @@
             this.groupBox1.Controls.Add(this.txtContactPerson);
             this.groupBox1.Controls.Add(this.txtEmail);
             this.groupBox1.Controls.Add(this.txtPhone);
-            this.groupBox1.Controls.Add(this.chkIsCompany);
+            this.groupBox1.Controls.Add(this.chkCompany);
             this.groupBox1.Controls.Add(this.txtName);
             this.groupBox1.Controls.Add(this.checkedListModules);
             this.groupBox1.Controls.Add(this.label1);
@@ -129,61 +130,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Създаване";
             // 
-            // txtName
+            // label5
             // 
-            this.txtName.Location = new System.Drawing.Point(140, 18);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(210, 20);
-            this.txtName.TabIndex = 7;
-            // 
-            // chkIsCompany
-            // 
-            this.chkIsCompany.AutoSize = true;
-            this.chkIsCompany.Location = new System.Drawing.Point(363, 21);
-            this.chkIsCompany.Name = "chkIsCompany";
-            this.chkIsCompany.Size = new System.Drawing.Size(63, 17);
-            this.chkIsCompany.TabIndex = 8;
-            this.chkIsCompany.Text = "Фирма";
-            this.chkIsCompany.UseVisualStyleBackColor = true;
-            // 
-            // txtPhone
-            // 
-            this.txtPhone.Location = new System.Drawing.Point(140, 44);
-            this.txtPhone.Name = "txtPhone";
-            this.txtPhone.Size = new System.Drawing.Size(210, 20);
-            this.txtPhone.TabIndex = 9;
-            // 
-            // txtEmail
-            // 
-            this.txtEmail.Location = new System.Drawing.Point(140, 70);
-            this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(210, 20);
-            this.txtEmail.TabIndex = 10;
-            // 
-            // txtContactPerson
-            // 
-            this.txtContactPerson.Location = new System.Drawing.Point(140, 96);
-            this.txtContactPerson.Name = "txtContactPerson";
-            this.txtContactPerson.Size = new System.Drawing.Size(210, 20);
-            this.txtContactPerson.TabIndex = 11;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 25);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 13);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Име/Фирма";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 52);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 13);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "Телефон";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(27, 103);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(97, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Лице за контакти";
             // 
             // label4
             // 
@@ -194,26 +148,73 @@
             this.label4.TabIndex = 14;
             this.label4.Text = "E-mail";
             // 
-            // label5
+            // label3
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(27, 103);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(97, 13);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "Лице за контакти";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(27, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(52, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Телефон";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(27, 25);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Име/Фирма";
+            // 
+            // txtContactPerson
+            // 
+            this.txtContactPerson.Location = new System.Drawing.Point(140, 96);
+            this.txtContactPerson.Name = "txtContactPerson";
+            this.txtContactPerson.Size = new System.Drawing.Size(210, 20);
+            this.txtContactPerson.TabIndex = 11;
+            // 
+            // txtEmail
+            // 
+            this.txtEmail.Location = new System.Drawing.Point(140, 70);
+            this.txtEmail.Name = "txtEmail";
+            this.txtEmail.Size = new System.Drawing.Size(210, 20);
+            this.txtEmail.TabIndex = 10;
+            // 
+            // txtPhone
+            // 
+            this.txtPhone.Location = new System.Drawing.Point(140, 44);
+            this.txtPhone.Name = "txtPhone";
+            this.txtPhone.Size = new System.Drawing.Size(210, 20);
+            this.txtPhone.TabIndex = 9;
+            // 
+            // chkCompany
+            // 
+            this.chkCompany.AutoSize = true;
+            this.chkCompany.Location = new System.Drawing.Point(363, 21);
+            this.chkCompany.Name = "chkCompany";
+            this.chkCompany.Size = new System.Drawing.Size(63, 17);
+            this.chkCompany.TabIndex = 8;
+            this.chkCompany.Text = "Фирма";
+            this.chkCompany.UseVisualStyleBackColor = true;
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(140, 18);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(210, 20);
+            this.txtName.TabIndex = 7;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(874, 420);
+            this.ClientSize = new System.Drawing.Size(874, 474);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtInfo);
             this.Controls.Add(this.txtLicenseId);
             this.Controls.Add(this.button2);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "License Api Tester v 0.0.1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -232,7 +233,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckedListBox checkedListModules;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox chkIsCompany;
+        private System.Windows.Forms.CheckBox chkCompany;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtPhone;

@@ -2,6 +2,7 @@
 using BS.Common;
 using BS.Common.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BS.Api.Models
 {
@@ -17,11 +18,13 @@ namespace BS.Api.Models
 
         public override string ToString()
         {
+            var modules = Modules != null ? Modules.Select(x => x.Description()) : new string[0];
             return string.Format(
 @"Идентификатор: {0},
 Валиден до: {1},
 Демо: {2},
-Потребител: {3}", Id, ValidTo, IsDemo.ToBgString(), User);
+Потребител: {3},
+Mодули: {4}", Id, ValidTo, IsDemo.ToBgString(), User, string.Join(",", modules));
         }
     }
 }

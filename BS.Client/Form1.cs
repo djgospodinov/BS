@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BS.Common;
 
 namespace BS.Client
 {
@@ -29,9 +30,9 @@ namespace BS.Client
         {
             txtLicenseId.Text = "9e35c57e-eecc-4123-a5dc-f914ccb89545".Replace("-", "");
 
-            foreach(var m in Enum.GetValues(typeof(LicenseModules)))
+            foreach (LicenseModules m in Enum.GetValues(typeof(LicenseModules)))
             {
-                //checkedListModules.Items.Add(new ListBoxItem);
+                checkedListModules.Items.Add(new ListBoxItem() { Value = (int)m, Name = m.Description() });
             }
 
             _client.BaseAddress = new Uri(_apiUrl);
@@ -64,7 +65,26 @@ namespace BS.Client
 
         private async void btnCreateLicense_Click(object sender, EventArgs e)
         {
-            var result = new LicenseModel { ValidTo = DateTime.Now.AddDays(30) };
+            var modules = new List<LicenseModules>();
+            foreach (ListBoxItem m in checkedListModules.CheckedItems)
+            {
+                modules.Add((LicenseModules)m.Value);
+            }
+
+            var result = new LicenseModel
+            {
+                ValidTo = DateTime.Now.AddMonths(3),
+                IsDemo = true,
+                Modules = modules,
+                User = new LicenserInfoModel() 
+                {
+                    Name = txtName.Text,
+                    Phone = txtPhone.Text,
+                    Email = txtEmail.Text,
+                    ConactPerson = txtContactPerson.Text,
+                    IsCompany = chkCompany.Checked
+                }
+            };
 
             HttpResponseMessage response = await _client.PostAsJsonAsync("/api/license", result);
             if (response.IsSuccessStatusCode)

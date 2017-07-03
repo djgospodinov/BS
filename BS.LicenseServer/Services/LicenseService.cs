@@ -37,6 +37,11 @@ namespace BS.Api.Services
         {
             model.Id = Guid.NewGuid();
 
+            if (model.IsDemo) 
+            {
+                model.ValidTo = DateTime.Now.AddMonths(3);
+            }
+
             string id = model.Id.ToString().Replace("-", "");
             _licenses.Add(id, model);
 
