@@ -28,7 +28,7 @@ namespace BS.Client
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            txtLicenseId.Text = "9e35c57e-eecc-4123-a5dc-f914ccb89545".Replace("-", "");
+            //txtLicenseId.Text = "9e35c57e-eecc-4123-a5dc-f914ccb89545".Replace("-", "");
 
             foreach (LicenseModules m in Enum.GetValues(typeof(LicenseModules)))
             {
