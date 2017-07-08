@@ -1,4 +1,5 @@
-﻿using BS.Api.Models;
+﻿using BS.Api.Common;
+using BS.Api.Models;
 using BS.Api.Services;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace BS.Api.Controllers
 {
     public class LicenseController : BaseController
     {
-        private readonly ILicenseService service = new LicenseService();
+        private readonly ILicenseService service = new DemoLicenseService();
 
         // GET api/values/5
         public LicenseModel Get(string id)
@@ -26,8 +27,9 @@ namespace BS.Api.Controllers
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody]LicenseModel value)
+        public void Put(string id, [FromBody]LicenseModel value)
         {
+            this.service.Update(id, value);
         }
 
         // DELETE api/values/5
