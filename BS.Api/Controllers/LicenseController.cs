@@ -15,26 +15,73 @@ namespace BS.Api.Controllers
         private readonly ILicenseService service = new DemoLicenseService();
 
         // GET api/values/5
-        public LicenseModel Get(string id)
+        public IHttpActionResult Get(string id)
         {
-            return this.service.Get(id);
+            try
+            {
+                var result = this.service.Get(id);
+
+                return Ok(result);
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // POST api/values
-        public string Post([FromBody]LicenseModel model)
+        public IHttpActionResult Post([FromBody]LicenseModel model)
         {
-            return this.service.Create(model);
+            try
+            {
+                var result = this.service.Create(model);
+                if (!string.IsNullOrEmpty(result)) 
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return BadRequest("Cannot delete licence.");
         }
 
         // PUT api/values/5
-        public void Put(string id, [FromBody]LicenseModel value)
+        public IHttpActionResult Put(string id, [FromBody]LicenseModel value)
         {
-            this.service.Update(id, value);
+            try
+            {
+                if (this.service.Update(id, value))
+                {
+                    return Ok(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return BadRequest(string.Format("Cannot create update license {0}.", id));
         }
 
         // DELETE api/values/5
-        public void Delete(string id)
+        public IHttpActionResult Delete(string id)
         {
+            try
+            {
+                if (this.service.Delete(id))
+                {
+                    return Ok(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return BadRequest(string.Format("Cannot delete license {0}.", id));
         }
     }
 }
