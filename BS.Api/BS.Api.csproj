@@ -164,8 +164,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="AuthContext.cs" />
     <Compile Include="AuthRepository.cs" />
-    <Compile Include="Controllers\AllowAnonymous.cs" />
     <Compile Include="Controllers\AuthorizedController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
