@@ -23,7 +23,7 @@ namespace BS.Api.Services
                 ValidTo = DateTime.Now.AddDays(30)
             };
 
-            _licenses.Add(license.Id.ToString().Replace("-", ""), license);
+            _licenses.Add(license.Id.ToString(), license);
         }
 
         public LicenseModel Get(string id)

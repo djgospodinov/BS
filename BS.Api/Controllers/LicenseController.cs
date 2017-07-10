@@ -10,11 +10,17 @@ using System.Web.Http;
 
 namespace BS.Api.Controllers
 {
+    [Authorize]
     public class LicenseController : BaseController
     {
         private readonly ILicenseService service = new DemoLicenseService();
 
-        // GET api/values/5
+        // GET api/license/5
+        /// <summary>
+        /// Returns info for the licence by the given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IHttpActionResult Get(string id)
         {
             try
@@ -29,7 +35,12 @@ namespace BS.Api.Controllers
             }
         }
 
-        // POST api/values
+        // POST api/license
+        /// <summary>
+        /// Creates a license
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public IHttpActionResult Post([FromBody]LicenseModel model)
         {
             try
@@ -48,7 +59,13 @@ namespace BS.Api.Controllers
             return BadRequest("Cannot delete licence.");
         }
 
-        // PUT api/values/5
+        // PUT api/license/5
+        /// <summary>
+        /// Edit license details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public IHttpActionResult Put(string id, [FromBody]LicenseModel value)
         {
             try
@@ -66,7 +83,12 @@ namespace BS.Api.Controllers
             return BadRequest(string.Format("Cannot create update license {0}.", id));
         }
 
-        // DELETE api/values/5
+        // DELETE api/license/5
+        /// <summary>
+        /// Marks a license as disabled
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IHttpActionResult Delete(string id)
         {
             try

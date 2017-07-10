@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BS.Common.Models
 {
-    public enum LicenseModules
+    public enum LicenseModulesEnum
     {
         [Description("Счетоводство")]
         Accounting = 1,

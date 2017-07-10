@@ -30,7 +30,7 @@ namespace BS.Client
         {
             //txtLicenseId.Text = "9e35c57e-eecc-4123-a5dc-f914ccb89545".Replace("-", "");
 
-            foreach (LicenseModules m in Enum.GetValues(typeof(LicenseModules)))
+            foreach (LicenseModulesEnum m in Enum.GetValues(typeof(LicenseModulesEnum)))
             {
                 checkedListModules.Items.Add(new ListBoxItem() { Value = (int)m, Name = m.Description() });
             }
@@ -65,10 +65,10 @@ namespace BS.Client
 
         private async void btnCreateLicense_Click(object sender, EventArgs e)
         {
-            var modules = new List<LicenseModules>();
+            var modules = new List<LicenseModulesEnum>();
             foreach (ListBoxItem m in checkedListModules.CheckedItems)
             {
-                modules.Add((LicenseModules)m.Value);
+                modules.Add((LicenseModulesEnum)m.Value);
             }
 
             var result = new LicenseModel

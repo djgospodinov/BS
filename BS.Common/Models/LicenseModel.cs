@@ -12,7 +12,7 @@ namespace BS.Api.Models
         public DateTime ValidTo { get; set; }
         public bool IsDemo { get; set; }
         public LicenserInfoModel User { get; set; }
-        public List<LicenseModules> Modules { get; set; } 
+        public List<LicenseModulesEnum> Modules { get; set; } 
 
         public override string ToString()
         {
