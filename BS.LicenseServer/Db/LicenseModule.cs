@@ -12,10 +12,13 @@ namespace BS.LicenseServer.Db
     using System;
     using System.Collections.Generic;
     
-    public partial class LicenseModules
+    public partial class LicenseModule
     {
         public int Id { get; set; }
         public System.Guid LicensesId { get; set; }
         public short ModuleId { get; set; }
+    
+        public virtual License License { get; set; }
+        public virtual lu_LicenseModules lu_LicenseModules { get; set; }
     }
 }

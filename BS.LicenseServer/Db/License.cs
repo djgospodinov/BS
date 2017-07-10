@@ -12,13 +12,19 @@ namespace BS.LicenseServer.Db
     using System;
     using System.Collections.Generic;
     
-    public partial class LicenseOwners
+    public partial class License
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public bool IsCompany { get; set; }
-        public string ContactPerson { get; set; }
+        public License()
+        {
+            this.LicenseModules = new HashSet<LicenseModule>();
+        }
+    
+        public System.Guid Id { get; set; }
+        public System.DateTime ValidTo { get; set; }
+        public bool IsDemo { get; set; }
+        public int LicenseOwnerId { get; set; }
+    
+        public virtual ICollection<LicenseModule> LicenseModules { get; set; }
+        public virtual LicenseOwner LicenseOwner { get; set; }
     }
 }

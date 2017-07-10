@@ -51,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\License.cs">
+      <DependentUpon>LicenseDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Db\LicenseDb.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -66,13 +69,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LicenseDb.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Db\LicenseModules.cs">
+    <Compile Include="Db\LicenseModule.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Db\LicenseOwners.cs">
-      <DependentUpon>LicenseDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Db\Licenses.cs">
+    <Compile Include="Db\LicenseOwner.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Db\lu_LicenseModules.cs">
@@ -100,20 +100,20 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
     <Content Include="Db\LicenseDb.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LicenseDb.edmx</DependentUpon>
       <LastGenOutput>LicenseDb.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Db\LicenseDb.edmx.sql" />
     <Content Include="Db\LicenseDb.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LicenseDb.edmx</DependentUpon>
       <LastGenOutput>LicenseDb.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

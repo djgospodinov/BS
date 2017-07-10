@@ -14,7 +14,14 @@ namespace BS.LicenseServer.Db
     
     public partial class lu_LicenseModules
     {
+        public lu_LicenseModules()
+        {
+            this.LicenseModules = new HashSet<LicenseModule>();
+        }
+    
         public short Id { get; set; }
         public string Name { get; set; }
+    
+        public virtual ICollection<LicenseModule> LicenseModules { get; set; }
     }
 }
