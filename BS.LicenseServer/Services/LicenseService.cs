@@ -16,15 +16,16 @@ namespace BS.LicenseServer.Services
         {
             using (var db = new LicenseDbEntities())
             {
-                var result = db.Licenses.FirstOrDefault(x => x.Id == Guid.Parse(id));
-                if (result != null) 
+                var guid = Guid.Parse(id);
+                var result = db.Licenses.FirstOrDefault(x => x.Id == guid);
+                if (result != null)
                 {
                     return new Api.Models.LicenseModel()
                     {
                         Id = result.Id,
                         IsDemo = result.IsDemo,
                         ValidTo = result.ValidTo,
-                        User = new Common.Models.LicenserInfoModel() 
+                        User = new Common.Models.LicenserInfoModel()
                         {
                             Name = result.LicenseOwner.Name,
                             IsCompany = result.LicenseOwner.IsCompany,
@@ -32,7 +33,7 @@ namespace BS.LicenseServer.Services
                             Phone = result.LicenseOwner.Phone,
                             ConactPerson = result.LicenseOwner.ContactPerson
                         },
-                        Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.Id).ToList()
+                        Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList()
                     };
                 }
             }
@@ -40,9 +41,31 @@ namespace BS.LicenseServer.Services
             return null;
         }
 
-        public string Create(Api.Models.LicenseModel model)
+        public string Create(Api.Models.LicenseModel result)
         {
-            throw new NotImplementedException();
+            using (var db = new LicenseDbEntities())
+            {
+                var model = new License()
+                {
+                    Id = Guid.NewGuid(),
+                    IsDemo = result.IsDemo,
+                    ValidTo = result.ValidTo,
+                    LicenseOwner = new LicenseOwner()
+                    {
+                        Name = result.User.Name,
+                        IsCompany = result.User.IsCompany,
+                        Email = result.User.Email,
+                        Phone = result.User.Phone,
+                        ContactPerson = result.User.ConactPerson
+                    },
+                    LicenseModules = result.Modules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList()
+                };
+
+                var created = db.Licenses.Add(model);
+                db.SaveChanges();
+
+                return created.Id.ToString();
+            }
         }
 
         public bool Update(string id, Api.Models.LicenseModel model)

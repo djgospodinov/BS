@@ -20,6 +20,7 @@ namespace BS.Client
     {
         protected readonly string _apiUrl = ConfigurationManager.AppSettings["apiUrl"].ToString();
         protected readonly HttpClient _client = new HttpClient();
+        private string _token = null;
 
         public Form1()
         {
@@ -38,6 +39,19 @@ namespace BS.Client
             _client.BaseAddress = new Uri(_apiUrl);
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("username", "bsadmin"),
+                new KeyValuePair<string, string>("password", "bsadmin!")
+
+            });
+
+            HttpResponseMessage response = _client.PostAsync("/api/token?{0}", content).Result;
+            _token = response.Content.ReadAsAsync<Dictionary<string, string>>().Result["access_token"];
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
         private async void button2_Click(object sender, EventArgs e)

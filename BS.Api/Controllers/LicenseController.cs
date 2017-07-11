@@ -1,6 +1,7 @@
 ﻿using BS.Api.Common;
 using BS.Api.Models;
 using BS.Api.Services;
+using BS.LicenseServer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace BS.Api.Controllers
     [Authorize]
     public class LicenseController : BaseController
     {
-        private readonly ILicenseService service = new DemoLicenseService();
+        private readonly ILicenseService service = new LicenseService();//new DemoLicenseService();
 
         // GET api/license/5
         /// <summary>
