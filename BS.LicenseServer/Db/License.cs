@@ -23,6 +23,7 @@ namespace BS.LicenseServer.Db
         public System.DateTime ValidTo { get; set; }
         public bool IsDemo { get; set; }
         public int LicenseOwnerId { get; set; }
+        public Nullable<bool> Enabled { get; set; }
     
         public virtual ICollection<LicenseModule> LicenseModules { get; set; }
         public virtual LicenseOwner LicenseOwner { get; set; }

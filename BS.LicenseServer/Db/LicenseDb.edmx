@@ -4,7 +4,24 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LicenseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LicenseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
         <EntityType Name="LicenseModules">
           <Key>
             <PropertyRef Name="Id" />
@@ -23,6 +40,7 @@
           <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
           <Property Name="IsCompany" Type="bit" Nullable="false" />
           <Property Name="ContactPerson" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="Licenses">
           <Key>
@@ -32,6 +50,7 @@
           <Property Name="ValidTo" Type="datetime" Nullable="false" />
           <Property Name="IsDemo" Type="bit" Nullable="false" />
           <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
+          <Property Name="Enabled" Type="bit" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -49,6 +68,18 @@
             </Principal>
             <Dependent Role="LicenseModules">
               <PropertyRef Name="LicensesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LicenseOwners_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="LicenseOwners" Type="Self.LicenseOwners" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseOwners">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -77,6 +108,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="LicenseDbModelStoreContainer">
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseModules" EntityType="Self.LicenseModules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseOwners" EntityType="Self.LicenseOwners" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Licenses" EntityType="Self.Licenses" Schema="dbo" store:Type="Tables" />
@@ -84,6 +116,10 @@
           <AssociationSet Name="FK_LicenseModulesLicenses" Association="Self.FK_LicenseModulesLicenses">
             <End Role="Licenses" EntitySet="Licenses" />
             <End Role="LicenseModules" EntitySet="LicenseModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LicenseOwners_AspNetUsers" Association="Self.FK_LicenseOwners_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="LicenseOwners" EntitySet="LicenseOwners" />
           </AssociationSet>
           <AssociationSet Name="FK_LicensesLicenseOwners" Association="Self.FK_LicensesLicenseOwners">
             <End Role="LicenseOwners" EntitySet="LicenseOwners" />
@@ -94,8 +130,7 @@
             <End Role="LicenseModules" EntitySet="LicenseModules" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LicenseDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -120,6 +155,8 @@
           <Property Name="IsCompany" Type="Boolean" Nullable="false" />
           <Property Name="ContactPerson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Licenses" Relationship="Self.FK_LicensesLicenseOwners" FromRole="LicenseOwners" ToRole="Licenses" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="LicenseDbModel.FK_LicenseOwners_AspNetUsers" FromRole="LicenseOwner" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -131,6 +168,7 @@
           <Property Name="LicenseOwnerId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="LicenseModules" Relationship="Self.FK_LicenseModulesLicenses" FromRole="Licenses" ToRole="LicenseModules" />
           <NavigationProperty Name="LicenseOwner" Relationship="Self.FK_LicensesLicenseOwners" FromRole="Licenses" ToRole="LicenseOwners" />
+          <Property Name="Enabled" Type="Boolean" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -193,7 +231,42 @@
             <End Role="LicenseOwners" EntitySet="LicenseOwners" />
             <End Role="Licenses" EntitySet="Licenses" />
           </AssociationSet>
+          <EntitySet Name="AspNetUsers" EntityType="LicenseDbModel.AspNetUser" />
+          <AssociationSet Name="FK_LicenseOwners_AspNetUsers" Association="LicenseDbModel.FK_LicenseOwners_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="LicenseOwner" EntitySet="LicenseOwners" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LicenseOwners" Relationship="LicenseDbModel.FK_LicenseOwners_AspNetUsers" FromRole="AspNetUser" ToRole="LicenseOwner" />
+        </EntityType>
+        <Association Name="FK_LicenseOwners_AspNetUsers">
+          <End Type="LicenseDbModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="LicenseDbModel.LicenseOwner" Role="LicenseOwner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseOwner">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -212,6 +285,7 @@
           <EntitySetMapping Name="LicenseOwners">
             <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwner">
               <MappingFragment StoreEntitySet="LicenseOwners">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -224,6 +298,7 @@
           <EntitySetMapping Name="Licenses">
             <EntityTypeMapping TypeName="LicenseDbModel.License">
               <MappingFragment StoreEntitySet="Licenses">
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
                 <ScalarProperty Name="IsDemo" ColumnName="IsDemo" />
@@ -236,6 +311,24 @@
               <MappingFragment StoreEntitySet="lu_LicenseModules">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="LicenseDbModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

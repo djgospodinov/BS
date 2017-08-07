@@ -40,6 +40,11 @@ namespace BS.Client
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+            Authenticate();
+        }
+
+        private async void Authenticate()
+        {
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("grant_type", "password"),
@@ -48,10 +53,11 @@ namespace BS.Client
 
             });
 
-            HttpResponseMessage response = _client.PostAsync("/api/token?{0}", content).Result;
-            _token = response.Content.ReadAsAsync<Dictionary<string, string>>().Result["access_token"];
+            HttpResponseMessage response = _client.PostAsync("/api/token", content).Result;
+            var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
+            _token = result["access_token"];
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token); ;
         }
 
         private async void button2_Click(object sender, EventArgs e)

@@ -5,13 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7c40ea04fff9442695d9fbc1a32b457d" Name="Diagram1">
-        <EntityTypeShape EntityType="LicenseDbModel.LicenseModule" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="LicenseDbModel.LicenseOwner" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="LicenseDbModel.License" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="LicenseDbModel.lu_LicenseModules" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicenseDbModel.LicenseModule" Width="1.5" PointX="7.5" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicenseDbModel.LicenseOwner" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicenseDbModel.License" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="LicenseDbModel.lu_LicenseModules" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
         <AssociationConnector Association="LicenseDbModel.FK_LicenseModulesLicenses" ManuallyRouted="false" />
         <AssociationConnector Association="LicenseDbModel.FK_lu_LicenseModulesLicenseModules" ManuallyRouted="false" />
         <AssociationConnector Association="LicenseDbModel.FK_LicensesLicenseOwners" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LicenseDbModel.AspNetUser" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="LicenseDbModel.FK_LicenseOwners_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
