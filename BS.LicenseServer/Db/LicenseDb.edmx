@@ -51,6 +51,22 @@
           <Property Name="IsDemo" Type="bit" Nullable="false" />
           <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
           <Property Name="Enabled" Type="bit" />
+          <Property Name="ActivationType" Type="tinyint" />
+          <Property Name="ActivationUserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ActivationMachineId" Type="nvarchar" MaxLength="128" />
+          <Property Name="WorkstationCount" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="lu_ActivationTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsOnline" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsOnline" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -113,6 +129,13 @@
           <EntitySet Name="LicenseOwners" EntityType="Self.LicenseOwners" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Licenses" EntityType="Self.Licenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lu_LicenseModules" EntityType="Self.lu_LicenseModules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="lu_ActivationTypes" EntityType="Self.lu_ActivationTypes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [lu_ActivationTypes].[Id] AS [Id], 
+    [lu_ActivationTypes].[Name] AS [Name], 
+    [lu_ActivationTypes].[IsOnline] AS [IsOnline]
+    FROM [dbo].[lu_ActivationTypes] AS [lu_ActivationTypes]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_LicenseModulesLicenses" Association="Self.FK_LicenseModulesLicenses">
             <End Role="Licenses" EntitySet="Licenses" />
             <End Role="LicenseModules" EntitySet="LicenseModules" />
@@ -169,6 +192,10 @@
           <NavigationProperty Name="LicenseModules" Relationship="Self.FK_LicenseModulesLicenses" FromRole="Licenses" ToRole="LicenseModules" />
           <NavigationProperty Name="LicenseOwner" Relationship="Self.FK_LicensesLicenseOwners" FromRole="Licenses" ToRole="LicenseOwners" />
           <Property Name="Enabled" Type="Boolean" />
+          <Property Name="ActivationType" Type="Byte" />
+          <Property Name="ActivationUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ActivationMachineId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="WorkstationCount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -236,6 +263,7 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="LicenseOwner" EntitySet="LicenseOwners" />
           </AssociationSet>
+          <EntitySet Name="lu_ActivationTypes" EntityType="LicenseDbModel.lu_ActivationTypes" />
         </EntityContainer>
         <EntityType Name="AspNetUser">
           <Key>
@@ -267,6 +295,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="lu_ActivationTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsOnline" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="IsOnline" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -298,6 +336,10 @@
           <EntitySetMapping Name="Licenses">
             <EntityTypeMapping TypeName="LicenseDbModel.License">
               <MappingFragment StoreEntitySet="Licenses">
+                <ScalarProperty Name="WorkstationCount" ColumnName="WorkstationCount" />
+                <ScalarProperty Name="ActivationMachineId" ColumnName="ActivationMachineId" />
+                <ScalarProperty Name="ActivationUserId" ColumnName="ActivationUserId" />
+                <ScalarProperty Name="ActivationType" ColumnName="ActivationType" />
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
@@ -328,6 +370,15 @@
                 <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lu_ActivationTypes">
+            <EntityTypeMapping TypeName="LicenseDbModel.lu_ActivationTypes">
+              <MappingFragment StoreEntitySet="lu_ActivationTypes">
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

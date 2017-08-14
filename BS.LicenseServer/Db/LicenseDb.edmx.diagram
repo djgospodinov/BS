@@ -14,6 +14,7 @@
         <AssociationConnector Association="LicenseDbModel.FK_LicensesLicenseOwners" ManuallyRouted="false" />
         <EntityTypeShape EntityType="LicenseDbModel.AspNetUser" Width="1.5" PointX="0.75" PointY="1" />
         <AssociationConnector Association="LicenseDbModel.FK_LicenseOwners_AspNetUsers" />
+        <EntityTypeShape EntityType="LicenseDbModel.lu_ActivationTypes" Width="1.5" PointX="0.75" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
