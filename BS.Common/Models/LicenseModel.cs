@@ -11,7 +11,7 @@ namespace BS.Api.Models
         public Guid Id { get; set; }
         public DateTime ValidTo { get; set; }
         public bool IsDemo { get; set; }
-        public LicenserInfoModel User { get; set; }
+        public LicenserInfoModelBase User { get; set; }
         public List<LicenseModulesEnum> Modules { get; set; } 
 
         public override string ToString()

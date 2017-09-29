@@ -7,7 +7,7 @@ using BS.Common;
 
 namespace BS.Common.Models
 {
-    public class LicenserInfoModel
+    public class LicenserInfoModelBase
     {
         public string Name { get; set; }
 
@@ -24,5 +24,15 @@ namespace BS.Common.Models
             return string.Format(
 @"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}", Name, (!IsCompany).ToBgString(), Phone, Email, ConactPerson);
         }
+    }
+
+    public class DemoLicenserInfoModel : LicenserInfoModelBase
+    {
+        
+    }
+
+    public class RealLicenserInfoModel : LicenserInfoModelBase
+    {
+
     }
 }

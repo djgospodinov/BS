@@ -25,7 +25,7 @@ namespace BS.LicenseServer.Services
                         Id = result.Id,
                         IsDemo = result.IsDemo,
                         ValidTo = result.ValidTo,
-                        User = new Common.Models.LicenserInfoModel()
+                        User = new Common.Models.RealLicenserInfoModel()
                         {
                             Name = result.LicenseOwner.Name,
                             IsCompany = result.LicenseOwner.IsCompany,
@@ -39,6 +39,34 @@ namespace BS.LicenseServer.Services
             }
 
             return null;
+        }
+
+        public List<Api.Models.LicenseModel> GetByCriteria(LicenseFilterModel filter)
+        {
+            using (var db = new LicenseDbEntities())
+            {
+                var result = db.Licenses.Where(x => x.LicenseOwner.IsCompany == true
+                    //&& x.LicenseOwner.FirmId == firmId //TODO: add to database
+                    );
+
+                return result
+                    .Select(x => new Api.Models.LicenseModel()
+                    {
+                        Id = x.Id,
+                        IsDemo = x.IsDemo,
+                        ValidTo = x.ValidTo,
+                        User = new Common.Models.RealLicenserInfoModel()
+                        {
+                            Name = x.LicenseOwner.Name,
+                            IsCompany = x.LicenseOwner.IsCompany,
+                            Email = x.LicenseOwner.Email,
+                            Phone = x.LicenseOwner.Phone,
+                            ConactPerson = x.LicenseOwner.ContactPerson
+                        },
+                        Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
+                    })
+                    .ToList();
+            }
         }
 
         public string Create(Api.Models.LicenseModel result)

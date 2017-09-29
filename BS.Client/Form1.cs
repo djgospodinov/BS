@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BS.Common;
+using Newtonsoft.Json;
 
 namespace BS.Client
 {
@@ -73,7 +74,8 @@ namespace BS.Client
             HttpResponseMessage response = await _client.GetAsync(string.Format("/api/license/{0}", licenseId));
             if (response.IsSuccessStatusCode)
             {
-                result = await response.Content.ReadAsAsync<LicenseModel>();
+                var responseResult = await response.Content.ReadAsStringAsync();
+                result = JsonConvert.DeserializeObject<LicenseModel>(StringCipher.Decrypt(responseResult.Replace("\"", ""), "testpassword"));
 
                 txtInfo.Text = result.ToString();
             }
@@ -96,7 +98,7 @@ namespace BS.Client
                 ValidTo = DateTime.Now.AddMonths(3),
                 IsDemo = true,
                 Modules = modules,
-                User = new LicenserInfoModel() 
+                User = new DemoLicenserInfoModel() 
                 {
                     Name = txtName.Text,
                     Phone = txtPhone.Text,

@@ -1,7 +1,9 @@
 ﻿using BS.Api.Common;
 using BS.Api.Models;
 using BS.Api.Services;
+using BS.Common;
 using BS.LicenseServer.Services;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +28,8 @@ namespace BS.Api.Controllers
         {
             try
             {
-                var result = this.service.Get(id);
+                var serializedObject = JsonConvert.SerializeObject(this.service.Get(id));
+                var result = StringCipher.Encrypt(serializedObject, "testpassword");
 
                 return Ok(result);
             }
