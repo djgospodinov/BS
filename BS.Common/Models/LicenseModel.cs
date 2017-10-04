@@ -12,8 +12,8 @@ namespace BS.Api.Models
         public DateTime ValidTo { get; set; }
         public bool IsDemo { get; set; }
         public LicenserInfoModelBase User { get; set; }
-        public List<LicenseModulesEnum> Modules { get; set; } 
-
+        public List<LicenseModulesEnum> Modules { get; set; }
+        
         public override string ToString()
         {
             var modules = Modules != null ? Modules.Select(x => x.Description()) : new string[0];

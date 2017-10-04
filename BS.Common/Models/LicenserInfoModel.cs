@@ -19,10 +19,12 @@ namespace BS.Common.Models
 
         public string ConactPerson { get; set; }
 
+        public string CompanyId { get; set; }
+
         public override string ToString()
         {
             return string.Format(
-@"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}", Name, (!IsCompany).ToBgString(), Phone, Email, ConactPerson);
+@"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}, Булстат: {5}", Name, (!IsCompany).ToBgString(), Phone, Email, ConactPerson, CompanyId);
         }
     }
 

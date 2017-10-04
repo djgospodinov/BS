@@ -8,6 +8,6 @@ namespace BS.Common.Models
 {
     public class LicenseFilterModel
     {
-        public string FirmId { get; set; }
+        public string CompanyId { get; set; }
     }
 }

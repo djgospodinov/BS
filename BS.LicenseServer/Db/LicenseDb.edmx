@@ -41,6 +41,7 @@
           <Property Name="IsCompany" Type="bit" Nullable="false" />
           <Property Name="ContactPerson" Type="nvarchar(max)" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="CompanyId" Type="nchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="Licenses">
           <Key>
@@ -180,6 +181,7 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
           <NavigationProperty Name="Licenses" Relationship="Self.FK_LicensesLicenseOwners" FromRole="LicenseOwners" ToRole="Licenses" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="LicenseDbModel.FK_LicenseOwners_AspNetUsers" FromRole="LicenseOwner" ToRole="AspNetUser" />
+          <Property Name="CompanyId" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -323,6 +325,7 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
           <EntitySetMapping Name="LicenseOwners">
             <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwner">
               <MappingFragment StoreEntitySet="LicenseOwners">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

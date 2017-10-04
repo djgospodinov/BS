@@ -58,7 +58,7 @@ namespace BS.Client
             var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
             _token = result["access_token"];
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token); ;
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
         private async void button2_Click(object sender, EventArgs e)
@@ -104,7 +104,8 @@ namespace BS.Client
                     Phone = txtPhone.Text,
                     Email = txtEmail.Text,
                     ConactPerson = txtContactPerson.Text,
-                    IsCompany = chkCompany.Checked
+                    IsCompany = chkCompany.Checked,
+                    CompanyId = txtCompanyId.Text
                 }
             };
 
@@ -119,6 +120,16 @@ namespace BS.Client
             {
                 txtCreatedLicenseId.Text = "Грешка!";
             }
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

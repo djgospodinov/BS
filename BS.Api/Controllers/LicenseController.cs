@@ -2,6 +2,7 @@
 using BS.Api.Models;
 using BS.Api.Services;
 using BS.Common;
+using BS.Common.Models;
 using BS.LicenseServer.Services;
 using Newtonsoft.Json;
 using System;
@@ -14,7 +15,7 @@ using System.Web.Http;
 namespace BS.Api.Controllers
 {
     [Authorize]
-    public class LicenseController : BaseController
+    public class LicenseController : AuthorizedController
     {
         private readonly ILicenseService service = new LicenseService();//new DemoLicenseService();
 
@@ -34,6 +35,28 @@ namespace BS.Api.Controllers
                 return Ok(result);
             }
             catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Returns info for the licence by the given id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IHttpActionResult FindByFilter(string id)
+        {
+            try
+            {
+                var result = JsonConvert.SerializeObject(this.service.GetByFilter(new LicenseFilterModel() 
+                    {
+                        CompanyId = id
+                    }));
+                
+                return Ok(result);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -60,7 +83,7 @@ namespace BS.Api.Controllers
                 return BadRequest(ex.Message);
             }
 
-            return BadRequest("Cannot delete licence.");
+            return BadRequest("Cannot create licence.");
         }
 
         // PUT api/license/5
@@ -84,7 +107,7 @@ namespace BS.Api.Controllers
                 return BadRequest(ex.Message);
             }
 
-            return BadRequest(string.Format("Cannot create update license {0}.", id));
+            return BadRequest(string.Format("Cannot update license {0}.", id));
         }
 
         // DELETE api/license/5

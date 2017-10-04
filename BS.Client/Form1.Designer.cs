@@ -45,6 +45,8 @@
             this.txtPhone = new System.Windows.Forms.TextBox();
             this.chkCompany = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtCompanyId = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,6 +112,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.txtCompanyId);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
@@ -204,6 +208,24 @@
             this.txtName.Size = new System.Drawing.Size(210, 20);
             this.txtName.TabIndex = 7;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(27, 128);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(58, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "БУЛСТАТ";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // txtCompanyId
+            // 
+            this.txtCompanyId.Location = new System.Drawing.Point(140, 121);
+            this.txtCompanyId.Name = "txtCompanyId";
+            this.txtCompanyId.Size = new System.Drawing.Size(210, 20);
+            this.txtCompanyId.TabIndex = 16;
+            this.txtCompanyId.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -242,6 +264,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtCompanyId;
     }
 }
 

@@ -81,5 +81,11 @@ namespace BS.Api.Services
         {
             return _licenses.Remove(id);
         }
+
+
+        public List<LicenseModel> GetByFilter(BS.Common.Models.LicenseFilterModel filter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

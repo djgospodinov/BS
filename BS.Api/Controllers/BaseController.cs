@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,6 +10,6 @@ namespace BS.Api.Controllers
 {
     public class BaseController : ApiController
     {
-
+        protected ILogger _logger = LogManager.GetCurrentClassLogger();
 	}
 }

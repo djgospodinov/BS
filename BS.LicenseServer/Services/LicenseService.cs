@@ -1,6 +1,7 @@
 ﻿using BS.Api.Common;
 using BS.Common.Models;
 using BS.LicenseServer.Db;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace BS.LicenseServer.Services
 {
     public class LicenseService : ILicenseService
     {
+        private static ILogger _logger = LogManager.GetCurrentClassLogger();
+
         //private readonly _db = new DB();
         public Api.Models.LicenseModel Get(string id)
         {
@@ -31,7 +34,8 @@ namespace BS.LicenseServer.Services
                             IsCompany = result.LicenseOwner.IsCompany,
                             Email = result.LicenseOwner.Email,
                             Phone = result.LicenseOwner.Phone,
-                            ConactPerson = result.LicenseOwner.ContactPerson
+                            ConactPerson = result.LicenseOwner.ContactPerson,
+                            CompanyId = result.LicenseOwner.CompanyId
                         },
                         Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList()
                     };
@@ -41,13 +45,12 @@ namespace BS.LicenseServer.Services
             return null;
         }
 
-        public List<Api.Models.LicenseModel> GetByCriteria(LicenseFilterModel filter)
+        public List<Api.Models.LicenseModel> GetByFilter(LicenseFilterModel filter)
         {
             using (var db = new LicenseDbEntities())
             {
                 var result = db.Licenses.Where(x => x.LicenseOwner.IsCompany == true
-                    //&& x.LicenseOwner.FirmId == firmId //TODO: add to database
-                    );
+                    && x.LicenseOwner.CompanyId == filter.CompanyId);
 
                 return result
                     .Select(x => new Api.Models.LicenseModel()
@@ -61,7 +64,8 @@ namespace BS.LicenseServer.Services
                             IsCompany = x.LicenseOwner.IsCompany,
                             Email = x.LicenseOwner.Email,
                             Phone = x.LicenseOwner.Phone,
-                            ConactPerson = x.LicenseOwner.ContactPerson
+                            ConactPerson = x.LicenseOwner.ContactPerson,
+                            CompanyId = x.LicenseOwner.CompanyId
                         },
                         Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
                     })
@@ -73,19 +77,23 @@ namespace BS.LicenseServer.Services
         {
             using (var db = new LicenseDbEntities())
             {
-                var model = new License()
-                {
-                    Id = Guid.NewGuid(),
-                    IsDemo = result.IsDemo,
-                    ValidTo = result.ValidTo,
-                    LicenseOwner = new LicenseOwner()
+                var owner = db.LicenseOwners.FirstOrDefault(x => x.CompanyId != null && x.CompanyId == result.User.CompanyId)
+                    ?? new LicenseOwner()
                     {
                         Name = result.User.Name,
                         IsCompany = result.User.IsCompany,
                         Email = result.User.Email,
                         Phone = result.User.Phone,
-                        ContactPerson = result.User.ConactPerson
-                    },
+                        ContactPerson = result.User.ConactPerson,
+                        CompanyId = result.User.CompanyId
+                    };
+
+                var model = new License()
+                {
+                    Id = Guid.NewGuid(),
+                    IsDemo = result.IsDemo,
+                    ValidTo = result.ValidTo,
+                    LicenseOwner = owner,
                     LicenseModules = result.Modules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList()
                 };
 
