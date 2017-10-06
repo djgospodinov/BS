@@ -29,6 +29,7 @@ namespace BS.Api
             var options = new OAuthAuthorizationServerOptions()
             {
                 AllowInsecureHttp = true,
+                //AllowInsecureHttp = false,
                 TokenEndpointPath = new PathString("/api/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new SimpleAuthorizationServerProvider()

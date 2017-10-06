@@ -20,7 +20,7 @@ namespace BS.Client
     public partial class Form1 : Form
     {
         protected readonly string _apiUrl = ConfigurationManager.AppSettings["apiUrl"].ToString();
-        protected readonly HttpClient _client = new HttpClient();
+        protected HttpClient _client;
         private string _token = null;
 
         public Form1()
@@ -36,12 +36,16 @@ namespace BS.Client
             {
                 checkedListModules.Items.Add(new ListBoxItem() { Value = (int)m, Name = m.Description() });
             }
+        }
 
-            _client.BaseAddress = new Uri(_apiUrl);
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        private HttpClient CreateClient(bool useHttps = false)
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(useHttps ? _apiUrl.Replace("http", "https") : _apiUrl);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            Authenticate();
+            return client;
         }
 
         private async void Authenticate()
@@ -53,6 +57,8 @@ namespace BS.Client
                 new KeyValuePair<string, string>("password", "bsadmin!")
 
             });
+
+            _client = CreateClient(cbSSL.Checked);
 
             HttpResponseMessage response = _client.PostAsync("/api/token", content).Result;
             var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
@@ -71,17 +77,21 @@ namespace BS.Client
             }
 
             LicenseModel result = null;
-            HttpResponseMessage response = await _client.GetAsync(string.Format("/api/license/{0}", licenseId));
-            if (response.IsSuccessStatusCode)
-            {
-                var responseResult = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<LicenseModel>(StringCipher.Decrypt(responseResult.Replace("\"", ""), "testpassword"));
 
-                txtInfo.Text = result.ToString();
-            }
-            else 
+            if (_client != null) 
             {
-                txtInfo.Text = "Грешка!";
+                HttpResponseMessage response = await _client.GetAsync(string.Format("/api/license/{0}", licenseId));
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseResult = await response.Content.ReadAsStringAsync();
+                    result = JsonConvert.DeserializeObject<LicenseModel>(StringCipher.Decrypt(responseResult.Replace("\"", ""), "testpassword"));
+
+                    txtInfo.Text = result.ToString();
+                }
+                else
+                {
+                    txtInfo.Text = "Грешка!";
+                }
             }
         }
 
@@ -130,6 +140,16 @@ namespace BS.Client
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAuthenticate_Click(object sender, EventArgs e)
+        {
+            Authenticate();
         }
     }
 }

@@ -14,7 +14,6 @@ namespace BS.LicenseServer.Services
     {
         private static ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        //private readonly _db = new DB();
         public Api.Models.LicenseModel Get(string id)
         {
             using (var db = new LicenseDbEntities())
@@ -50,7 +49,8 @@ namespace BS.LicenseServer.Services
             using (var db = new LicenseDbEntities())
             {
                 var result = db.Licenses.Where(x => x.LicenseOwner.IsCompany == true
-                    && x.LicenseOwner.CompanyId == filter.CompanyId);
+                    && x.LicenseOwner.CompanyId == filter.CompanyId)
+                    .ToList();
 
                 return result
                     .Select(x => new Api.Models.LicenseModel()

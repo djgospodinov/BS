@@ -36,6 +36,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.checkedListModules = new System.Windows.Forms.CheckedListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbSSL = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtCompanyId = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -45,8 +48,7 @@
             this.txtPhone = new System.Windows.Forms.TextBox();
             this.chkCompany = new System.Windows.Forms.CheckBox();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtCompanyId = new System.Windows.Forms.TextBox();
+            this.btnAuthenticate = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,6 +114,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnAuthenticate);
+            this.groupBox1.Controls.Add(this.cbSSL);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.txtCompanyId);
             this.groupBox1.Controls.Add(this.label5);
@@ -133,6 +137,35 @@
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Създаване";
+            // 
+            // cbSSL
+            // 
+            this.cbSSL.AutoSize = true;
+            this.cbSSL.Location = new System.Drawing.Point(363, 52);
+            this.cbSSL.Name = "cbSSL";
+            this.cbSSL.Size = new System.Drawing.Size(46, 17);
+            this.cbSSL.TabIndex = 18;
+            this.cbSSL.Text = "SSL";
+            this.cbSSL.UseVisualStyleBackColor = true;
+            this.cbSSL.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(27, 128);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(58, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "БУЛСТАТ";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
+            // 
+            // txtCompanyId
+            // 
+            this.txtCompanyId.Location = new System.Drawing.Point(140, 121);
+            this.txtCompanyId.Name = "txtCompanyId";
+            this.txtCompanyId.Size = new System.Drawing.Size(210, 20);
+            this.txtCompanyId.TabIndex = 16;
+            this.txtCompanyId.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label5
             // 
@@ -208,23 +241,15 @@
             this.txtName.Size = new System.Drawing.Size(210, 20);
             this.txtName.TabIndex = 7;
             // 
-            // label6
+            // btnAuthenticate
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(27, 128);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(58, 13);
-            this.label6.TabIndex = 17;
-            this.label6.Text = "БУЛСТАТ";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
-            // 
-            // txtCompanyId
-            // 
-            this.txtCompanyId.Location = new System.Drawing.Point(140, 121);
-            this.txtCompanyId.Name = "txtCompanyId";
-            this.txtCompanyId.Size = new System.Drawing.Size(210, 20);
-            this.txtCompanyId.TabIndex = 16;
-            this.txtCompanyId.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.btnAuthenticate.Location = new System.Drawing.Point(363, 75);
+            this.btnAuthenticate.Name = "btnAuthenticate";
+            this.btnAuthenticate.Size = new System.Drawing.Size(93, 23);
+            this.btnAuthenticate.TabIndex = 19;
+            this.btnAuthenticate.Text = "Login";
+            this.btnAuthenticate.UseVisualStyleBackColor = true;
+            this.btnAuthenticate.Click += new System.EventHandler(this.btnAuthenticate_Click);
             // 
             // Form1
             // 
@@ -266,6 +291,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtCompanyId;
+        private System.Windows.Forms.CheckBox cbSSL;
+        private System.Windows.Forms.Button btnAuthenticate;
     }
 }
 

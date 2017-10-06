@@ -17,13 +17,13 @@ namespace BS.Api.Controllers
     [Authorize]
     public class LicenseController : AuthorizedController
     {
-        private readonly ILicenseService service = new LicenseService();//new DemoLicenseService();
+        private readonly ILicenseService service = new LicenseService();
 
         // GET api/license/5
         /// <summary>
         /// Returns info for the licence by the given id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">the id of the license, it should guid</param>
         /// <returns></returns>
         public IHttpActionResult Get(string id)
         {
@@ -41,11 +41,11 @@ namespace BS.Api.Controllers
         }
 
         /// <summary>
-        /// Returns info for the licence by the given id
+        /// Returns info for the licence by the given id/bulstat
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">this is the firm id, e.g. the bulstat</param>
         /// <returns></returns>
-        public IHttpActionResult FindByFilter(string id)
+        public IHttpActionResult Licenses(string id)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace BS.Api.Controllers
         /// <summary>
         /// Marks a license as disabled
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">the id of the license, it should guid</param>
         /// <returns></returns>
         public IHttpActionResult Delete(string id)
         {
