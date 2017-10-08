@@ -15,6 +15,8 @@ namespace BS.Api.Common
 
         string Create(LicenseModel model);
 
+        string[] CreateMany(List<LicenseModel> model);
+
         bool Update(string id, LicenseModel model);
 
         bool Delete(string id);

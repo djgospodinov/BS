@@ -108,7 +108,7 @@ namespace BS.Client
                 ValidTo = DateTime.Now.AddMonths(3),
                 IsDemo = true,
                 Modules = modules,
-                User = new DemoLicenserInfoModel() 
+                User = new RealLicenserInfoModel() 
                 {
                     Name = txtName.Text,
                     Phone = txtPhone.Text,

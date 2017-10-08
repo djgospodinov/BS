@@ -30,6 +30,7 @@ namespace BS.LicenseServer.Db
         public virtual DbSet<License> Licenses { get; set; }
         public virtual DbSet<lu_LicenseModules> lu_LicenseModules { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<lu_ActivationTypes> lu_ActivationTypes { get; set; }
+        public virtual DbSet<LicenseOwnerExtraInfo> LicenseOwnerExtraInfoes { get; set; }
+        public virtual DbSet<lu_LicenseTypes> lu_LicenseTypes { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace BS.Common.Models
     {
         public string Name { get; set; }
 
-        public bool IsCompany { get; set; }
+        public virtual bool IsCompany { get; set; }
 
         public string Phone { get; set; }
 
@@ -21,10 +21,12 @@ namespace BS.Common.Models
 
         public string CompanyId { get; set; }
 
+        public string EGN { get; set; }
+
         public override string ToString()
         {
             return string.Format(
-@"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}, Булстат: {5}", Name, (!IsCompany).ToBgString(), Phone, Email, ConactPerson, CompanyId);
+@"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}, Булстат: {5}", Name, (!IsCompany).ToBgString(), Phone, Email, ConactPerson);
         }
     }
 
@@ -35,6 +37,33 @@ namespace BS.Common.Models
 
     public class RealLicenserInfoModel : LicenserInfoModelBase
     {
+        public int PostCode { get; set; }
 
+        public string RegistrationAddress { get; set; }
+
+        public string PostAddress { get; set; }
+
+        public string MOL { get; set; }
+
+        public string ContactPerson { get; set; }
+
+        public string AccountingPerson { get; set; }
+
+        public bool DDSRegistration { get; set; }
+
+        public override string ToString()
+        {
+            var result = base.ToString();
+            if (result.Length > 0)
+            {
+                result = result + ' ' + string.Format("Булстат: {0}", CompanyId);
+            }
+            else 
+            {
+                result = result + string.Format("Булстат: {0}", CompanyId);
+            }
+
+             return result;
+        }
     }
 }

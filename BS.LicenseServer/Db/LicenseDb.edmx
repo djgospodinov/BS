@@ -30,6 +30,20 @@
           <Property Name="LicensesId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ModuleId" Type="smallint" Nullable="false" />
         </EntityType>
+        <EntityType Name="LicenseOwnerExtraInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
+          <Property Name="PostCode" Type="int" />
+          <Property Name="RegistrationAddress" Type="nchar" MaxLength="250" />
+          <Property Name="PostAddress" Type="nchar" MaxLength="250" />
+          <Property Name="MOL" Type="nvarchar" MaxLength="250" />
+          <Property Name="ContactPerson" Type="nvarchar" MaxLength="250" />
+          <Property Name="AccountingPerson" Type="nvarchar" MaxLength="250" />
+          <Property Name="DDSRegistration" Type="bit" />
+        </EntityType>
         <EntityType Name="LicenseOwners">
           <Key>
             <PropertyRef Name="Id" />
@@ -52,14 +66,21 @@
           <Property Name="IsDemo" Type="bit" Nullable="false" />
           <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
           <Property Name="Enabled" Type="bit" />
-          <Property Name="ActivationType" Type="tinyint" />
-          <Property Name="ActivationUserId" Type="nvarchar" MaxLength="128" />
-          <Property Name="ActivationMachineId" Type="nvarchar" MaxLength="128" />
+          <Property Name="Type" Type="tinyint" />
           <Property Name="WorkstationCount" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="SubscribedTo" Type="datetime" />
+        </EntityType>
+        <EntityType Name="lu_LicenseModules">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="lu_ActivationTypes">
+warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="lu_LicenseTypes">
           <Key>
             <PropertyRef Name="Id" />
             <PropertyRef Name="Name" />
@@ -68,13 +89,6 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="IsOnline" Type="bit" Nullable="false" />
-        </EntityType>
-        <EntityType Name="lu_LicenseModules">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <Association Name="FK_LicenseModulesLicenses">
           <End Role="Licenses" Type="Self.Licenses" Multiplicity="1" />
@@ -85,6 +99,18 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
             </Principal>
             <Dependent Role="LicenseModules">
               <PropertyRef Name="LicensesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LicenseOwnerExtraInfo_LicenseOwners">
+          <End Role="LicenseOwners" Type="Self.LicenseOwners" Multiplicity="1" />
+          <End Role="LicenseOwnerExtraInfo" Type="Self.LicenseOwnerExtraInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseOwners">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseOwnerExtraInfo">
+              <PropertyRef Name="LicenseOwnerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -127,19 +153,24 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
         <EntityContainer Name="LicenseDbModelStoreContainer">
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseModules" EntityType="Self.LicenseModules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LicenseOwnerExtraInfo" EntityType="Self.LicenseOwnerExtraInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseOwners" EntityType="Self.LicenseOwners" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Licenses" EntityType="Self.Licenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lu_LicenseModules" EntityType="Self.lu_LicenseModules" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="lu_ActivationTypes" EntityType="Self.lu_ActivationTypes" store:Type="Tables" store:Schema="dbo">
+          <EntitySet Name="lu_LicenseTypes" EntityType="Self.lu_LicenseTypes" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [lu_ActivationTypes].[Id] AS [Id], 
-    [lu_ActivationTypes].[Name] AS [Name], 
-    [lu_ActivationTypes].[IsOnline] AS [IsOnline]
-    FROM [dbo].[lu_ActivationTypes] AS [lu_ActivationTypes]</DefiningQuery>
+    [lu_LicenseTypes].[Id] AS [Id], 
+    [lu_LicenseTypes].[Name] AS [Name], 
+    [lu_LicenseTypes].[IsOnline] AS [IsOnline]
+    FROM [dbo].[lu_LicenseTypes] AS [lu_LicenseTypes]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_LicenseModulesLicenses" Association="Self.FK_LicenseModulesLicenses">
             <End Role="Licenses" EntitySet="Licenses" />
             <End Role="LicenseModules" EntitySet="LicenseModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LicenseOwnerExtraInfo_LicenseOwners" Association="Self.FK_LicenseOwnerExtraInfo_LicenseOwners">
+            <End Role="LicenseOwners" EntitySet="LicenseOwners" />
+            <End Role="LicenseOwnerExtraInfo" EntitySet="LicenseOwnerExtraInfo" />
           </AssociationSet>
           <AssociationSet Name="FK_LicenseOwners_AspNetUsers" Association="Self.FK_LicenseOwners_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -182,6 +213,7 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="LicenseDbModel.FK_LicenseOwners_AspNetUsers" FromRole="LicenseOwner" ToRole="AspNetUser" />
           <Property Name="CompanyId" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="LicenseOwnerExtraInfoes" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners" FromRole="LicenseOwner" ToRole="LicenseOwnerExtraInfo" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -194,10 +226,10 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
           <NavigationProperty Name="LicenseModules" Relationship="Self.FK_LicenseModulesLicenses" FromRole="Licenses" ToRole="LicenseModules" />
           <NavigationProperty Name="LicenseOwner" Relationship="Self.FK_LicensesLicenseOwners" FromRole="Licenses" ToRole="LicenseOwners" />
           <Property Name="Enabled" Type="Boolean" />
-          <Property Name="ActivationType" Type="Byte" />
-          <Property Name="ActivationUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ActivationMachineId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="WorkstationCount" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SubscribedTo" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="Byte" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -265,7 +297,12 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="LicenseOwner" EntitySet="LicenseOwners" />
           </AssociationSet>
-          <EntitySet Name="lu_ActivationTypes" EntityType="LicenseDbModel.lu_ActivationTypes" />
+          <EntitySet Name="LicenseOwnerExtraInfoes" EntityType="LicenseDbModel.LicenseOwnerExtraInfo" />
+          <AssociationSet Name="FK_LicenseOwnerExtraInfo_LicenseOwners" Association="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners">
+            <End Role="LicenseOwner" EntitySet="LicenseOwners" />
+            <End Role="LicenseOwnerExtraInfo" EntitySet="LicenseOwnerExtraInfoes" />
+          </AssociationSet>
+          <EntitySet Name="lu_LicenseTypes" EntityType="LicenseDbModel.lu_LicenseTypes" />
         </EntityContainer>
         <EntityType Name="AspNetUser">
           <Key>
@@ -297,7 +334,34 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="lu_ActivationTypes">
+        <EntityType Name="LicenseOwnerExtraInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LicenseOwnerId" Type="Int32" Nullable="false" />
+          <Property Name="PostCode" Type="Int32" />
+          <Property Name="RegistrationAddress" Type="String" MaxLength="250" FixedLength="true" Unicode="true" />
+          <Property Name="PostAddress" Type="String" MaxLength="250" FixedLength="true" Unicode="true" />
+          <Property Name="MOL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="AccountingPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DDSRegistration" Type="Boolean" />
+          <NavigationProperty Name="LicenseOwner" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners" FromRole="LicenseOwnerExtraInfo" ToRole="LicenseOwner" />
+        </EntityType>
+        <Association Name="FK_LicenseOwnerExtraInfo_LicenseOwners">
+          <End Type="LicenseDbModel.LicenseOwner" Role="LicenseOwner" Multiplicity="1" />
+          <End Type="LicenseDbModel.LicenseOwnerExtraInfo" Role="LicenseOwnerExtraInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseOwner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseOwnerExtraInfo">
+              <PropertyRef Name="LicenseOwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="lu_LicenseTypes">
           <Key>
             <PropertyRef Name="Id" />
             <PropertyRef Name="Name" />
@@ -339,10 +403,10 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
           <EntitySetMapping Name="Licenses">
             <EntityTypeMapping TypeName="LicenseDbModel.License">
               <MappingFragment StoreEntitySet="Licenses">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="SubscribedTo" ColumnName="SubscribedTo" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="WorkstationCount" ColumnName="WorkstationCount" />
-                <ScalarProperty Name="ActivationMachineId" ColumnName="ActivationMachineId" />
-                <ScalarProperty Name="ActivationUserId" ColumnName="ActivationUserId" />
-                <ScalarProperty Name="ActivationType" ColumnName="ActivationType" />
                 <ScalarProperty Name="Enabled" ColumnName="Enabled" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
@@ -377,9 +441,24 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_ActivationTypes' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="lu_ActivationTypes">
-            <EntityTypeMapping TypeName="LicenseDbModel.lu_ActivationTypes">
-              <MappingFragment StoreEntitySet="lu_ActivationTypes">
+          <EntitySetMapping Name="LicenseOwnerExtraInfoes">
+            <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwnerExtraInfo">
+              <MappingFragment StoreEntitySet="LicenseOwnerExtraInfo">
+                <ScalarProperty Name="DDSRegistration" ColumnName="DDSRegistration" />
+                <ScalarProperty Name="AccountingPerson" ColumnName="AccountingPerson" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="MOL" ColumnName="MOL" />
+                <ScalarProperty Name="PostAddress" ColumnName="PostAddress" />
+                <ScalarProperty Name="RegistrationAddress" ColumnName="RegistrationAddress" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="LicenseOwnerId" ColumnName="LicenseOwnerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lu_LicenseTypes">
+            <EntityTypeMapping TypeName="LicenseDbModel.lu_LicenseTypes">
+              <MappingFragment StoreEntitySet="lu_LicenseTypes">
                 <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

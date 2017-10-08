@@ -11,14 +11,19 @@ namespace BS.Common.Models
     {
         [Description("Счетоводство")]
         Accounting = 1,
+
         [Description("Производство")]
         Production = 2,
+
         [Description("Склад")]
         Warehouse = 3,
+
         [Description("Търговска система")]
         TradingSystem = 4,
+
         [Description("ТРЗ")]
         Salary = 5,
+            
         [Description("Графици")]
         Schedules = 6
     }

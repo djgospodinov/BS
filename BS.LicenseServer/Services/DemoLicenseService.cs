@@ -87,5 +87,11 @@ namespace BS.Api.Services
         {
             throw new NotImplementedException();
         }
+
+
+        public string[] CreateMany(List<LicenseModel> model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

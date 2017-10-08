@@ -45,6 +45,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -79,10 +80,13 @@
     <Compile Include="Db\LicenseOwner.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Db\lu_ActivationTypes.cs">
+    <Compile Include="Db\LicenseOwnerExtraInfo.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Db\lu_LicenseModules.cs">
+      <DependentUpon>LicenseDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\lu_LicenseTypes.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

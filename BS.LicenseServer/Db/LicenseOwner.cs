@@ -17,6 +17,7 @@ namespace BS.LicenseServer.Db
         public LicenseOwner()
         {
             this.Licenses = new HashSet<License>();
+            this.LicenseOwnerExtraInfoes = new HashSet<LicenseOwnerExtraInfo>();
         }
     
         public int Id { get; set; }
@@ -30,5 +31,6 @@ namespace BS.LicenseServer.Db
     
         public virtual ICollection<License> Licenses { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual ICollection<LicenseOwnerExtraInfo> LicenseOwnerExtraInfoes { get; set; }
     }
 }

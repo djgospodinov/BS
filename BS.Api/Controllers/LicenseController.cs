@@ -86,6 +86,30 @@ namespace BS.Api.Controllers
             return BadRequest("Cannot create licence.");
         }
 
+        // POST api/license
+        /// <summary>
+        /// Creates many license
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public IHttpActionResult PostMany([FromBody]List<LicenseModel> model)
+        {
+            try
+            {
+                var result = string.Join(",", this.service.CreateMany(model));
+                if (!string.IsNullOrEmpty(result))
+                {
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return BadRequest("Cannot create licences.");
+        }
+
         // PUT api/license/5
         /// <summary>
         /// Edit license details
