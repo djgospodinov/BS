@@ -17,7 +17,7 @@ namespace BS.Api.Controllers
     [Authorize]
     public class LicenseController : AuthorizedController
     {
-        private readonly ILicenseService service = new LicenseService();
+        private readonly ILicenseService _service = new LicenseService();
 
         // GET api/license/5
         /// <summary>
@@ -29,7 +29,7 @@ namespace BS.Api.Controllers
         {
             try
             {
-                var serializedObject = JsonConvert.SerializeObject(this.service.Get(id));
+                var serializedObject = JsonConvert.SerializeObject(_service.Get(id));
                 var result = StringCipher.Encrypt(serializedObject, "testpassword");
 
                 return Ok(result);
@@ -49,7 +49,7 @@ namespace BS.Api.Controllers
         {
             try
             {
-                var result = JsonConvert.SerializeObject(this.service.GetByFilter(new LicenseFilterModel() 
+                var result = JsonConvert.SerializeObject(_service.GetByFilter(new LicenseFilterModel() 
                     {
                         CompanyId = id
                     }));
@@ -78,7 +78,7 @@ namespace BS.Api.Controllers
                     return BadRequest("Cannot create licence.");
                 }
 
-                var result = this.service.Create(model);
+                var result = _service.Create(model);
                 if (!string.IsNullOrEmpty(result)) 
                 {
                     return Ok(result);
@@ -134,7 +134,7 @@ namespace BS.Api.Controllers
         {
             try
             {
-                if (this.service.Update(id, value))
+                if (_service.Update(id, value))
                 {
                     return Ok(id);
                 }
@@ -157,7 +157,7 @@ namespace BS.Api.Controllers
         {
             try
             {
-                if (this.service.Delete(id))
+                if (_service.Delete(id))
                 {
                     return Ok(id);
                 }

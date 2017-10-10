@@ -14,15 +14,26 @@ namespace BS.Api.Controllers
 {
     public class TestController : ApiController
     {
-        private readonly ILicenseService _service = new LicenseService();
-        private static readonly bool _allowedTestRequests = Convert.ToBoolean(ConfigurationManager.AppSettings["AllowTestRequests"].ToString());
+        private static readonly bool AllowedTestRequests = Convert.ToBoolean(ConfigurationManager.AppSettings["AllowTestRequests"]);
+
+        private readonly ILicenseService _service;
+
+        public TestController()
+            :this(new LicenseService())
+        {
+        }
+
+        public TestController(ILicenseService service)
+        {
+            _service = service;
+        }
 
         [HttpGet]
         public IHttpActionResult Encrypted(string id)
         {
             try
             {
-                if (!_allowedTestRequests) 
+                if (!AllowedTestRequests) 
                     return NotFound();
                 
                 var serializedObject = JsonConvert.SerializeObject(this._service.Get(id));
@@ -41,7 +52,7 @@ namespace BS.Api.Controllers
         {
             try
             {
-                if (!_allowedTestRequests)
+                if (!AllowedTestRequests)
                     return NotFound();
 
                 var result = JsonConvert.SerializeObject(this._service.Get(id));
@@ -59,7 +70,7 @@ namespace BS.Api.Controllers
         {
             try
             {
-                if (!_allowedTestRequests)
+                if (!AllowedTestRequests)
                     return NotFound();
 
                 var result = JsonConvert.SerializeObject(this._service.GetByFilter(new LicenseFilterModel()
