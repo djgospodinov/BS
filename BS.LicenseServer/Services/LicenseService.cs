@@ -28,6 +28,7 @@ namespace BS.LicenseServer.Services
                         Id = result.Id,
                         IsDemo = result.IsDemo,
                         ValidTo = result.ValidTo,
+                        Type = (LicenseType)result.Type,
                         User = new Common.Models.RealLicenserInfoModel()
                         {
                             Name = result.LicenseOwner.Name,
@@ -35,7 +36,7 @@ namespace BS.LicenseServer.Services
                             Email = result.LicenseOwner.Email,
                             Phone = result.LicenseOwner.Phone,
                             ConactPerson = result.LicenseOwner.ContactPerson,
-                            CompanyId = result.LicenseOwner.CompanyId
+                            CompanyId = result.LicenseOwner.CompanyId,
                         },
                         Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList()
                     };
@@ -117,6 +118,8 @@ namespace BS.LicenseServer.Services
                     Id = Guid.NewGuid(),
                     IsDemo = model.IsDemo,
                     ValidTo = model.ValidTo,
+                    SubscribedTo = model.SubscribedTo,
+                    Type = (byte)model.Type,
                     LicenseOwner = owner,
                     LicenseModules = model.Modules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList()
                 };

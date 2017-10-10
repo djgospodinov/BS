@@ -68,10 +68,16 @@ namespace BS.Api.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [HttpPost]
         public IHttpActionResult Post([FromBody]LicenseModel model)
         {
             try
             {
+                if (!ModelState.IsValid) 
+                {
+                    return BadRequest("Cannot create licence.");
+                }
+
                 var result = this.service.Create(model);
                 if (!string.IsNullOrEmpty(result)) 
                 {
@@ -86,31 +92,38 @@ namespace BS.Api.Controllers
             return BadRequest("Cannot create licence.");
         }
 
-        // POST api/license
-        /// <summary>
-        /// Creates many license
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public IHttpActionResult PostMany([FromBody]List<LicenseModel> model)
-        {
-            try
-            {
-                var result = string.Join(",", this.service.CreateMany(model));
-                if (!string.IsNullOrEmpty(result))
-                {
-                    return Ok(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+        //// POST api/license
+        ///// <summary>
+        ///// Creates many license
+        ///// </summary>
+        ///// <param name="model"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //public IHttpActionResult CreateMany([FromBody]List<LicenseModel> model)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest("Cannot create licence.");
+        //        }
 
-            return BadRequest("Cannot create licences.");
-        }
+        //        var result = string.Join(",", this.service.CreateMany(model));
+        //        if (!string.IsNullOrEmpty(result))
+        //        {
+        //            return Ok(result);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //    return BadRequest("Cannot create licences.");
+        //}
 
         // PUT api/license/5
+
         /// <summary>
         /// Edit license details
         /// </summary>

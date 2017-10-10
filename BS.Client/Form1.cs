@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BS.Common;
 using Newtonsoft.Json;
+using System.Net;
 
 namespace BS.Client
 {
@@ -36,6 +37,17 @@ namespace BS.Client
             {
                 checkedListModules.Items.Add(new ListBoxItem() { Value = (int)m, Name = m.Description() });
             }
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                | SecurityProtocolType.Tls11
+                | SecurityProtocolType.Tls12
+                | SecurityProtocolType.Ssl3;
+
+            ServicePointManager.ServerCertificateValidationCallback +=
+                (se, cert, chain, sslerror) =>
+                {
+                    return true;
+                };
         }
 
         private HttpClient CreateClient(bool useHttps = false)
@@ -43,7 +55,6 @@ namespace BS.Client
             var client = new HttpClient();
             client.BaseAddress = new Uri(useHttps ? _apiUrl.Replace("http", "https") : _apiUrl);
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             return client;
         }
@@ -59,8 +70,9 @@ namespace BS.Client
             });
 
             _client = CreateClient(cbSSL.Checked);
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
-            HttpResponseMessage response = _client.PostAsync("/api/token", content).Result;
+            HttpResponseMessage response = await _client.PostAsync("/api/token", content);
             var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
             _token = result["access_token"];
 
@@ -106,6 +118,7 @@ namespace BS.Client
             var result = new LicenseModel
             {
                 ValidTo = DateTime.Now.AddMonths(3),
+                SubscribedTo = DateTime.Now.AddMonths(3),
                 IsDemo = true,
                 Modules = modules,
                 User = new RealLicenserInfoModel() 

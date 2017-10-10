@@ -4,29 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BS.Common;
+using System.ComponentModel.DataAnnotations;
 
 namespace BS.Common.Models
 {
     public class LicenserInfoModelBase
     {
+        [Required]
         public string Name { get; set; }
 
         public virtual bool IsCompany { get; set; }
 
+        [Required]
         public string Phone { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
         public string ConactPerson { get; set; }
 
+        //[Required]
         public string CompanyId { get; set; }
 
+        //[Required]
         public string EGN { get; set; }
 
         public override string ToString()
         {
             return string.Format(
-@"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}, Булстат: {5}", Name, (!IsCompany).ToBgString(), Phone, Email, ConactPerson);
+@"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}, Булстат: {5}", Name, (!IsCompany).ToBgString(), Phone, Email, ConactPerson, CompanyId);
         }
     }
 
