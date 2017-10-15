@@ -102,6 +102,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>LicenseDb.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="Db\Backup\LicenseDb" />
+    <None Include="Db\Backup\LicenseDb.bak" />
     <None Include="Db\LicenseDb.edmx.diagram">
       <DependentUpon>LicenseDb.edmx</DependentUpon>
     </None>

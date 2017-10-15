@@ -4,29 +4,40 @@ using BS.Common.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace BS.Common
 {
+    [DataContract]
     public class LicenseModel
     {
+        [DataMember]
         public Guid Id { get; set; }
 
+        [DataMember]
         [Required]
         public DateTime ValidTo { get; set; }
 
+        [DataMember]
         public DateTime? SubscribedTo { get; set; }
 
+        [DataMember]
         [Required]
         public bool IsDemo { get; set; }
 
         [Required]
         public LicenserInfoModelBase User { get; set; }
 
+        [DataMember]
         [Required]
         public List<LicenseModulesEnum> Modules { get; set; }
 
+        [DataMember]
         [Required]
         public LicenseType  Type { get; set; }
+
+        [DataMember]
+        public bool Enabled { get; set; }
         
         public override string ToString()
         {

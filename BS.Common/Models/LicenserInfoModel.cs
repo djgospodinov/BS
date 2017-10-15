@@ -4,10 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BS.Common;
+using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
 
 namespace BS.Common.Models
 {
+    [DataContract]
+    [KnownType(typeof(DemoLicenserInfoModel))]
+    [KnownType(typeof(RealLicenserInfoModel))]
     public class LicenserInfoModelBase
     {
         [Required]

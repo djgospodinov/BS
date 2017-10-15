@@ -29,6 +29,8 @@ namespace BS.LicenseServer.Services
                         IsDemo = result.IsDemo,
                         ValidTo = result.ValidTo,
                         Type = (LicenseType)result.Type,
+                        Enabled = result.Enabled ?? false,
+                        SubscribedTo = result.SubscribedTo,
                         User = new Common.Models.RealLicenserInfoModel()
                         {
                             Name = result.LicenseOwner.Name,
@@ -117,11 +119,12 @@ namespace BS.LicenseServer.Services
                 {
                     Id = Guid.NewGuid(),
                     IsDemo = model.IsDemo,
-                    ValidTo = model.ValidTo,
-                    SubscribedTo = model.SubscribedTo,
-                    Type = (byte)model.Type,
+                    ValidTo = !model.IsDemo ? model.ValidTo : DateTime.Now.AddMonths(1),
+                    SubscribedTo = !model.IsDemo ? model.SubscribedTo : DateTime.Now.AddMonths(1),
+                    Type = !model.IsDemo ? (byte)model.Type : (byte)LicenseType.PerComputer,
                     LicenseOwner = owner,
-                    LicenseModules = model.Modules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList()
+                    LicenseModules = model.Modules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList(),
+                    Enabled = !model.IsDemo ? false : true//the real license should be enabled, afterwards e.g. after it is payed
                 };
 
                 var created = db.Licenses.Add(result);

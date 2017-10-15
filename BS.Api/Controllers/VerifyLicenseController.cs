@@ -29,6 +29,7 @@ namespace BS.Api.Controllers
         }
 
         [HttpPost]
+        [Route("api/verifylicense/{id}")]
         public IHttpActionResult Index(string id)
         {
             try
@@ -63,7 +64,8 @@ namespace BS.Api.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
+        [Route("api/verifylicense/test/{id}")]
         public IHttpActionResult NotEncrypted(string id)
         {
             try
@@ -71,30 +73,9 @@ namespace BS.Api.Controllers
                 if (!AllowedTestRequests)
                     return NotFound();
 
-                var result = JsonConvert.SerializeObject(this._service.Get(id));
+                var result = this._service.Get(id);
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        public IHttpActionResult Licenses(string id)
-        {
-            try
-            {
-                if (!AllowedTestRequests)
-                    return NotFound();
-
-                var result = JsonConvert.SerializeObject(this._service.GetByFilter(new LicenseFilterModel()
-                {
-                    CompanyId = id
-                }));
-
-                return Ok(result);
+                return Ok<LicenseModel>(result);
             }
             catch (Exception ex)
             {
