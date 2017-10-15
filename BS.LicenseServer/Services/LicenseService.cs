@@ -1,4 +1,4 @@
-﻿using BS.Api.Common;
+﻿using BS.Common;
 using BS.Common.Models;
 using BS.LicenseServer.Db;
 using NLog;
@@ -15,7 +15,7 @@ namespace BS.LicenseServer.Services
     {
         private static ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        public Api.Models.LicenseModel Get(string id)
+        public LicenseModel Get(string id)
         {
             using (var db = new LicenseDbEntities())
             {
@@ -23,7 +23,7 @@ namespace BS.LicenseServer.Services
                 var result = db.Licenses.FirstOrDefault(x => x.Id == guid);
                 if (result != null)
                 {
-                    return new Api.Models.LicenseModel()
+                    return new LicenseModel()
                     {
                         Id = result.Id,
                         IsDemo = result.IsDemo,
@@ -46,7 +46,7 @@ namespace BS.LicenseServer.Services
             return null;
         }
 
-        public List<Api.Models.LicenseModel> GetByFilter(LicenseFilterModel filter)
+        public List<LicenseModel> GetByFilter(LicenseFilterModel filter)
         {
             using (var db = new LicenseDbEntities())
             {
@@ -55,7 +55,7 @@ namespace BS.LicenseServer.Services
                     .ToList();
 
                 return result
-                    .Select(x => new Api.Models.LicenseModel()
+                    .Select(x => new LicenseModel()
                     {
                         Id = x.Id,
                         IsDemo = x.IsDemo,
@@ -75,7 +75,7 @@ namespace BS.LicenseServer.Services
             }
         }
 
-        public string Create(Api.Models.LicenseModel model)
+        public string Create(LicenseModel model)
         {
             using (var db = new LicenseDbEntities())
             {
@@ -131,7 +131,7 @@ namespace BS.LicenseServer.Services
             }
         }
 
-        public bool Update(string id, Api.Models.LicenseModel model)
+        public bool Update(string id, LicenseModel model)
         {
             using (var db = new LicenseDbEntities())
             {
@@ -197,7 +197,7 @@ namespace BS.LicenseServer.Services
         }
 
 
-        public string[] CreateMany(List<Api.Models.LicenseModel> model)
+        public string[] CreateMany(List<LicenseModel> model)
         {
             var result = new List<string>();
             using (var scope = new TransactionScope()) 
@@ -212,6 +212,35 @@ namespace BS.LicenseServer.Services
             }
 
             return result.ToArray();
+        }
+
+
+        public List<LicenseModel> GetAll()
+        {
+            using (var db = new LicenseDbEntities())
+            {
+                var result = db.Licenses
+                    .ToList();
+
+                return result
+                    .Select(x => new LicenseModel()
+                    {
+                        Id = x.Id,
+                        IsDemo = x.IsDemo,
+                        ValidTo = x.ValidTo,
+                        User = new Common.Models.RealLicenserInfoModel()
+                        {
+                            Name = x.LicenseOwner.Name,
+                            IsCompany = x.LicenseOwner.IsCompany,
+                            Email = x.LicenseOwner.Email,
+                            Phone = x.LicenseOwner.Phone,
+                            ConactPerson = x.LicenseOwner.ContactPerson,
+                            CompanyId = x.LicenseOwner.CompanyId
+                        },
+                        Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
+                    })
+                    .ToList();
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using BS.Api.Common;
+﻿using BS.Api.Models;
 using BS.Common;
 using BS.Common.Models;
 using BS.LicenseServer.Services;
@@ -12,34 +12,50 @@ using System.Web.Http;
 
 namespace BS.Api.Controllers
 {
-    public class TestController : ApiController
+    public class VerifyLicenseController : ApiController
     {
         private static readonly bool AllowedTestRequests = Convert.ToBoolean(ConfigurationManager.AppSettings["AllowTestRequests"]);
 
         private readonly ILicenseService _service;
 
-        public TestController()
+        public VerifyLicenseController()
             :this(new LicenseService())
         {
         }
 
-        public TestController(ILicenseService service)
+        public VerifyLicenseController(ILicenseService service)
         {
             _service = service;
         }
 
-        [HttpGet]
-        public IHttpActionResult Encrypted(string id)
+        [HttpPost]
+        public IHttpActionResult Index(string id)
         {
             try
             {
                 if (!AllowedTestRequests) 
                     return NotFound();
-                
-                var serializedObject = JsonConvert.SerializeObject(this._service.Get(id));
-                var result = StringCipher.Encrypt(serializedObject, "testpassword");
 
-                return Ok(result);
+                var license = this._service.Get(id);
+                if (license == null)
+                {
+                    return BadRequest("No such license with the given Id.");
+                }
+
+                var serializedObject = JsonConvert.SerializeObject(license, new JsonSerializerSettings() 
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    });
+
+                var password = Guid.NewGuid().ToString().Replace("-", "");
+                var result = StringCipher.Encrypt(serializedObject, password);
+
+                return Ok<VerifyLicenseMessage>(new VerifyLicenseMessage()
+                    {
+                        Key = StringCipher.Encrypt(password, Constants.PublicKey),
+                        License = result,
+                        LicenseId = id
+                    });
             }
             catch (Exception ex)
             {

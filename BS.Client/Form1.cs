@@ -1,5 +1,4 @@
-﻿using BS.Api.Models;
-using BS.Common.Models;
+﻿using BS.Common.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,8 +19,8 @@ namespace BS.Client
 {
     public partial class Form1 : Form
     {
-        protected readonly string _apiUrl = ConfigurationManager.AppSettings["apiUrl"].ToString();
-        protected HttpClient _client;
+        protected static readonly string _apiUrl = ConfigurationManager.AppSettings["apiUrl"].ToString();
+        protected HttpClient _client = CreateClient();
         private string _token = null;
 
         public Form1()
@@ -31,6 +30,10 @@ namespace BS.Client
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //var test = StringCipher.Encrypt("test", "test");
+
+            //var result = StringCipher.Decrypt("", "test");
+
             //txtLicenseId.Text = "9e35c57e-eecc-4123-a5dc-f914ccb89545".Replace("-", "");
 
             foreach (LicenseModulesEnum m in Enum.GetValues(typeof(LicenseModulesEnum)))
@@ -50,7 +53,7 @@ namespace BS.Client
                 };
         }
 
-        private HttpClient CreateClient(bool useHttps = false)
+        private static HttpClient CreateClient(bool useHttps = false)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(useHttps ? _apiUrl.Replace("http", "https") : _apiUrl);
@@ -70,13 +73,13 @@ namespace BS.Client
             });
 
             _client = CreateClient(cbSSL.Checked);
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+            //_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
-            HttpResponseMessage response = await _client.PostAsync("/api/token", content);
-            var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
-            _token = result["access_token"];
+            //HttpResponseMessage response = await _client.PostAsync("/api/token", content);
+            //var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
+            //_token = result["access_token"];
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
         private async void button2_Click(object sender, EventArgs e)
@@ -92,13 +95,18 @@ namespace BS.Client
 
             if (_client != null) 
             {
-                HttpResponseMessage response = await _client.GetAsync(string.Format("/api/license/{0}", licenseId));
+                HttpResponseMessage response = await _client.PostAsync(string.Format("/api/verifylicense/{0}", licenseId), null);
                 if (response.IsSuccessStatusCode)
                 {
-                    var responseResult = await response.Content.ReadAsStringAsync();
-                    result = JsonConvert.DeserializeObject<LicenseModel>(StringCipher.Decrypt(responseResult.Replace("\"", ""), "testpassword"));
+                    var responseResult = await response.Content.ReadAsAsync<Dictionary<string, string>>();
+                    var privateKey = StringCipher.Decrypt(responseResult["Key"].ToString(), Common.Constants.PublicKey);
+                    var json = StringCipher.Decrypt(responseResult["License"].ToString(), privateKey);
+                    result = JsonConvert.DeserializeObject<LicenseModel>(json);
 
-                    txtInfo.Text = result.ToString();
+                    var builder = new StringBuilder();
+                    builder.AppendLine(json);
+                    builder.AppendLine(result.ToString());
+                    txtInfo.Text = builder.ToString();
                 }
                 else
                 {

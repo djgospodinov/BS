@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Exceptions\LicenseNotFoundException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces\ILicenseService.cs" />

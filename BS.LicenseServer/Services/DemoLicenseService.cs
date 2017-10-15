@@ -1,5 +1,4 @@
-﻿using BS.Api.Common;
-using BS.Api.Models;
+﻿using BS.Common;
 using BS.Common.Exceptions;
 using NLog;
 using System;
@@ -37,7 +36,7 @@ namespace BS.Api.Services
             throw new LicenseNotFoundException(string.Format("License for ID: {0} was not found.", id));
         }
 
-        public string Create(Models.LicenseModel model)
+        public string Create(LicenseModel model)
         {
             model.Id = Guid.NewGuid();
 
@@ -52,7 +51,7 @@ namespace BS.Api.Services
             return id;
         }
 
-        public bool Update(string id, Models.LicenseModel model)
+        public bool Update(string id, LicenseModel model)
         {
             try 
             {
@@ -90,6 +89,12 @@ namespace BS.Api.Services
 
 
         public string[] CreateMany(List<LicenseModel> model)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<LicenseModel> GetAll()
         {
             throw new NotImplementedException();
         }

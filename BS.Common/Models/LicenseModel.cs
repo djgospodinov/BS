@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 
-namespace BS.Api.Models
+namespace BS.Common
 {
     public class LicenseModel
     {

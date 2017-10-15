@@ -1,0 +1,32 @@
+﻿@model List<BS.Common.LicenseModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Лицензи</h2>
+
+<table border="1">
+    <thead>
+        <th>License Id</th>
+        <th>Valid to</th>
+        <th>Enabled</th>
+        <th>Type</th>
+        </thead>
+    @foreach(var x in Model)
+    {
+        <tr>
+            <td>
+                @x.Id
+            </td>
+            <td>
+                @x.ValidTo
+            </td>
+            <td>
+                @*@x.Enabled*@
+            </td>
+            <td>
+                @x.Type
+            </td>
+        </tr>
+    }
+    </table>

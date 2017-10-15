@@ -1,5 +1,4 @@
-﻿using BS.Api.Common;
-using BS.Api.Models;
+﻿using BS.Api.Models;
 using BS.Api.Services;
 using BS.Common;
 using BS.Common.Models;
