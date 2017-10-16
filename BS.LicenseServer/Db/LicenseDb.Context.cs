@@ -29,7 +29,7 @@ namespace BS.LicenseServer.Db
         public virtual DbSet<LicenseOwner> LicenseOwners { get; set; }
         public virtual DbSet<License> Licenses { get; set; }
         public virtual DbSet<lu_LicenseModules> lu_LicenseModules { get; set; }
-        public virtual DbSet<LicenseOwnerExtraInfo> LicenseOwnerExtraInfoes { get; set; }
         public virtual DbSet<lu_LicenseTypes> lu_LicenseTypes { get; set; }
+        public virtual DbSet<LicenseOwnerExtraInfo1> LicenseOwnerExtraInfo1 { get; set; }
     }
 }

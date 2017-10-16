@@ -129,7 +129,7 @@ namespace BS.Client
                 SubscribedTo = DateTime.Now.AddMonths(3),
                 IsDemo = true,
                 Modules = modules,
-                User = new RealLicenserInfoModel() 
+                User = new LicenserInfoModel() 
                 {
                     Name = txtName.Text,
                     Phone = txtPhone.Text,

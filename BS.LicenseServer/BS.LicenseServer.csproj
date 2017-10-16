@@ -77,7 +77,7 @@
     <Compile Include="Db\LicenseOwner.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Db\LicenseOwnerExtraInfo.cs">
+    <Compile Include="Db\LicenseOwnerExtraInfo1.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Db\lu_LicenseModules.cs">

@@ -35,7 +35,9 @@ namespace BS.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.Log(NLog.LogLevel.Error, ex);
+
+                return BadRequest(ApiErrors.BadRequest);
             }
         }
 
@@ -54,7 +56,9 @@ namespace BS.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.Log(NLog.LogLevel.Error, ex);
+
+                return BadRequest(ApiErrors.BadRequest);
             }
         }
 
@@ -70,7 +74,7 @@ namespace BS.Api.Controllers
         {
             try
             {
-                if (!ModelState.IsValid) 
+                if (!ModelState.IsValid || (int)model.Type < 1 || (int)model.Type > 3) 
                 {
                     return BadRequest("Cannot create licence.");
                 }
@@ -83,7 +87,9 @@ namespace BS.Api.Controllers
             }
             catch (Exception ex) 
             {
-                return BadRequest(ex.Message);
+                _logger.Log(NLog.LogLevel.Error, ex);
+
+                return BadRequest(ApiErrors.BadRequest);
             }
 
             return BadRequest("Cannot create licence.");
@@ -138,7 +144,9 @@ namespace BS.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.Log(NLog.LogLevel.Error, ex);
+
+                return BadRequest(ApiErrors.BadRequest);
             }
 
             return BadRequest(string.Format("Cannot update license {0}.", id));
@@ -161,7 +169,9 @@ namespace BS.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.Log(NLog.LogLevel.Error, ex);
+
+                return BadRequest(ApiErrors.BadRequest);
             }
 
             return BadRequest(string.Format("Cannot delete license {0}.", id));

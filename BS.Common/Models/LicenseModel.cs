@@ -25,8 +25,9 @@ namespace BS.Common
         [Required]
         public bool IsDemo { get; set; }
 
+        [DataMember]
         [Required]
-        public LicenserInfoModelBase User { get; set; }
+        public LicenserInfoModel User { get; set; }
 
         [DataMember]
         [Required]

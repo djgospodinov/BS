@@ -1,28 +1,38 @@
+Ресурс:"api/verifylicense/test/{id}"
+Пример:http://{base_url}/api/verifylicense/test/E1BA42A3-C5CA-4700-B7F1-D2FF8C361F6E
+HTTP Method: POST
+Request:
+{
+}
+Responce:
 {  
    "Id":"e1ba42a3-c5ca-4700-b7f1-d2ff8c361f6e", //идентификатор на лиценза, уникален ключ за всеки
    "ValidTo":"2017-10-11T20:30:26.617",//докога е валиден, това се изпраща при създаване на лиценза, като за демо ще бъде ограничен до месец
-   "SubscribedTo":null,
+   "SubscribedTo":"2017-10-11T20:30:26.617", //докога е абониран за ъпдейти и подръжка
    "IsDemo":true,
-   "User":{  
-      "PostCode":0,
-      "RegistrationAddress":null,
-      "PostAddress":null,
-      "MOL":null,
-      "ContactPerson":null,
-      "AccountingPerson":null,
-      "DDSRegistration":false,
-      "Name":"test123",
-      "IsCompany":true,
-      "Phone":"123",
-      "Email":"111@test",
-      "ConactPerson":"teeeest 123",
-      "CompanyId":null,
-      "EGN":null
+   "User":{  //потребителя, за/който е закупил лиценза
+      "PostCode":0,//пощенски код
+      "RegistrationAddress":null,//адрес на регистрация
+      "PostAddress":null,//пощенски адрес
+      "MOL":null,//МОЛ
+      "ContactPerson":null,//Лице за контакт
+      "AccountingPerson":null,//Счетоводител
+      "DDSRegistration":false,//има ли регистрация по ДДС
+      "Name":"test123",//име на лицето закупил лиценза/може и фирма
+      "IsCompany":true,//дали е фирма
+      "Phone":"123",//телефон
+      "Email":"111@test",//електрона поща
+      "CompanyId":null,//БУЛСТАТ ако е фирма
+      "EGN":null//ЕГН ако не е фирма
    },
-   "Modules":[  
-      1,
-      3,
-      5
+   "Modules"://закупени модули, не е задължително да са всички
+   [  
+	   1, //Счетоводство
+	   2, //Производство
+	   3, //Склад
+	   4, //Търговска система
+	   5, //ТРЗ
+	   6  //Графици
    ],
-   "Type":1
+   "Type":1//Вид лиценз, възможни стойности са три: 1 - За компютър, 2 - За потребител, 3 - За сървър
 }

@@ -4,145 +4,154 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="LicenseDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityContainer Name="LicenseDbModelStoreContainer">
-    <EntitySet Name="LicenseModules" EntityType="LicenseDbModel.Store.LicenseModules" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="LicenseOwners" EntityType="LicenseDbModel.Store.LicenseOwners" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Licenses" EntityType="LicenseDbModel.Store.Licenses" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="lu_LicenseModules" EntityType="LicenseDbModel.Store.lu_LicenseModules" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="LicenseOwnerExtraInfoes" EntityType="LicenseDbModel.Store.LicenseOwnerExtraInfoes" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="lu_LicenseTypes" EntityType="LicenseDbModel.Store.lu_LicenseTypes" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="FK_LicenseModulesLicenses" Association="LicenseDbModel.Store.FK_LicenseModulesLicenses">
-      <End Role="Licenses" EntitySet="Licenses" />
-      <End Role="LicenseModules" EntitySet="LicenseModules" />
-    </AssociationSet>
-    <AssociationSet Name="FK_lu_LicenseModulesLicenseModules" Association="LicenseDbModel.Store.FK_lu_LicenseModulesLicenseModules">
-      <End Role="lu_LicenseModules" EntitySet="lu_LicenseModules" />
-      <End Role="LicenseModules" EntitySet="LicenseModules" />
-    </AssociationSet>
-    <AssociationSet Name="FK_LicensesLicenseOwners" Association="LicenseDbModel.Store.FK_LicensesLicenseOwners">
-      <End Role="LicenseOwners" EntitySet="LicenseOwners" />
-      <End Role="Licenses" EntitySet="Licenses" />
-    </AssociationSet>
-    <AssociationSet Name="FK_LicenseOwnerExtraInfo_LicenseOwners" Association="LicenseDbModel.Store.FK_LicenseOwnerExtraInfo_LicenseOwners">
-      <End Role="LicenseOwner" EntitySet="LicenseOwners" />
-      <End Role="LicenseOwnerExtraInfo" EntitySet="LicenseOwnerExtraInfoes" />
-    </AssociationSet>
-  </EntityContainer>
-  <EntityType Name="LicenseModules">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="LicensesId" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="ModuleId" Type="smallint" Nullable="false" />
-  </EntityType>
-  <EntityType Name="LicenseOwners">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="IsCompany" Type="bit" Nullable="false" />
-    <Property Name="ContactPerson" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="CompanyId" Type="nchar" Nullable="true" MaxLength="15" />
-  </EntityType>
-  <EntityType Name="Licenses">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="ValidTo" Type="datetime" Nullable="false" />
-    <Property Name="IsDemo" Type="bit" Nullable="false" />
-    <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
-    <Property Name="Enabled" Type="bit" Nullable="true" />
-    <Property Name="WorkstationCount" Type="int" Nullable="false" />
-    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-    <Property Name="SubscribedTo" Type="datetime" Nullable="true" />
-    <Property Name="Type" Type="tinyint" Nullable="true" />
-  </EntityType>
-  <EntityType Name="lu_LicenseModules">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="LicenseOwnerExtraInfoes">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
-    <Property Name="PostCode" Type="int" Nullable="true" />
-    <Property Name="RegistrationAddress" Type="nchar" Nullable="true" MaxLength="250" />
-    <Property Name="PostAddress" Type="nchar" Nullable="true" MaxLength="250" />
-    <Property Name="MOL" Type="nvarchar" Nullable="true" MaxLength="250" />
-    <Property Name="ContactPerson" Type="nvarchar" Nullable="true" MaxLength="250" />
-    <Property Name="AccountingPerson" Type="nvarchar" Nullable="true" MaxLength="250" />
-    <Property Name="DDSRegistration" Type="bit" Nullable="true" />
-  </EntityType>
-  <EntityType Name="lu_LicenseTypes">
-    <Key>
-      <PropertyRef Name="Id" />
-      <PropertyRef Name="Name" />
-      <PropertyRef Name="IsOnline" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nchar" Nullable="false" MaxLength="20" />
-    <Property Name="IsOnline" Type="bit" Nullable="false" />
-  </EntityType>
-  <Association Name="FK_LicenseModulesLicenses">
-    <End Role="Licenses" Type="LicenseDbModel.Store.Licenses" Multiplicity="1" />
-    <End Role="LicenseModules" Type="LicenseDbModel.Store.LicenseModules" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Licenses">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="LicenseModules">
-        <PropertyRef Name="LicensesId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_lu_LicenseModulesLicenseModules">
-    <End Role="lu_LicenseModules" Type="LicenseDbModel.Store.lu_LicenseModules" Multiplicity="1" />
-    <End Role="LicenseModules" Type="LicenseDbModel.Store.LicenseModules" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="lu_LicenseModules">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="LicenseModules">
-        <PropertyRef Name="ModuleId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_LicensesLicenseOwners">
-    <End Role="LicenseOwners" Type="LicenseDbModel.Store.LicenseOwners" Multiplicity="1" />
-    <End Role="Licenses" Type="LicenseDbModel.Store.Licenses" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="LicenseOwners">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Licenses">
-        <PropertyRef Name="LicenseOwnerId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_LicenseOwnerExtraInfo_LicenseOwners">
-    <End Role="LicenseOwner" Type="LicenseDbModel.Store.LicenseOwners" Multiplicity="1" />
-    <End Role="LicenseOwnerExtraInfo" Type="LicenseDbModel.Store.LicenseOwnerExtraInfoes" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="LicenseOwner">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="LicenseOwnerExtraInfo">
-        <PropertyRef Name="LicenseOwnerId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-</Schema></edmx:StorageModels>
+    <Schema Namespace="LicenseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LicenseModules">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LicensesId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ModuleId" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LicenseOwnerExtraInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
+          <Property Name="PostCode" Type="int" />
+          <Property Name="RegistrationAddress" Type="nchar" MaxLength="250" />
+          <Property Name="PostAddress" Type="nchar" MaxLength="250" />
+          <Property Name="MOL" Type="nvarchar" MaxLength="250" />
+          <Property Name="ContactPerson" Type="nvarchar" MaxLength="250" />
+          <Property Name="AccountingPerson" Type="nvarchar" MaxLength="250" />
+          <Property Name="DDSRegistration" Type="bit" />
+        </EntityType>
+        <EntityType Name="LicenseOwners">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsCompany" Type="bit" Nullable="false" />
+          <Property Name="ContactPerson" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="CompanyId" Type="nchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="Licenses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ValidTo" Type="datetime" Nullable="false" />
+          <Property Name="IsDemo" Type="bit" Nullable="false" />
+          <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
+          <Property Name="Enabled" Type="bit" />
+          <Property Name="Type" Type="tinyint" />
+          <Property Name="WorkstationCount" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="SubscribedTo" Type="datetime" />
+        </EntityType>
+        <EntityType Name="lu_LicenseModules">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="lu_LicenseTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsOnline" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsOnline" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_LicenseModulesLicenses">
+          <End Role="Licenses" Type="Self.Licenses" Multiplicity="1" />
+          <End Role="LicenseModules" Type="Self.LicenseModules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Licenses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseModules">
+              <PropertyRef Name="LicensesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LicenseOwnerExtraInfo_LicenseOwners">
+          <End Role="LicenseOwners" Type="Self.LicenseOwners" Multiplicity="1" />
+          <End Role="LicenseOwnerExtraInfo" Type="Self.LicenseOwnerExtraInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseOwners">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseOwnerExtraInfo">
+              <PropertyRef Name="LicenseOwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LicensesLicenseOwners">
+          <End Role="LicenseOwners" Type="Self.LicenseOwners" Multiplicity="1" />
+          <End Role="Licenses" Type="Self.Licenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseOwners">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Licenses">
+              <PropertyRef Name="LicenseOwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_lu_LicenseModulesLicenseModules">
+          <End Role="lu_LicenseModules" Type="Self.lu_LicenseModules" Multiplicity="1" />
+          <End Role="LicenseModules" Type="Self.LicenseModules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lu_LicenseModules">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseModules">
+              <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LicenseDbModelStoreContainer">
+          <EntitySet Name="LicenseModules" EntityType="Self.LicenseModules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LicenseOwnerExtraInfo" EntityType="Self.LicenseOwnerExtraInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LicenseOwners" EntityType="Self.LicenseOwners" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Licenses" EntityType="Self.Licenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="lu_LicenseModules" EntityType="Self.lu_LicenseModules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="lu_LicenseTypes" EntityType="Self.lu_LicenseTypes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [lu_LicenseTypes].[Id] AS [Id], 
+    [lu_LicenseTypes].[Name] AS [Name], 
+    [lu_LicenseTypes].[IsOnline] AS [IsOnline]
+    FROM [dbo].[lu_LicenseTypes] AS [lu_LicenseTypes]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_LicenseModulesLicenses" Association="Self.FK_LicenseModulesLicenses">
+            <End Role="Licenses" EntitySet="Licenses" />
+            <End Role="LicenseModules" EntitySet="LicenseModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LicenseOwnerExtraInfo_LicenseOwners" Association="Self.FK_LicenseOwnerExtraInfo_LicenseOwners">
+            <End Role="LicenseOwners" EntitySet="LicenseOwners" />
+            <End Role="LicenseOwnerExtraInfo" EntitySet="LicenseOwnerExtraInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LicensesLicenseOwners" Association="Self.FK_LicensesLicenseOwners">
+            <End Role="LicenseOwners" EntitySet="LicenseOwners" />
+            <End Role="Licenses" EntitySet="Licenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_lu_LicenseModulesLicenseModules" Association="Self.FK_lu_LicenseModulesLicenseModules">
+            <End Role="lu_LicenseModules" EntitySet="lu_LicenseModules" />
+            <End Role="LicenseModules" EntitySet="LicenseModules" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LicenseDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -168,7 +177,8 @@
           <Property Name="ContactPerson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Licenses" Relationship="Self.FK_LicensesLicenseOwners" FromRole="LicenseOwners" ToRole="Licenses" />
           <Property Name="CompanyId" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="LicenseOwnerExtraInfoes" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners" FromRole="LicenseOwner" ToRole="LicenseOwnerExtraInfo" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LicenseOwnerExtraInfoes1" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwner" ToRole="LicenseOwnerExtraInfo1" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -247,14 +257,24 @@
             <End Role="LicenseOwners" EntitySet="LicenseOwners" />
             <End Role="Licenses" EntitySet="Licenses" />
           </AssociationSet>
-          <EntitySet Name="LicenseOwnerExtraInfoes" EntityType="LicenseDbModel.LicenseOwnerExtraInfo" />
-          <AssociationSet Name="FK_LicenseOwnerExtraInfo_LicenseOwners" Association="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners">
-            <End Role="LicenseOwner" EntitySet="LicenseOwners" />
-            <End Role="LicenseOwnerExtraInfo" EntitySet="LicenseOwnerExtraInfoes" />
-          </AssociationSet>
           <EntitySet Name="lu_LicenseTypes" EntityType="LicenseDbModel.lu_LicenseTypes" />
+          <EntitySet Name="LicenseOwnerExtraInfo1" EntityType="LicenseDbModel.LicenseOwnerExtraInfo1" />
+          <AssociationSet Name="FK_LicenseOwnerExtraInfo_LicenseOwners1" Association="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1">
+            <End Role="LicenseOwner" EntitySet="LicenseOwners" />
+            <End Role="LicenseOwnerExtraInfo1" EntitySet="LicenseOwnerExtraInfo1" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="LicenseOwnerExtraInfo">
+        <EntityType Name="lu_LicenseTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsOnline" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="IsOnline" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LicenseOwnerExtraInfo1">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -267,30 +287,20 @@
           <Property Name="ContactPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="AccountingPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="DDSRegistration" Type="Boolean" />
-          <NavigationProperty Name="LicenseOwner" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners" FromRole="LicenseOwnerExtraInfo" ToRole="LicenseOwner" />
+          <NavigationProperty Name="LicenseOwner" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwnerExtraInfo1" ToRole="LicenseOwner" />
         </EntityType>
-        <Association Name="FK_LicenseOwnerExtraInfo_LicenseOwners">
+        <Association Name="FK_LicenseOwnerExtraInfo_LicenseOwners1">
           <End Type="LicenseDbModel.LicenseOwner" Role="LicenseOwner" Multiplicity="1" />
-          <End Type="LicenseDbModel.LicenseOwnerExtraInfo" Role="LicenseOwnerExtraInfo" Multiplicity="*" />
+          <End Type="LicenseDbModel.LicenseOwnerExtraInfo1" Role="LicenseOwnerExtraInfo1" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="LicenseOwner">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="LicenseOwnerExtraInfo">
+            <Dependent Role="LicenseOwnerExtraInfo1">
               <PropertyRef Name="LicenseOwnerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="lu_LicenseTypes">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="IsOnline" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="IsOnline" Type="Boolean" Nullable="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -309,7 +319,8 @@
     <EntitySetMapping Name="LicenseOwners">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.LicenseOwner)">
         <MappingFragment StoreEntitySet="LicenseOwners">
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
@@ -342,21 +353,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="LicenseOwnerExtraInfoes">
-      <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.LicenseOwnerExtraInfo)">
-        <MappingFragment StoreEntitySet="LicenseOwnerExtraInfoes">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="LicenseOwnerId" ColumnName="LicenseOwnerId" />
-          <ScalarProperty Name="PostCode" ColumnName="PostCode" />
-          <ScalarProperty Name="RegistrationAddress" ColumnName="RegistrationAddress" />
-          <ScalarProperty Name="PostAddress" ColumnName="PostAddress" />
-          <ScalarProperty Name="MOL" ColumnName="MOL" />
-          <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
-          <ScalarProperty Name="AccountingPerson" ColumnName="AccountingPerson" />
-          <ScalarProperty Name="DDSRegistration" ColumnName="DDSRegistration" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="lu_LicenseTypes">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.lu_LicenseTypes)">
         <MappingFragment StoreEntitySet="lu_LicenseTypes">
@@ -366,6 +362,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+          <EntitySetMapping Name="LicenseOwnerExtraInfo1">
+            <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwnerExtraInfo1">
+              <MappingFragment StoreEntitySet="LicenseOwnerExtraInfo">
+                <ScalarProperty Name="DDSRegistration" ColumnName="DDSRegistration" />
+                <ScalarProperty Name="AccountingPerson" ColumnName="AccountingPerson" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="MOL" ColumnName="MOL" />
+                <ScalarProperty Name="PostAddress" ColumnName="PostAddress" />
+                <ScalarProperty Name="RegistrationAddress" ColumnName="RegistrationAddress" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="LicenseOwnerId" ColumnName="LicenseOwnerId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

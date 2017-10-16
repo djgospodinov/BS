@@ -12,7 +12,7 @@ using System.Web.Http;
 
 namespace BS.Api.Controllers
 {
-    public class VerifyLicenseController : ApiController
+    public class VerifyLicenseController : BaseController
     {
         private static readonly bool AllowedTestRequests = Convert.ToBoolean(ConfigurationManager.AppSettings["AllowTestRequests"]);
 
@@ -34,13 +34,10 @@ namespace BS.Api.Controllers
         {
             try
             {
-                if (!AllowedTestRequests) 
-                    return NotFound();
-
                 var license = this._service.Get(id);
                 if (license == null)
                 {
-                    return BadRequest("No such license with the given Id.");
+                    return BadRequest(string.Format("No such license with the given Id {0}.", id));
                 }
 
                 var serializedObject = JsonConvert.SerializeObject(license, new JsonSerializerSettings() 
@@ -60,18 +57,22 @@ namespace BS.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.Log(NLog.LogLevel.Error, ex);
+
+                return BadRequest(ApiErrors.BadRequest);
             }
         }
 
         [HttpPost]
         [Route("api/verifylicense/test/{id}")]
-        public IHttpActionResult NotEncrypted(string id)
+        public IHttpActionResult NoEncryption(string id)
         {
             try
             {
-                if (!AllowedTestRequests)
+                if (!AllowedTestRequests) 
+                {
                     return NotFound();
+                }
 
                 var result = this._service.Get(id);
 
@@ -79,7 +80,9 @@ namespace BS.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.Log(NLog.LogLevel.Error, ex);
+
+                return BadRequest(ApiErrors.BadRequest);
             }
         }
 	}

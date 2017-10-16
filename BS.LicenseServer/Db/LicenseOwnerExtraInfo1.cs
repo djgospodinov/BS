@@ -12,7 +12,7 @@ namespace BS.LicenseServer.Db
     using System;
     using System.Collections.Generic;
     
-    public partial class LicenseOwnerExtraInfo
+    public partial class LicenseOwnerExtraInfo1
     {
         public int Id { get; set; }
         public int LicenseOwnerId { get; set; }

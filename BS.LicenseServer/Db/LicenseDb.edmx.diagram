@@ -12,9 +12,9 @@
         <AssociationConnector Association="LicenseDbModel.FK_LicenseModulesLicenses" ManuallyRouted="false" />
         <AssociationConnector Association="LicenseDbModel.FK_lu_LicenseModulesLicenseModules" ManuallyRouted="false" />
         <AssociationConnector Association="LicenseDbModel.FK_LicensesLicenseOwners" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="LicenseDbModel.LicenseOwnerExtraInfo" Width="1.5" PointX="9.875" PointY="4.375" />
-        <AssociationConnector Association="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners" />
         <EntityTypeShape EntityType="LicenseDbModel.lu_LicenseTypes" Width="1.5" PointX="0.75" PointY="6.125" />
+        <EntityTypeShape EntityType="LicenseDbModel.LicenseOwnerExtraInfo1" Width="1.5" PointX="5.25" PointY="8.5" />
+        <AssociationConnector Association="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
