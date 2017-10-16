@@ -30,27 +30,34 @@ namespace BS.Client
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //var test = StringCipher.Encrypt("test", "test");
+            Authenticate();
 
-            //var result = StringCipher.Decrypt("", "test");
-
-            //txtLicenseId.Text = "9e35c57e-eecc-4123-a5dc-f914ccb89545".Replace("-", "");
-
-            foreach (LicenseModulesEnum m in Enum.GetValues(typeof(LicenseModulesEnum)))
-            {
-                checkedListModules.Items.Add(new ListBoxItem() { Value = (int)m, Name = m.Description() });
-            }
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                | SecurityProtocolType.Tls11
-                | SecurityProtocolType.Tls12
-                | SecurityProtocolType.Ssl3;
-
-            ServicePointManager.ServerCertificateValidationCallback +=
-                (se, cert, chain, sslerror) =>
-                {
-                    return true;
-                };
+            txtRequest.Text = 
+@"{  
+   ""ValidTo"":""2018-01-20"",
+   ""SubscribedTo"":""2018-01-20"",
+   ""IsDemo"":false,
+   ""User"":{  
+      ""PostCode"":0,
+      ""RegistrationAddress"":null,
+      ""PostAddress"":null,
+      ""MOL"":null,
+      ""AccountingPerson"":null,
+      ""DDSRegistration"":false,
+      ""Name"":""1"",
+      ""IsCompany"":true,
+      ""Phone"":""1"",
+      ""Email"":""1"",
+      ""ConactPerson"":""1"",
+      ""CompanyId"":""123"",
+      ""EGN"":null
+   },
+   ""Modules"":[  
+      1, 2, 3, 4 , 5 ,6
+   ],
+   ""Type"":1,
+   ""Enabled"":false
+}";
         }
 
         private static HttpClient CreateClient(bool useHttps = false)
@@ -69,23 +76,27 @@ namespace BS.Client
                 new KeyValuePair<string, string>("grant_type", "password"),
                 new KeyValuePair<string, string>("username", "bsadmin"),
                 new KeyValuePair<string, string>("password", "bsadmin!")
-
             });
 
-            _client = CreateClient(cbSSL.Checked);
-            //_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+            _client = CreateClient();
+            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
-            //HttpResponseMessage response = await _client.PostAsync("/api/token", content);
-            //var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
-            //_token = result["access_token"];
+            HttpResponseMessage response = await _client.PostAsync("/api/token", content);
+            var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
+            _token = result["access_token"];
 
-            //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
         }
 
         private async void button2_Click(object sender, EventArgs e)
         {
+            await GetLicenseInfo();
+        }
+
+        private async Task GetLicenseInfo()
+        {
             var licenseId = txtLicenseId.Text;
-            if (string.IsNullOrEmpty(licenseId)) 
+            if (string.IsNullOrEmpty(licenseId))
             {
                 MessageBox.Show("Enter license Id.");
                 return;
@@ -93,7 +104,7 @@ namespace BS.Client
 
             LicenseModel result = null;
 
-            if (_client != null) 
+            if (_client != null)
             {
                 HttpResponseMessage response = await _client.PostAsync(string.Format("/api/verifylicense/{0}", licenseId), null);
                 if (response.IsSuccessStatusCode)
@@ -103,10 +114,10 @@ namespace BS.Client
                     var json = StringCipher.Decrypt(responseResult["License"].ToString(), privateKey);
                     result = JsonConvert.DeserializeObject<LicenseModel>(json);
 
-                    var builder = new StringBuilder();
-                    builder.AppendLine(json);
-                    builder.AppendLine(result.ToString());
-                    txtInfo.Text = builder.ToString();
+                    var encryptedResult = await response.Content.ReadAsStringAsync();
+                    txtRealOutput.Text = JsonHelper.FormatJson(encryptedResult);
+                    txtJson.Text = JsonHelper.FormatJson(json);
+                    txtInfo.Text = result.ToString();
                 }
                 else
                 {
@@ -117,28 +128,7 @@ namespace BS.Client
 
         private async void btnCreateLicense_Click(object sender, EventArgs e)
         {
-            var modules = new List<LicenseModulesEnum>();
-            foreach (ListBoxItem m in checkedListModules.CheckedItems)
-            {
-                modules.Add((LicenseModulesEnum)m.Value);
-            }
-
-            var result = new LicenseModel
-            {
-                ValidTo = DateTime.Now.AddMonths(3),
-                SubscribedTo = DateTime.Now.AddMonths(3),
-                IsDemo = true,
-                Modules = modules,
-                User = new LicenserInfoModel() 
-                {
-                    Name = txtName.Text,
-                    Phone = txtPhone.Text,
-                    Email = txtEmail.Text,
-                    ConactPerson = txtContactPerson.Text,
-                    IsCompany = chkCompany.Checked,
-                    CompanyId = txtCompanyId.Text
-                }
-            };
+            var result = JsonConvert.DeserializeObject<LicenseModel>(txtRequest.Text);
 
             HttpResponseMessage response = await _client.PostAsJsonAsync("/api/license", result);
             if (response.IsSuccessStatusCode)
@@ -153,24 +143,92 @@ namespace BS.Client
             }
         }
 
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnAuthenticate_Click(object sender, EventArgs e)
         {
             Authenticate();
+        }
+
+        private void txtJson_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void button2_Click_1(object sender, EventArgs e)
+        {
+            await GetLicenseInfo();
+        }
+    }
+
+    public class JsonHelper
+    {
+        private const string INDENT_STRING = "    ";
+        public static string FormatJson(string str)
+        {
+            var indent = 0;
+            var quoted = false;
+            var sb = new StringBuilder();
+            for (var i = 0; i < str.Length; i++)
+            {
+                var ch = str[i];
+                switch (ch)
+                {
+                    case '{':
+                    case '[':
+                        sb.Append(ch);
+                        if (!quoted)
+                        {
+                            sb.AppendLine();
+                            Enumerable.Range(0, ++indent).ForEach(item => sb.Append(INDENT_STRING));
+                        }
+                        break;
+                    case '}':
+                    case ']':
+                        if (!quoted)
+                        {
+                            sb.AppendLine();
+                            Enumerable.Range(0, --indent).ForEach(item => sb.Append(INDENT_STRING));
+                        }
+                        sb.Append(ch);
+                        break;
+                    case '"':
+                        sb.Append(ch);
+                        bool escaped = false;
+                        var index = i;
+                        while (index > 0 && str[--index] == '\\')
+                            escaped = !escaped;
+                        if (!escaped)
+                            quoted = !quoted;
+                        break;
+                    case ',':
+                        sb.Append(ch);
+                        if (!quoted)
+                        {
+                            sb.AppendLine();
+                            Enumerable.Range(0, indent).ForEach(item => sb.Append(INDENT_STRING));
+                        }
+                        break;
+                    case ':':
+                        sb.Append(ch);
+                        if (!quoted)
+                            sb.Append(" ");
+                        break;
+                    default:
+                        sb.Append(ch);
+                        break;
+                }
+            }
+            return sb.ToString();
+        }
+    }
+
+    static class Extensions
+    {
+        public static void ForEach<T>(this IEnumerable<T> ie, Action<T> action)
+        {
+            foreach (var i in ie)
+            {
+                action(i);
+            }
         }
     }
 }

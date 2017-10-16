@@ -13,7 +13,7 @@ using System.Web.Http;
 
 namespace BS.Api.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class LicenseController : BaseController
     {
         private readonly ILicenseService _service = new LicenseService();
