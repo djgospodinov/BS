@@ -24,11 +24,31 @@ namespace BS.Admin.Web.Controllers
         }
 
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
+            int recordsPerPage = 10;
             List<LicenseModel> result = _service.GetAll();
 
-            return View(result);
+            int records = result.Count;
+            int pageCount = (records + recordsPerPage - 1) / recordsPerPage;
+            if (page > pageCount) 
+            {
+                page = 1;
+            }
+
+            var pages = new string[pageCount];
+            int index = 0;
+            foreach(var p in pages)
+            {
+                pages[index++] = index.ToString();
+            }
+            ViewBag.Pages = pages;
+            ViewBag.PageIndex = page;
+
+            return View(result
+                .Skip((page - 1) * recordsPerPage)
+                .Take(recordsPerPage)
+                .ToList());
         }
 
         public ActionResult Create() 

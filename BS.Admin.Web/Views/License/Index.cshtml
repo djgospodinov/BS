@@ -6,17 +6,22 @@
 <h2>Лицензи</h2>
 
 <table border="1">
-    <thead>
+    <tr>
+        <th></th>
         <th>License Id</th>
         <th>Valid to</th>
         <th>Enabled</th>
         <th>Type</th>
-        </thead>
-    @foreach(var x in Model)
+    </tr>
+    @foreach (var x in Model)
     {
         <tr>
             <td>
-                @x.Id
+
+                @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
+            </td>
+            <td>
+                @Html.ActionLink(x.Id.ToString(), "Details", new { id = x.Id })
             </td>
             <td>
                 @x.ValidTo
@@ -29,4 +34,17 @@
             </td>
         </tr>
     }
-    </table>
+</table>
+
+<span>Страница: </span>
+@foreach (var p in (string[])ViewBag.Pages) 
+{
+    if (ViewBag.PageIndex.ToString() == p) 
+    {
+        @Html.ActionLink(p.ToString(), "Index", new { page = p }, new { style = "color: red" })
+    }
+    else 
+    {
+        @Html.ActionLink(p.ToString(), "Index", new { page = p }) 
+    }
+}

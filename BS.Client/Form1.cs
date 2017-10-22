@@ -82,10 +82,17 @@ namespace BS.Client
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
 
             HttpResponseMessage response = await _client.PostAsync("/api/token", content);
-            var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
-            _token = result["access_token"];
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsAsync<Dictionary<string, string>>();
+                _token = result["access_token"];
 
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+            }
+            else 
+            {
+                txtError.Text = string.Format("{0} - {1}", response.StatusCode, response.ReasonPhrase);
+            }
         }
 
         private async void button2_Click(object sender, EventArgs e)
