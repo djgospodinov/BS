@@ -30,7 +30,7 @@ namespace BS.Api.Controllers
 
         [HttpPost]
         [Route("api/verifylicense/{id}")]
-        public IHttpActionResult Index(string id)
+        public IHttpActionResult Index(string id, LicenseActivation activator)
         {
             try
             {
@@ -38,6 +38,41 @@ namespace BS.Api.Controllers
                 if (license == null)
                 {
                     return BadRequest(string.Format("No such license with the given Id {0}.", id));
+                }
+
+                if (activator != null) 
+                {
+                    if (license.Type == LicenseType.PerComputer) 
+                    {
+                        if (string.IsNullOrEmpty(activator.ComputerId)) 
+                        {
+                            return BadRequest(string.Format("ComputerID must be provided for license with type PerComputer.", id));
+                        }
+
+                        if (!license.ActivationId.Equals(activator.ComputerId)) 
+                        {
+                            return BadRequest(string.Format("License is activated for another computer Id.", id));
+                        }
+                    }
+
+                    if (license.Type == LicenseType.PerUser) 
+                    {
+                        if (string.IsNullOrEmpty(activator.UserId)) 
+                        {
+                            return BadRequest(string.Format("UserID must be provided for license with type PerUser.", id));
+                        }
+
+                        if (!license.ActivationId.Equals(activator.UserId))
+                        {
+                            return BadRequest(string.Format("License is activated for another user Id.", id));
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(license.ActivationId) && activator != null) 
+                    {
+                        _service.Activate(license, license.Type == LicenseType.PerUser ? activator.UserId :
+                            license.Type == LicenseType.PerComputer ? activator.ComputerId : string.Empty);
+                    }
                 }
 
                 var serializedObject = JsonConvert.SerializeObject(license, new JsonSerializerSettings() 
@@ -59,7 +94,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrors.BadRequest);
+                return BadRequest(ApiErrorMessages.BadRequest);
             }
         }
 
@@ -82,7 +117,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrors.BadRequest);
+                return BadRequest(ApiErrorMessages.BadRequest);
             }
         }
 	}

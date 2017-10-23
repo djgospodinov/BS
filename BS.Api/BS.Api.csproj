@@ -175,6 +175,7 @@
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Filters\IpFilterAttribute.cs" />
     <Compile Include="Models\IpFilter.cs" />
+    <Compile Include="Models\LicenseActivation.cs" />
     <Compile Include="Models\LicenseMessage.cs" />
     <Compile Include="Models\VerifyLicenseMessage.cs" />
     <Compile Include="Models\LoginModel.cs" />

@@ -17,6 +17,7 @@ namespace BS.LicenseServer.Db
         public License()
         {
             this.LicenseModules = new HashSet<LicenseModule>();
+            this.LicenseActivations = new HashSet<LicenseActivation>();
         }
     
         public System.Guid Id { get; set; }
@@ -24,12 +25,12 @@ namespace BS.LicenseServer.Db
         public bool IsDemo { get; set; }
         public int LicenseOwnerId { get; set; }
         public Nullable<bool> Enabled { get; set; }
-        public int WorkstationCount { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> SubscribedTo { get; set; }
         public Nullable<byte> Type { get; set; }
     
         public virtual ICollection<LicenseModule> LicenseModules { get; set; }
         public virtual LicenseOwner LicenseOwner { get; set; }
+        public virtual ICollection<LicenseActivation> LicenseActivations { get; set; }
     }
 }

@@ -22,5 +22,7 @@ namespace BS.Common
         bool Update(string id, LicenseModel model);
 
         bool Delete(string id);
+
+        void Activate(LicenseModel license, string activationId);
     }
 }

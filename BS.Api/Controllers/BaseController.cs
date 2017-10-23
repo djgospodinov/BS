@@ -8,7 +8,13 @@ using System.Web.Mvc;
 
 namespace BS.Api.Controllers
 {
-    public class ApiErrors 
+    public enum Errors
+    {
+        GeneralError = 1,
+
+    }
+
+    public class ApiErrorMessages
     {
         public const string BadRequest = "Api error: mallformed or incorrect request.";
     }

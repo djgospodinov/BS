@@ -39,7 +39,13 @@ namespace BS.Common
 
         [DataMember]
         public bool Enabled { get; set; }
-        
+
+        [DataMember]
+        public string ActivationId { get; set; }
+
+        [DataMember]
+        public bool IsActivated { get; set; }
+
         public override string ToString()
         {
             var modules = Modules != null ? Modules.Select(x => x.Description()) : new string[0];

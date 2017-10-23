@@ -23,6 +23,7 @@ namespace BS.LicenseServer.Services
                 var result = db.Licenses.FirstOrDefault(x => x.Id == guid);
                 if (result != null)
                 {
+                    var activator = result.LicenseActivations.FirstOrDefault();
                     return new LicenseModel()
                     {
                         Id = result.Id,
@@ -40,7 +41,11 @@ namespace BS.LicenseServer.Services
                             ConactPerson = result.LicenseOwner.ContactPerson,
                             CompanyId = result.LicenseOwner.CompanyId,
                         },
-                        Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList()
+                        Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
+                        ActivationId = ((LicenseType)result.Type) == LicenseType.PerUser 
+                            ? activator != null ? activator.UserId : string.Empty
+                            : activator != null ? activator.ComputerId : string.Empty,
+                        IsActivated = activator != null
                     };
                 }
             }
@@ -150,7 +155,6 @@ namespace BS.LicenseServer.Services
                     result.ValidTo = model.ValidTo;
                     result.SubscribedTo = model.SubscribedTo;
                     result.IsDemo = model.IsDemo;
-                    result.WorkstationCount = 1;
 
                     result.LicenseOwner.Name = model.User.Name;
                     result.LicenseOwner.IsCompany = model.User.IsCompany;
@@ -250,6 +254,28 @@ namespace BS.LicenseServer.Services
                         Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
                     })
                     .ToList();
+            }
+        }
+
+
+        public void Activate(LicenseModel license, string activationId)
+        {
+            using (var db = new LicenseDbEntities()) 
+            {
+                var result = db.Licenses.FirstOrDefault(x => x.Id == license.Id);
+                if (result == null) 
+                {
+                    throw new Exception(string.Format("License not found with Id: {0}", license.Id));
+                }
+
+                result.LicenseActivations.Add(new LicenseActivation() 
+                {
+                    ComputerId =  license.Type == LicenseType.PerComputer ? activationId : string.Empty,
+                    UserId = license.Type == LicenseType.PerUser ? activationId : string.Empty,
+                    ComputerCount = 1
+                });
+
+                db.SaveChanges();
             }
         }
     }

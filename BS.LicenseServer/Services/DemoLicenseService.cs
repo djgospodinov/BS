@@ -96,7 +96,13 @@ namespace BS.Api.Services
 
         public List<LicenseModel> GetAll()
         {
-            throw new NotImplementedException();
+            return null;
+        }
+
+
+        public void Activate(LicenseModel license, string activationId)
+        {
+            
         }
     }
 }
