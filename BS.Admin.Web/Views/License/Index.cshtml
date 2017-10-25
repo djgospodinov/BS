@@ -56,7 +56,7 @@
                 @x.IsDemo.ToBgString()
             </td>
             <td class="small-width">
-                @x.User.Name
+                @Html.ActionLink(x.User.Name, "UserLicense", "User", new { id = x.User.Id })
             </td>
             <td class="small-width">
                 @x.Created

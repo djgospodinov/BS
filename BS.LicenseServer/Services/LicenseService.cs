@@ -36,7 +36,7 @@ namespace BS.LicenseServer.Services
                         Enabled = result.Enabled ?? false,
                         SubscribedTo = result.SubscribedTo,
                         Created = result.CreatedDate,
-                        User = new Common.Models.LicenserInfoModel()
+                        User = new LicenserInfoModel()
                         {
                             Name = result.LicenseOwner.Name,
                             IsCompany = result.LicenseOwner.IsCompany,

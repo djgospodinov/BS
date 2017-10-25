@@ -13,6 +13,9 @@ namespace BS.Common.Models
     public class LicenserInfoModel
     {
         [DataMember]
+        public int Id { get; set; }
+
+        [DataMember]
         [Required]
         public string Name { get; set; }
 
