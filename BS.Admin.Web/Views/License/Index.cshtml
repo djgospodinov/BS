@@ -1,40 +1,80 @@
-﻿@model List<BS.Common.LicenseModel>
+﻿@using BS.Common
+@model List<BS.Common.LicenseModel>
 @{
     ViewBag.Title = "Index";
 }
 
+<style>
+    .large-width {
+        width: 200px;
+    }
+    .small-width {
+        width: 100px;
+    }
+    .odd {
+        
+    }
+    .even {
+        background: burlywood;
+    }
+    td {
+        text-align: center;
+    }
+</style>
 <h2>Лицензи</h2>
+<br />
+<br />
+<br />
 
 <table border="1">
     <tr>
-        <th></th>
-        <th>License Id</th>
-        <th>Valid to</th>
-        <th>Enabled</th>
-        <th>Type</th>
+        <th class="small-width"></th>
+        <th class="large-width">Идентификатор</th>
+        <th class="large-width">Валиден до</th>
+        <th class="small-width">Демо</th>
+        <th class="small-width">Потребител</th>
+        <th class="small-width">Създаден на</th>
+        <th class="small-width">Активиран</th>
+        <th class="small-width">Потвърден</th>
+        <th class="small-width">Вид</th>
     </tr>
+    
+    @{ var odd = true; }
     @foreach (var x in Model)
     {
-        <tr>
-            <td>
-
+        <tr class="@(odd ? "odd": "even")">
+            <td class="small-width">
                 @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
             </td>
-            <td>
-                @Html.ActionLink(x.Id.ToString(), "Details", new { id = x.Id })
+            <td  class="large-width" style="width: 350px">
+                @Html.ActionLink(x.Id.ToString().Substring(0, 20), "Details", new { id = x.Id, title = x.Id.ToString() })<span>...</span>
             </td>
-            <td>
+            <td class="large-width">
                 @x.ValidTo
             </td>
-            <td>
-                @*@x.Enabled*@
+            <td class="small-width">
+                @x.IsDemo.ToBgString()
             </td>
-            <td>
-                @x.Type
+            <td class="small-width">
+                @x.User.Name
+            </td>
+            <td class="small-width">
+                @x.Created
+            </td>
+            <td class="small-width">
+                @x.IsActivated.ToBgString()
+            </td>
+            <td class="small-width">
+                @x.Enabled.ToBgString()
+            </td>
+            <td class="small-width">
+                @x.Type.Description()
             </td>
         </tr>
+        odd = !odd;
     }
 </table>
+<br />
 
 <span>Страница: </span>
 @foreach (var p in (string[])ViewBag.Pages) 
