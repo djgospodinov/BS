@@ -18,6 +18,8 @@ namespace BS.Common
         public static string Description(this Enum value) 
         {
             FieldInfo fi = value.GetType().GetField(value.ToString());
+            if (fi == null)
+                return string.Empty;
 
             DescriptionAttribute[] attributes =
                 (DescriptionAttribute[])fi.GetCustomAttributes(

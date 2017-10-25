@@ -46,6 +46,9 @@ namespace BS.Common
         [DataMember]
         public bool IsActivated { get; set; }
 
+        [DataMember]
+        public DateTime Created { get; set; }
+
         public override string ToString()
         {
             var modules = Modules != null ? Modules.Select(x => x.Description()) : new string[0];

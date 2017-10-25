@@ -1,5 +1,54 @@
-﻿@{
-    ViewBag.Title = "Create";
+﻿@model BS.Common.LicenseModel
+@{
+    ViewBag.Title = "Създаване на лиценз";
 }
 
 <h2>Create</h2>
+
+@using (Html.BeginForm("Create", "License", FormMethod.Post))
+{
+    <table>
+        @if (Model != null && Model.Id != Guid.Empty)
+        {
+            <tr>
+                <td>
+                    <span>Идентификатор:</span>
+                </td>
+                <td>
+                    @Html.Raw(Model.Id)
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td>
+                <span>Валиден до:</span>
+            </td>
+            <td>
+                @Html.EditorFor(m => m.ValidTo, new { @class = "dateTimePicker" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>Абониран до:</span>
+            </td>
+            <td>
+                @Html.EditorFor(m => m.SubscribedTo, new { @class = "dateTimePicker" })
+            </td>
+        </tr>
+    </table>
+    <section>
+        <article>Модули</article>
+        <table>
+            <tr>
+                <td>
+                    Счетоводство:
+                </td>
+                <td>
+                    <input type="checkbox" value="1"/>
+                </td>
+            </tr>
+        </table>
+    </section>
+<input type="submit" value="Създай"/>
+}
