@@ -1,6 +1,6 @@
 ﻿@model BS.Admin.Web.Models.CreateLicenseModel
 @{
-    ViewBag.Title = "Създаване на лиценз";
+    ViewBag.Title = "Редакция на лиценз";
 }
 
 <style>
@@ -10,11 +10,11 @@
     }
 </style>
 
-<h2>Създаване на лиценз</h2>
+<h2>@ViewBag.Title</h2>
 <br />
 <br />
 
-@using (Html.BeginForm("Create", "License", FormMethod.Post))
+@using (Html.BeginForm("Edit", "License", FormMethod.Post))
 {
     <span style="color:green">@ViewBag.Message</span>
     <span style="color:red">@ViewBag.ErrorMessage</span>
@@ -61,7 +61,6 @@
             </td>
             <td>
                 @Html.DropDownListFor(m => m.UserId, new SelectList(Model.Users, "Id", "Name"))
-                @Html.ActionLink("Създай потребител", "Create", "UserLicense")
             </td>
         </tr>
         <tr>
@@ -144,5 +143,5 @@
             </table>
         </fieldset>
     </section>
-    <input type="submit" value="Създай"/>
+    <input type="submit" value="Редактирай" />
 }

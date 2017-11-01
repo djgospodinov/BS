@@ -170,6 +170,7 @@ namespace BS.LicenseServer.Services
                     result.ValidTo = model.ValidTo;
                     result.SubscribedTo = model.SubscribedTo;
                     result.IsDemo = model.IsDemo;
+                    result.Enabled = model.Enabled;
 
                     result.LicenseOwner.Name = model.User.Name;
                     result.LicenseOwner.IsCompany = model.User.IsCompany;
@@ -177,6 +178,16 @@ namespace BS.LicenseServer.Services
                     result.LicenseOwner.Phone = model.User.Phone;
                     result.LicenseOwner.ContactPerson = model.User.ConactPerson;
                     result.LicenseOwner.CompanyId = model.User.CompanyId;
+
+                    //result.LicenseModules.Remove();
+
+                    foreach(var module in model.Modules)
+                    {
+                        result.LicenseModules.Add(new LicenseModule() 
+                        {
+                            Id = (int)module
+                        });
+                    }
 
                     var extraInfo = result.LicenseOwner.LicenseOwnerExtraInfoes1.FirstOrDefault();
                     if (extraInfo == null)
@@ -259,6 +270,7 @@ namespace BS.LicenseServer.Services
                         ValidTo = x.ValidTo,
                         Created = x.CreatedDate,
                         SubscribedTo = x.SubscribedTo,
+                        Type = (LicenseType)(x.Type ?? 1),
                         User = new Common.Models.LicenserInfoModel()
                         {
                             Name = x.LicenseOwner.Name,

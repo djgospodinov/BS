@@ -1,16 +1,40 @@
 ﻿@model BS.Admin.Web.Models.RegisterModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Регистриране";
 }
+<style>
+    fieldset {
+        border: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        fieldset legend {
+            display: none;
+        }
+
+        fieldset ol {
+            padding: 0;
+            list-style: none;
+        }
+
+            fieldset ol li {
+                padding-bottom: 5px;
+            }
+</style>
 
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Create a new account.</h2>
+    <h2>Създаване на нов потребител.</h2>
 </hgroup>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
+    
+    if (!string.IsNullOrEmpty(ViewBag.Message)) 
+    {
+        <span style="color:lightgreen">@ViewBag.Message</span>
+    }
 
     <fieldset>
         <legend>Registration Form</legend>
@@ -28,7 +52,7 @@
                 @Html.PasswordFor(m => m.ConfirmPassword)
             </li>
         </ol>
-        <input type="submit" value="Register" />
+        <input type="submit" value="Регистриране" />
     </fieldset>
 }
 

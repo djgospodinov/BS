@@ -1,4 +1,5 @@
-﻿using BS.Common.Interfaces;
+﻿using BS.Admin.Web.Models;
+using BS.Common.Interfaces;
 using BS.LicenseServer.Services;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,23 @@ namespace BS.Admin.Web.Controllers
             var user = _service.Get(id);
 
             return View(user);
+        }
+
+        [HttpGet]
+        public ActionResult Create() 
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(CreateLicenseOwnerModel model)
+        {
+            if (ModelState.IsValid) 
+            {
+                //var result = _service.Create(model);
+            }
+
+            return View(model);
         }
     }
 }

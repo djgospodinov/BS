@@ -1,4 +1,5 @@
 ﻿using BS.Common.Interfaces;
+using BS.Common.Models;
 using BS.LicenseServer.Db;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,23 @@ namespace BS.LicenseServer.Services
 
         public List<Common.Models.LicenserInfoModel> GetAll(bool? isDemo = null)
         {
-            throw new NotImplementedException();
+            using (var db = new LicenseDbEntities()) 
+            {
+                return db.LicenseOwners
+                    .Where(x => !isDemo.HasValue
+                        || (isDemo.Value && string.IsNullOrEmpty(x.CompanyId)))
+                    .Select(x => new LicenserInfoModel() 
+                    {
+                            Id = x.Id,
+                            Name = x.Name,
+                            IsCompany = x.IsCompany,
+                            Email = x.Email,
+                            Phone = x.Phone,
+                            ConactPerson = x.ContactPerson,
+                            CompanyId = x.CompanyId
+                    })
+                    .ToList();
+            }
         }
     }
 }

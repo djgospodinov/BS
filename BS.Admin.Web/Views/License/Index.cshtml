@@ -1,5 +1,5 @@
 ﻿@using BS.Common
-@model List<BS.Common.LicenseModel>
+@model BS.Admin.Web.Models.SortedLicenseCollection
 @{
     ViewBag.Title = "Index";
 }
@@ -20,59 +20,77 @@
     td {
         text-align: center;
     }
+
+    /*.border-small {
+        border-bottom: 5px solid black;
+    }*/
 </style>
 <h2>Лицензи</h2>
+<br />
+
+@Html.ActionLink("Създай лиценз", "Create", "License")
 <br />
 <br />
 <br />
 
 <table border="1">
-    <tr>
+    @*<tr>
+        <td class="small-width"></td>
+        <td class="large-width"></td>
+        <td class="large-width">@Html.ActionLink("Валиден до", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.ValidTo, asc = Model.IsAscending(2) })</td>
+        <td class="small-width">@Html.ActionLink("Демо", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.IsDemo, asc = Model.IsAscending(3) })</td>
+        <td class="small-width">@Html.ActionLink("Потребител", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.User, asc = Model.IsAscending(4) })</td>
+        <td class="small-width">@Html.ActionLink("Създаден на", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Created, asc = Model.IsAscending(5) })</td>
+        <td class="small-width">@Html.ActionLink("Активиран", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Active, asc = Model.IsAscending(6) })</td>
+        <td class="small-width">@Html.ActionLink("Потвърден", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Enabled, asc = Model.IsAscending(7) })</td>
+        <td class="small-width">@Html.ActionLink("Вид", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Type, asc = Model.IsAscending(8) })</td>
+    </tr>*@
+    <tr class="border-small">
         <th class="small-width"></th>
-        <th class="large-width">Идентификатор</th>
-        <th class="large-width">Валиден до</th>
-        <th class="small-width">Демо</th>
-        <th class="small-width">Потребител</th>
-        <th class="small-width">Създаден на</th>
-        <th class="small-width">Активиран</th>
-        <th class="small-width">Потвърден</th>
-        <th class="small-width">Вид</th>
+        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Id, asc = Model.IsAscending(1) })</th>
+        <th class="large-width">@Html.ActionLink("Валиден до", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.ValidTo, asc = Model.IsAscending(2) })</th>
+        <th class="small-width">@Html.ActionLink("Демо", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.IsDemo, asc = Model.IsAscending(3) })</th>
+        <th class="small-width">@Html.ActionLink("Потребител", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.User, asc = Model.IsAscending(4) })</th>
+        <th class="small-width">@Html.ActionLink("Създаден на", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Created, asc = Model.IsAscending(5) })</th>
+        <th class="small-width">@Html.ActionLink("Активиран", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Active, asc = Model.IsAscending(6) })</th>
+        <th class="small-width">@Html.ActionLink("Потвърден", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Enabled, asc = Model.IsAscending(7) })</th>
+        <th class="large-width">@Html.ActionLink("Вид", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Type, asc = Model.IsAscending(8) })</th>
     </tr>
     
     @{ var odd = true; }
-    @foreach (var x in Model)
-    {
-        <tr class="@(odd ? "odd": "even")">
-            <td class="small-width">
-                @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
-            </td>
-            <td  class="large-width" style="width: 350px">
-                @Html.ActionLink(x.Id.ToString().Substring(0, 20), "Details", new { id = x.Id, title = x.Id.ToString() })<span>...</span>
-            </td>
-            <td class="large-width">
-                @x.ValidTo
-            </td>
-            <td class="small-width">
-                @x.IsDemo.ToBgString()
-            </td>
-            <td class="small-width">
-                @Html.ActionLink(x.User.Name, "UserLicense", "User", new { id = x.User.Id })
-            </td>
-            <td class="small-width">
-                @x.Created
-            </td>
-            <td class="small-width">
-                @x.IsActivated.ToBgString()
-            </td>
-            <td class="small-width">
-                @x.Enabled.ToBgString()
-            </td>
-            <td class="small-width">
-                @x.Type.Description()
-            </td>
-        </tr>
-        odd = !odd;
-    }
+    @foreach (var x in Model.Licenses)
+{
+    <tr class="@(odd ? "odd": "even") border-small">
+        <td class="small-width">
+            @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
+        </td>
+        <td class="large-width" style="width: 350px">
+            @Html.ActionLink(x.Id.ToString().Substring(0, 20), "Details", new { id = x.Id, title = x.Id.ToString() })<span>...</span>
+        </td>
+        <td class="large-width">
+            @x.ValidTo.ToShortDateString()
+        </td>
+        <td class="small-width">
+            @x.IsDemo.ToBgString()
+        </td>
+        <td class="small-width">
+            @Html.ActionLink(x.User.Name, "User", new { userId = x.User.Id })
+        </td>
+        <td class="small-width">
+            @x.Created.ToShortDateString()
+        </td>
+        <td class="small-width">
+            @x.IsActivated.ToBgString()
+        </td>
+        <td class="small-width">
+            @x.Enabled.ToBgString()
+        </td>
+        <td class="large-width">
+            @x.Type.Description()
+        </td>
+    </tr>
+    odd = !odd;
+}
 </table>
 <br />
 

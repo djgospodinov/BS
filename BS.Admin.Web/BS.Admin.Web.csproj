@@ -189,6 +189,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Models\CreateLicenseOwnerModel.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\UserLicenseController.cs" />
@@ -197,6 +198,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\CreateLicenseModel.cs" />
+    <Compile Include="Models\SortedLicenseCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +321,10 @@
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\License\Details.cshtml" />
     <Content Include="Views\UserLicense\User.cshtml" />
+    <Content Include="Views\License\User.cshtml" />
+    <Content Include="Views\UserLicense\Create.cshtml" />
+    <Content Include="Views\License\Edit.cshtml" />
+    <Content Include="Views\UserLicense\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

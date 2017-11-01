@@ -1,47 +1,54 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    
-                </div>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                @Html.Partial("_LoginPartial")
+            </div>
+            @if (User.Identity != null && !string.IsNullOrEmpty(User.Identity.Name))
+            {
                 <div class="float-right">
                     <nav>
-                        <ul id="menu">
+                        <ul id="menu" style="text-align:center">
                             <li>@Html.ActionLink("Лицензи", "Index", "License")</li>
-                            <li>@Html.ActionLink("Създай лиценз", "Create", "License")</li>
-                            <li>@Html.ActionLink("Потребители на лицензи", "Users", "License")</li>
+                            @*<li>@Html.ActionLink("Създай лиценз", "Create", "License")</li>*@
+                            <li>@Html.ActionLink("Потребители на лицензи", "Index", "UserLicense")</li>
                             <li>@Html.ActionLink("IP Конфигурации", "IPs", "Settings")</li>
-                            <li>@Html.ActionLink("Публични ключове", "PublicKeys", "Settings")</li>
+                            @*<li>@Html.ActionLink("Публични ключове", "PublicKeys", "Settings")</li>*@
+                            @if (User.Identity.Name == "bsadmin")
+                            {
+                                <li>@Html.ActionLink("Създаване на потребител", "Register", "Account")</li>
+                            }
                         </ul>
                     </nav>
                 </div>
-            </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
+            }
         </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - BS Admin</p>
-                </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - BS Admin</p>
             </div>
-        </footer>
+        </div>
+    </footer>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
 </html>

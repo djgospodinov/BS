@@ -395,7 +395,7 @@ aside {
 }
 
 /* forms */
-fieldset {
+/*fieldset {
     border: none;
     margin: 0;
     padding: 0;
@@ -412,7 +412,7 @@ fieldset {
 
         fieldset ol li {
             padding-bottom: 5px;
-        }
+        }*/
 
 label {
     display: block;

@@ -15,6 +15,9 @@ namespace BS.Admin.Web.Filters
         private static object _initializerLock = new object();
         private static bool _isInitialized;
 
+        private static string  _defaultAdminName = "bsadmin";
+        private static string _defaultAdminPass = "bsadmin!";
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             // Ensure ASP.NET Simple Membership is initialized only once per app start
@@ -39,6 +42,10 @@ namespace BS.Admin.Web.Filters
                     }
 
                     WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    if (WebSecurity.GetUserId(_defaultAdminName) <= 0) 
+                    {
+                        WebSecurity.CreateUserAndAccount(_defaultAdminName, _defaultAdminPass);
+                    }
                 }
                 catch (Exception ex)
                 {

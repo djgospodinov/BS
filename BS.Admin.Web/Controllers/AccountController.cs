@@ -37,11 +37,11 @@ namespace BS.Admin.Web.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Index", "License");
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "Потрвбителя или паролата не са правилни.");
             return View(model);
         }
 
@@ -54,15 +54,19 @@ namespace BS.Admin.Web.Controllers
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //
         // GET: /Account/Register
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public ActionResult Register()
         {
+            if (!User.Identity.IsAuthenticated || User.Identity.Name.ToLower() != "bsadmin") 
+            {
+                throw new Exception("Not authorized");
+            }
             return View();
         }
 
@@ -80,8 +84,9 @@ namespace BS.Admin.Web.Controllers
                 try
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                    //WebSecurity.Login(model.UserName, model.Password);
+                    ViewBag.Message = "Потребителя е създаден успешно!";
+                    return View(model);
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -280,7 +285,7 @@ namespace BS.Admin.Web.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
+                        ModelState.AddModelError("UserName", "Потребител с това име вече съществува. Изберете друго име.");
                     }
                 }
             }
@@ -372,7 +377,7 @@ namespace BS.Admin.Web.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return "Потребител с това име вече съществува. Изберете друго име.";
 
                 case MembershipCreateStatus.DuplicateEmail:
                     return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
