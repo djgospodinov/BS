@@ -1,7 +1,108 @@
-﻿@{
+﻿@model BS.Admin.Web.Models.UserLicenseSortedCollection
+@{
     ViewBag.Title = "Потребители на лицензи";
 }
 
 <h2>@ViewBag.Title</h2>
 
 @Html.ActionLink("Създай потребител", "Create", "UserLicense")
+
+<style>
+    .large-width {
+        width: 200px;
+    }
+
+    .small-width {
+        width: 100px;
+    }
+
+    .odd {
+    }
+
+    .even {
+        background: burlywood;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    /*.border-small {
+        border-bottom: 5px solid black;
+    }*/
+</style>
+<h2>Лицензи</h2>
+<br />
+@if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity.Name))
+{
+    @Html.ActionLink("Създай потребител", "Create", "UserLicense")
+}
+
+<br />
+<br />
+<br />
+
+<table border="1">
+    <tr class="border-small">
+        @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity.Name))
+        {
+            <th class="small-width"></th>
+        }
+        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.Id, asc = Model.IsAscending(1) })</th>
+        <th class="large-width">@Html.ActionLink("Име", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.ValidTo, asc = Model.IsAscending(2) })</th>
+        <th class="small-width">@Html.ActionLink("Демо", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.IsDemo, asc = Model.IsAscending(3) })</th>
+        <th class="small-width">@Html.ActionLink("Имейл", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.User, asc = Model.IsAscending(4) })</th>
+        <th class="small-width">@Html.ActionLink("Телефон на", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.Created, asc = Model.IsAscending(5) })</th>
+        <th class="small-width">@Html.ActionLink("Фирма", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.Active, asc = Model.IsAscending(6) })</th>
+        <th class="small-width">@Html.ActionLink("Булстат", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.Enabled, asc = Model.IsAscending(7) })</th>
+    </tr>
+
+    @{ var odd = true; }
+    @foreach (var x in Model.Licenses)
+    {
+        <tr class="@(odd ? "odd": "even") border-small">
+            @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity.Name))
+            {
+                <td class="small-width">
+                    @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
+                </td>
+            }
+            <td class="large-width" style="width: 350px">
+                @Html.ActionLink(x.Id.ToString().Substring(0, 20), "Details", new { id = x.Id, title = x.Id.ToString() })<span>...</span>
+            </td>
+            <td class="large-width">
+                @x.ValidTo.ToShortDateString()
+            </td>
+            <td class="small-width">
+                @x.IsDemo.ToBgString()
+            </td>
+            <td class="small-width">
+                @Html.ActionLink(x.User.Name, "User", new { userId = x.User.Id })
+            </td>
+            <td class="small-width">
+                @x.Created.ToShortDateString()
+            </td>
+            <td class="small-width">
+                @x.IsActivated.ToBgString()
+            </td>
+            <td class="small-width">
+                @x.Enabled.ToBgString()
+            </td>
+        </tr>
+            odd = !odd;
+    }
+</table>
+<br />
+
+<span>Страница: </span>
+@foreach (var p in (string[])ViewBag.Pages)
+{
+    if (ViewBag.PageIndex.ToString() == p)
+    {
+        @Html.ActionLink(p.ToString(), "Index", new { page = p }, new { style = "color: red" })
+    }
+    else
+    {
+        @Html.ActionLink(p.ToString(), "Index", new { page = p })
+    }
+}

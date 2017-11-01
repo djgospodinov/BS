@@ -50,13 +50,13 @@ namespace BS.Admin.Web.Controllers
             ViewBag.Pages = pages;
             ViewBag.PageIndex = page;
 
-            var result = new SortedLicenseCollection() 
+            var result = new LicenseSortedCollection() 
             {
-                Sort = sort,
+                SortExpression = sort,
                 Asc = asc,
                 Licenses = dbModel
             };
-            result.SortLicenses();
+            result.Sort();
 
             result.Licenses = result.Licenses
                 .Skip((page - 1) * recordsPerPage)
