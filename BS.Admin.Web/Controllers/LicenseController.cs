@@ -69,6 +69,11 @@ namespace BS.Admin.Web.Controllers
         [HttpGet]
         public ActionResult Create() 
         {
+            if (!RolesManager.CanCreateLicense(this.User.Identity.Name)) 
+            {
+                return RedirectToAction("UnAuthorized", "Error");
+            }
+
             var model = new CreateLicenseModel(_userService);
             return View(model);
         }
@@ -78,6 +83,11 @@ namespace BS.Admin.Web.Controllers
         {
             try
             {
+                if (!RolesManager.CanCreateLicense(this.User.Identity.Name))
+                {
+                    return RedirectToAction("UnAuthorized", "Error");
+                }
+
                 if (!ModelState.IsValid)
                 {
                     return View(model);
@@ -105,6 +115,11 @@ namespace BS.Admin.Web.Controllers
         {
             try
             {
+                if (!RolesManager.CanCreateLicense(this.User.Identity.Name))
+                {
+                    return RedirectToAction("UnAuthorized", "Error");
+                }
+
                 var dbModel = _licenseService.Get(id.ToString());
                 if (dbModel != null)
                 {
@@ -145,11 +160,6 @@ namespace BS.Admin.Web.Controllers
 
             ViewBag.ErrorMessage = "Възникна грешка!";
             return View(new CreateLicenseModel(model, _userService));
-        }
-
-        public ActionResult User(int userId) 
-        {
-            return View();
         }
 
         public ActionResult Details(string id)

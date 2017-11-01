@@ -86,6 +86,9 @@ namespace BS.Admin.Web.Models
         [Display(Name = "Потвърди парола")]
         [Compare("Password", ErrorMessage = "Паролите не съвпадат.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Супер потребител")]
+        public bool IsSuperUser { get; set; }
     }
 
     public class ExternalLogin

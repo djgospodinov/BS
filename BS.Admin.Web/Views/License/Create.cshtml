@@ -36,7 +36,7 @@
                 <span>Валиден до:</span>
             </td>
             <td>
-                @Html.EditorFor(m => m.ValidTo, new { @class = "dateTimePicker" })
+                @Html.TextBoxFor(m => m.ValidTo, new { @class = "datepicker", style = "width: 140px"})
             </td>
         </tr>
         <tr>
@@ -44,7 +44,7 @@
                 <span>Абониран до:</span>
             </td>
             <td>
-                @Html.EditorFor(m => m.SubscribedTo, new { @class = "dateTimePicker" })
+                @Html.TextBoxFor(m => m.SubscribedTo, new { @class = "datepicker", style = "width: 140px" })
             </td>
         </tr>
         <tr>

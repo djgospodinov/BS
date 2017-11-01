@@ -188,7 +188,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Const.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Models\CreateLicenseOwnerModel.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -201,6 +203,7 @@
     <Compile Include="Models\CreateLicenseModel.cs" />
     <Compile Include="Models\SortedLicenseCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RolesManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -325,6 +328,7 @@
     <Content Include="Views\UserLicense\Create.cshtml" />
     <Content Include="Views\License\Edit.cshtml" />
     <Content Include="Views\UserLicense\Index.cshtml" />
+    <Content Include="Views\Error\UnAuthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

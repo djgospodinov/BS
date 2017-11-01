@@ -63,9 +63,9 @@ namespace BS.Admin.Web.Controllers
         //[AllowAnonymous]
         public ActionResult Register()
         {
-            if (!User.Identity.IsAuthenticated || User.Identity.Name.ToLower() != "bsadmin") 
+            if (!RolesManager.IsAdministrator(User.Identity.Name)) 
             {
-                throw new Exception("Not authorized");
+                return RedirectToAction("UnAuthorized", "Error");
             }
             return View();
         }
@@ -74,17 +74,22 @@ namespace BS.Admin.Web.Controllers
         // POST: /Account/Register
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
+            if (!RolesManager.IsAdministrator(User.Identity.Name))
+            {
+                return RedirectToAction("UnAuthorized", "Error");
+            }
+
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
                 try
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    //WebSecurity.Login(model.UserName, model.Password);
+                    Roles.AddUsersToRole(new[] { model.UserName }, model.IsSuperUser ? Const.SuperUserRoleName : Const.NormalUserRoleName);
+
                     ViewBag.Message = "Потребителя е създаден успешно!";
                     return View(model);
                 }
