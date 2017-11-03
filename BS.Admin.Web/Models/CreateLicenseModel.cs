@@ -152,8 +152,10 @@ namespace BS.Admin.Web.Models
         public Guid Id { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime ValidTo { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? SubscribedTo { get; set; }
 
         [Required]

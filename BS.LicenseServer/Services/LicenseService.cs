@@ -179,14 +179,30 @@ namespace BS.LicenseServer.Services
                     result.LicenseOwner.ContactPerson = model.User.ConactPerson;
                     result.LicenseOwner.CompanyId = model.User.CompanyId;
 
-                    //result.LicenseModules.Remove();
-
                     foreach(var module in model.Modules)
                     {
-                        result.LicenseModules.Add(new LicenseModule() 
+                        int moduleId = (int)module;
+                        if (result.LicenseModules.FirstOrDefault(x => x.ModuleId == moduleId) == null) 
                         {
-                            Id = (int)module
-                        });
+                            result.LicenseModules.Add(new LicenseModule()
+                            {
+                                Id = moduleId
+                            });
+                        }
+                    }
+
+                    var modulesForRemoval = new List<LicenseModule>();
+                    foreach (var module in result.LicenseModules) 
+                    {
+                        if (model.Modules.FirstOrDefault(x => (int)x == module.ModuleId) > 0) 
+                        {
+                            modulesForRemoval.Add(module);
+                        }
+                    }
+                    
+                    foreach (var module in modulesForRemoval) 
+                    {
+                        result.LicenseModules.Remove(module);
                     }
 
                     var extraInfo = result.LicenseOwner.LicenseOwnerExtraInfoes1.FirstOrDefault();
