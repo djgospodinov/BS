@@ -190,8 +190,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="DropdownHelper.cs" />
+    <Compile Include="Filters\AuthorizeUserAttribute.cs" />
     <Compile Include="Models\CreateLicenseOwnerModel.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -330,6 +332,7 @@
     <Content Include="Views\License\Edit.cshtml" />
     <Content Include="Views\UserLicense\Index.cshtml" />
     <Content Include="Views\Error\UnAuthorized.cshtml" />
+    <Content Include="Views\UserLicense\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

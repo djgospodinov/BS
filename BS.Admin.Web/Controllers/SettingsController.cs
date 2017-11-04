@@ -8,22 +8,8 @@ using System.Web.Mvc;
 
 namespace BS.Admin.Web.Controllers
 {
-    [Authorize]
-    public class SettingsController : Controller
+    public class SettingsController : BaseController
     {
-        private readonly ILicenseService _service;
-
-        public SettingsController()
-            :this(new LicenseService())
-        {
-        }
-
-        public SettingsController(ILicenseService service)
-        {
-            _service = service;
-        }
-
-
         public ActionResult Index()
         {
             return View();

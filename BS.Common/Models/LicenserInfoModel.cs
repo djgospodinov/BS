@@ -20,6 +20,9 @@ namespace BS.Common.Models
         public string Name { get; set; }
 
         [DataMember]
+        public bool IsDemo { get; set; }
+
+        [DataMember]
         public bool IsCompany { get; set; }
 
         [DataMember]

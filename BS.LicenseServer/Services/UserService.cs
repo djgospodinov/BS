@@ -39,7 +39,8 @@ namespace BS.LicenseServer.Services
                             Email = x.Email,
                             Phone = x.Phone,
                             ConactPerson = x.ContactPerson,
-                            CompanyId = x.CompanyId
+                            CompanyId = x.CompanyId,
+                            IsDemo = string.IsNullOrEmpty(x.CompanyId)
                     })
                     .ToList();
             }

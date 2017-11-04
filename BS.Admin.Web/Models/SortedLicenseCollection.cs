@@ -19,15 +19,26 @@ namespace BS.Admin.Web.Models
         Type = 8
     }
 
+    public enum SortedUserLicenseEnum
+    {
+        Id = 1,
+        Name = 2,
+        Email = 3,
+        Phone = 4,
+        IsDemo = 5,
+        IsCompany = 6,
+        CompanyId = 7,
+    }
+
     public class BaseSortedCollection
     {
-        public SortedLicenseEnum? SortExpression { get; set; }
+        public int? SortExpression { get; set; }
 
         public bool Asc { get; set; }
 
         public object IsAscending(int sort)
         {
-            if (SortExpression.HasValue && SortExpression.Value == (SortedLicenseEnum)sort)
+            if (SortExpression.HasValue && SortExpression.Value == sort)
                 return !Asc;
 
             return true;
@@ -46,7 +57,8 @@ namespace BS.Admin.Web.Models
         {
             if (SortExpression.HasValue)
             {
-                switch (SortExpression.Value)
+                var value = (SortedLicenseEnum)SortExpression.Value;
+                switch (value)
                 {
                     case SortedLicenseEnum.Id:
                         Licenses = Asc
@@ -95,18 +107,19 @@ namespace BS.Admin.Web.Models
 
     public class UserLicenseSortedCollection : BaseSortedCollection
     {
-        public List<LicenserInfoModel> Licenses { get; set; }
+        public List<LicenserInfoModel> Users { get; set; }
 
         public override void Sort()
         {
             if (SortExpression.HasValue)
             {
-                switch (SortExpression.Value)
+                var value = (SortedUserLicenseEnum)SortExpression.Value;
+                switch (value)
                 {
-                    case SortedLicenseEnum.Id:
-                        Licenses = Asc
-                            ? Licenses.OrderBy(x => x.Id).ToList()
-                            : Licenses.OrderByDescending(x => x.Id).ToList();
+                    case SortedUserLicenseEnum.Id:
+                        Users = Asc
+                            ? Users.OrderBy(x => x.Id).ToList()
+                            : Users.OrderByDescending(x => x.Id).ToList();
                         break;
                     //case SortedLicenseEnum.ValidTo:
                     //    Licenses = Asc

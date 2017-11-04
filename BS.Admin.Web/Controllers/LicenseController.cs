@@ -8,27 +8,13 @@ using System.Web.Mvc;
 using BS.Common.Models;
 using BS.Admin.Web.Models;
 using BS.Common.Interfaces;
+using BS.Admin.Web.Filters;
+using NLog;
 
 namespace BS.Admin.Web.Controllers
 {
-    [Authorize]
-    public class LicenseController : Controller
+    public class LicenseController : BaseController
     {
-        private readonly ILicenseService _licenseService;
-        private readonly IUserService _userService;
-
-        public LicenseController()
-            :this(new LicenseService(), new UserService())
-        {
-        }
-
-        public LicenseController(ILicenseService licenseService, IUserService userService)
-        {
-            _licenseService = licenseService;
-            _userService = userService;
-        }
-
-
         public ActionResult Index(int page = 1, SortedLicenseEnum? sort = null, bool asc = true)
         {
             int recordsPerPage = 10;
@@ -52,7 +38,7 @@ namespace BS.Admin.Web.Controllers
 
             var result = new LicenseSortedCollection() 
             {
-                SortExpression = sort,
+                SortExpression = sort.HasValue ? (int?)sort.Value : null,
                 Asc = asc,
                 Licenses = dbModel
             };
@@ -67,43 +53,32 @@ namespace BS.Admin.Web.Controllers
         }
 
         [HttpGet]
+        [AuthorizeUser(AccessLevel = Const.CreateLicence)]
         public ActionResult Create() 
         {
-            if (!RolesManager.CanCreateLicense(this.User.Identity)) 
-            {
-                return RedirectToAction("UnAuthorized", "Error");
-            }
-
-            var model = new CreateLicenseModel();
-            return View(model);
+            return View(new CreateLicenseModel());
         }
 
         [HttpPost]
+        [AuthorizeUser(AccessLevel = Const.CreateLicence)]
         public ActionResult Create(CreateLicenseModel model)
         {
             try
             {
-                if (!RolesManager.CanCreateLicense(this.User.Identity))
-                {
-                    return RedirectToAction("UnAuthorized", "Error");
-                }
-
                 if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
 
-                var dbModel = model.ToDbModel(_userService);
-                var id = _licenseService.Create(dbModel);
+                var id = _licenseService.Create(model.ToDbModel(_userService));
                 if (!string.IsNullOrEmpty(id))
                 {
-                    ViewBag.Message = "Успешно създаден!";
-
-                    return RedirectToAction("Index");
+                    return SuccessResult();
                 }
             }
-            catch 
+            catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, ex);
             }
 
             ViewBag.ErrorMessage = "Възникна грешка!";
@@ -111,15 +86,11 @@ namespace BS.Admin.Web.Controllers
         }
 
         [HttpGet]
+        [AuthorizeUser(AccessLevel = Const.EditLicence)]
         public ActionResult Edit(Guid id) 
         {
             try
             {
-                if (!RolesManager.CanCreateLicense(this.User.Identity))
-                {
-                    return RedirectToAction("UnAuthorized", "Error");
-                }
-
                 var dbModel = _licenseService.Get(id.ToString());
                 if (dbModel != null)
                 {
@@ -130,14 +101,16 @@ namespace BS.Admin.Web.Controllers
                     }
                 }
             }
-            catch 
+            catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, ex);
             }
 
             return Content("License not found");
         }
 
         [HttpPost]
+        [AuthorizeUser(AccessLevel = Const.EditLicence)]
         public ActionResult Edit(CreateLicenseModel model) 
         {
             try
@@ -149,12 +122,12 @@ namespace BS.Admin.Web.Controllers
 
                 if (_licenseService.Update(model.Id.ToString(), model.ToDbModel(_userService)))
                 {
-                    return RedirectToAction("Index");
+                    return SuccessResult();
                 }
             }
-            catch 
+            catch (Exception ex)
             {
-
+                _logger.Log(LogLevel.Error, ex);
             }
 
             ViewBag.ErrorMessage = "Възникна грешка!";
@@ -175,8 +148,9 @@ namespace BS.Admin.Web.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, ex);
             }
 
             return Content("License not found");

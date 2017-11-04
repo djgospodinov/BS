@@ -41,7 +41,7 @@ namespace BS.Admin.Web.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "Потрвбителя или паролата не са правилни.");
+            ModelState.AddModelError("", "Потребителят или паролата не са правилни.");
             return View(model);
         }
 

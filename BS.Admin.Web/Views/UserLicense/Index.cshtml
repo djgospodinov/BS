@@ -1,11 +1,8 @@
-﻿@model BS.Admin.Web.Models.UserLicenseSortedCollection
+﻿@using BS.Common
+@model BS.Admin.Web.Models.UserLicenseSortedCollection
 @{
     ViewBag.Title = "Потребители на лицензи";
 }
-
-<h2>@ViewBag.Title</h2>
-
-@Html.ActionLink("Създай потребител", "Create", "UserLicense")
 
 <style>
     .large-width {
@@ -31,7 +28,7 @@
         border-bottom: 5px solid black;
     }*/
 </style>
-<h2>Лицензи</h2>
+<h2>@ViewBag.Title</h2>
 <br />
 @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
 {
@@ -48,17 +45,17 @@
         {
             <th class="small-width"></th>
         }
-        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.Id, asc = Model.IsAscending(1) })</th>
-        <th class="large-width">@Html.ActionLink("Име", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.ValidTo, asc = Model.IsAscending(2) })</th>
-        <th class="small-width">@Html.ActionLink("Демо", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.IsDemo, asc = Model.IsAscending(3) })</th>
-        <th class="small-width">@Html.ActionLink("Имейл", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.User, asc = Model.IsAscending(4) })</th>
-        <th class="small-width">@Html.ActionLink("Телефон на", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.Created, asc = Model.IsAscending(5) })</th>
-        <th class="small-width">@Html.ActionLink("Фирма", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.Active, asc = Model.IsAscending(6) })</th>
-        <th class="small-width">@Html.ActionLink("Булстат", "Index", new { SortExpression = BS.Admin.Web.Models.SortedLicenseEnum.Enabled, asc = Model.IsAscending(7) })</th>
+        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.Id, asc = Model.IsAscending(1) })</th>
+        <th class="large-width">@Html.ActionLink("Име", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.Name, asc = Model.IsAscending(2) })</th>
+        <th class="small-width">@Html.ActionLink("Демо", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.IsDemo, asc = Model.IsAscending(3) })</th>
+        <th class="small-width">@Html.ActionLink("Имейл", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.Email, asc = Model.IsAscending(4) })</th>
+        <th class="small-width">@Html.ActionLink("Телефон", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.Phone, asc = Model.IsAscending(5) })</th>
+        <th class="small-width">@Html.ActionLink("Фирма", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.IsCompany, asc = Model.IsAscending(6) })</th>
+        <th class="small-width">@Html.ActionLink("Булстат", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.CompanyId, asc = Model.IsAscending(7) })</th>
     </tr>
 
     @{ var odd = true; }
-    @foreach (var x in Model.Licenses)
+    @foreach (var x in Model.Users)
     {
         <tr class="@(odd ? "odd": "even") border-small">
             @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
@@ -67,26 +64,26 @@
                     @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
                 </td>
             }
+            <td class="small-width">
+                @Html.ActionLink(x.Id.ToString(), "Details", new { id = x.Id, title = x.Id.ToString() })
+            </td>
             <td class="large-width" style="width: 350px">
-                @Html.ActionLink(x.Id.ToString().Substring(0, 20), "Details", new { id = x.Id, title = x.Id.ToString() })<span>...</span>
+                @x.Name
             </td>
             <td class="large-width">
-                @x.ValidTo.ToShortDateString()
-            </td>
-            <td class="small-width">
                 @x.IsDemo.ToBgString()
             </td>
             <td class="small-width">
-                @Html.ActionLink(x.User.Name, "User", new { userId = x.User.Id })
+                @x.Email
             </td>
             <td class="small-width">
-                @x.Created.ToShortDateString()
+                @x.Phone
             </td>
             <td class="small-width">
-                @x.IsActivated.ToBgString()
+                @x.IsCompany.ToBgString()
             </td>
             <td class="small-width">
-                @x.Enabled.ToBgString()
+                @x.CompanyId
             </td>
         </tr>
             odd = !odd;

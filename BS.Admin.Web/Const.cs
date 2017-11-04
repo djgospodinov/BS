@@ -12,5 +12,13 @@ namespace BS.Admin.Web
         public const string SuperUserRoleName = "SuperUser";
         public const string NormalUserRoleName = "NormalUser";
         #endregion
+
+        #region Permissions
+        public const string CreateLicence = "CreateLicence";
+        public const string EditLicence = "EditLicence";
+
+        public const string CreateUserLicence = "CreateUserLicence";
+        public const string EditUserLicence = "EditUserLicence";
+        #endregion
     }
 }

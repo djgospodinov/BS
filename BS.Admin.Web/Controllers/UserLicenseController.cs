@@ -1,6 +1,8 @@
 ﻿using BS.Admin.Web.Models;
 using BS.Common.Interfaces;
+using BS.Common.Models;
 using BS.LicenseServer.Services;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +11,49 @@ using System.Web.Mvc;
 
 namespace BS.Admin.Web.Controllers
 {
-    [Authorize]
-    public class UserLicenseController : Controller
+    public class UserLicenseController : BaseController
     {
-        private readonly IUserService _service = new UserService();
-        //
-        // GET: /UserLicense/
-
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(int page = 1, SortedLicenseEnum? sort = null, bool asc = true)
         {
-            return View();
+            int recordsPerPage = 10;
+            List<LicenserInfoModel> dbModel = _userService.GetAll();
+
+            int records = dbModel.Count;
+            int pageCount = (records + recordsPerPage - 1) / recordsPerPage;
+            if (page > pageCount)
+            {
+                page = 1;
+            }
+
+            var pages = new string[pageCount];
+            int index = 0;
+            foreach (var p in pages)
+            {
+                pages[index++] = index.ToString();
+            }
+            ViewBag.Pages = pages;
+            ViewBag.PageIndex = page;
+
+            var result = new UserLicenseSortedCollection()
+            {
+                SortExpression = sort.HasValue ? (int?)sort.Value : null,
+                Asc = asc,
+                Users = dbModel
+            };
+            result.Sort();
+
+            result.Users = result.Users
+                .Skip((page - 1) * recordsPerPage)
+                .Take(recordsPerPage)
+                .ToList();
+
+            return View(result);
         }
 
         public ActionResult UserLicense(int id) 
         {
-            var user = _service.Get(id);
+            var user = _userService.Get(id);
 
             return View(user);
         }
@@ -37,11 +67,44 @@ namespace BS.Admin.Web.Controllers
         [HttpPost]
         public ActionResult Create(CreateLicenseOwnerModel model)
         {
-            if (ModelState.IsValid) 
+            try 
             {
-                //var result = _service.Create(model);
-            }
+                if (ModelState.IsValid)
+                {
+                    //var result = _service.Create(model);
+                }
 
+                return SuccessResult();
+            }
+            catch(Exception ex)
+            {
+                _logger.Log(LogLevel.Error, ex);
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(CreateLicenseOwnerModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //var result = _service.Create(model);
+                }
+
+                return SuccessResult();
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, ex);
+            }
             return View(model);
         }
     }
