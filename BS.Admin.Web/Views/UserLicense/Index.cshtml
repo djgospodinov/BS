@@ -33,7 +33,7 @@
 </style>
 <h2>Лицензи</h2>
 <br />
-@if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity.Name))
+@if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
 {
     @Html.ActionLink("Създай потребител", "Create", "UserLicense")
 }
@@ -44,7 +44,7 @@
 
 <table border="1">
     <tr class="border-small">
-        @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity.Name))
+        @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
         {
             <th class="small-width"></th>
         }
@@ -61,7 +61,7 @@
     @foreach (var x in Model.Licenses)
     {
         <tr class="@(odd ? "odd": "even") border-small">
-            @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity.Name))
+            @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
             {
                 <td class="small-width">
                     @Html.ActionLink("Редакция", "Edit", new { id = x.Id })

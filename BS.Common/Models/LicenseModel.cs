@@ -35,7 +35,7 @@ namespace BS.Common
 
         [DataMember]
         [Required]
-        public LicenseType  Type { get; set; }
+        public LicenseTypeEnum  Type { get; set; }
 
         [DataMember]
         public bool Enabled { get; set; }

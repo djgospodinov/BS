@@ -26,7 +26,7 @@
                     <span>Идентификатор:</span>
                 </td>
                 <td>
-                    @Html.Raw(Model.Id)
+                    <strong>@Html.Raw(Model.Id)</strong>
                 </td>
             </tr>
         }
@@ -36,7 +36,7 @@
                 <span>Валиден до:</span>
             </td>
             <td>
-                @Html.TextBoxFor(m => m.ValidTo, new { @class = "datepicker", style = "width: 140px" })
+                @Html.TextBoxFor(m => m.ValidTo, new { @Value = Model.ValidTo.ToString("yyyy/MM/dd"), @class = "datepicker" })
             </td>
         </tr>
         <tr>
@@ -44,7 +44,7 @@
                 <span>Абониран до:</span>
             </td>
             <td>
-                @Html.TextBoxFor(m => m.SubscribedTo, new { @class = "datepicker", style = "width: 140px" })
+                @Html.TextBoxFor(m => m.SubscribedTo, new { @Value = Model.SubscribedTo.HasValue ? Model.SubscribedTo.Value.ToString("yyyy/MM/dd") : "", @class = "datepicker" })
             </td>
         </tr>
         <tr>
@@ -60,7 +60,7 @@
                 Потребител:
             </td>
             <td>
-                @Html.DropDownListFor(m => m.UserId, new SelectList(Model.Users, "Id", "Name"))
+                @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers())
             </td>
         </tr>
         <tr>
@@ -68,7 +68,7 @@
                 Вид:
             </td>
             <td>
-                @Html.DropDownListFor(m => m.Type, new SelectList(Model.Types))
+                @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseTypes())
             </td>
         </tr>
         <tr>

@@ -42,7 +42,7 @@ namespace BS.Api.Controllers
 
                 if (activator != null) 
                 {
-                    if (license.Type == LicenseType.PerComputer) 
+                    if (license.Type == LicenseTypeEnum.PerComputer) 
                     {
                         if (string.IsNullOrEmpty(activator.ComputerId)) 
                         {
@@ -55,7 +55,7 @@ namespace BS.Api.Controllers
                         }
                     }
 
-                    if (license.Type == LicenseType.PerUser) 
+                    if (license.Type == LicenseTypeEnum.PerUser) 
                     {
                         if (string.IsNullOrEmpty(activator.UserId)) 
                         {
@@ -70,8 +70,8 @@ namespace BS.Api.Controllers
 
                     if (string.IsNullOrEmpty(license.ActivationId) && activator != null) 
                     {
-                        _service.Activate(license, license.Type == LicenseType.PerUser ? activator.UserId :
-                            license.Type == LicenseType.PerComputer ? activator.ComputerId : string.Empty);
+                        _service.Activate(license, license.Type == LicenseTypeEnum.PerUser ? activator.UserId :
+                            license.Type == LicenseTypeEnum.PerComputer ? activator.ComputerId : string.Empty);
                     }
                 }
 

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BS.Admin.Web.Controllers
 {
+    [Authorize]
     public class UserLicenseController : Controller
     {
         private readonly IUserService _service = new UserService();
@@ -20,7 +21,7 @@ namespace BS.Admin.Web.Controllers
             return View();
         }
 
-        public ActionResult User(int id) 
+        public ActionResult UserLicense(int id) 
         {
             var user = _service.Get(id);
 

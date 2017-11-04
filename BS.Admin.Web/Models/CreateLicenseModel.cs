@@ -11,39 +11,21 @@ namespace BS.Admin.Web.Models
 {
     public class CreateLicenseModel
     {
-        protected static readonly List<LicenseType> _types = new List<LicenseType>() 
-            {
-                LicenseType.PerComputer,
-                LicenseType.PerUser,
-                LicenseType.PerServer
-            };
-
-        private readonly IUserService _service;
-        
-        private IUserService _userService;
-
         public CreateLicenseModel() 
         {
-            Types = _types;
-            _userService = _userService ?? new UserService();
+            ValidTo = DateTime.Now.AddMonths(1);
+            SubscribedTo = DateTime.Now.AddMonths(1);
         }
 
-        public CreateLicenseModel(IUserService service) 
+        public CreateLicenseModel(BS.Common.LicenseModel model)
             :this()
-        {
-            _service = service;
-            Users = _service.GetAll();
-        }
-
-        public CreateLicenseModel(BS.Common.LicenseModel model, IUserService service)
-            :this(service)
         {
             Id = model.Id;
             ValidTo = model.ValidTo;
             SubscribedTo = model.SubscribedTo;
             IsDemo = model.IsDemo;
             UserId = model.User != null ? model.User.Id : 0;
-            Type = model.Type;
+            Type = (int)model.Type;
             Enabled = model.Enabled;
             IsActivated = model.IsActivated;
             Created = model.Created;
@@ -79,8 +61,8 @@ namespace BS.Admin.Web.Models
             }
         }
 
-        public CreateLicenseModel(CreateLicenseModel model, IUserService userService)
-            :this(userService)
+        public CreateLicenseModel(CreateLicenseModel model)
+            :this()
         {
             Id = model.Id;
             ValidTo = model.ValidTo;
@@ -100,7 +82,7 @@ namespace BS.Admin.Web.Models
             Schedules = model.Schedules;
         }
 
-        public BS.Common.LicenseModel ToDbModel() 
+        public BS.Common.LicenseModel ToDbModel(IUserService userService) 
         {
             var result = new Common.LicenseModel()
             {
@@ -108,8 +90,8 @@ namespace BS.Admin.Web.Models
                 ValidTo = this.ValidTo,
                 SubscribedTo = this.SubscribedTo,
                 IsDemo = this.IsDemo,
-                User = _userService.Get(this.UserId.Value),
-                Type = this.Type,
+                User = userService.Get(this.UserId.Value),
+                Type = (LicenseTypeEnum)this.Type,
                 Enabled = this.Enabled,
                 IsActivated = this.IsActivated,
                 Created = this.Created
@@ -165,7 +147,7 @@ namespace BS.Admin.Web.Models
         public int? UserId { get; set; }
 
         [Required]
-        public LicenseType Type { get; set; }
+        public int Type { get; set; }
 
         public bool Enabled { get; set; }
 
@@ -173,7 +155,7 @@ namespace BS.Admin.Web.Models
 
         public DateTime Created { get; set; }
 
-        public List<LicenseType> Types { get; set; }
+        public List<LicenseTypeEnum> Types { get; set; }
 
         public List<LicenserInfoModel> Users { get; set; }
 

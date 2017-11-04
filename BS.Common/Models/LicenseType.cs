@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BS.Common.Models
 {
-    public enum LicenseType
+    public enum LicenseTypeEnum
     {
         [Description("За компютър")]
         PerComputer = 1,

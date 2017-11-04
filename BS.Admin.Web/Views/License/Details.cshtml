@@ -1,9 +1,150 @@
-﻿@model BS.Common.LicenseModel
-
+﻿@model BS.Admin.Web.Models.CreateLicenseModel
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Информация за лиценз";
 }
 
-<h2>Details</h2>
+<style>
+    select {
+        width: 120px;
+        height: 25px;
+    }
+</style>
 
-@Html.EditorForModel("Model");
+<h2>@ViewBag.Title</h2>
+<br />
+<br />
+
+<table>
+    @if (Model != null && Model.Id != Guid.Empty)
+    {
+        <tr>
+            <td>
+                <span>Идентификатор:</span>
+            </td>
+            <td>
+                <strong>@Html.Raw(Model.Id)</strong>
+            </td>
+        </tr>
+    }
+
+    <tr>
+        <td>
+            <span>Валиден до:</span>
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.ValidTo, new { @Value = Model.ValidTo.ToString("yyyy/MM/dd"), @class = "datepicker" })
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <span>Абониран до:</span>
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.SubscribedTo, new { @Value = Model.SubscribedTo.HasValue ? Model.SubscribedTo.Value.ToString("yyyy/MM/dd") : "", @class = "datepicker" })
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Демо:
+        </td>
+        <td>
+            @Html.CheckBoxFor(m => m.IsDemo)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Потребител:
+        </td>
+        <td>
+            @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers())
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Вид:
+        </td>
+        <td>
+            @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseUsers())
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Потвърден:
+        </td>
+        <td>
+            @Html.CheckBoxFor(m => m.Enabled)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Активиран:
+        </td>
+        <td>
+            @Html.CheckBoxFor(m => m.IsActivated, new { @disabled = "disabled" })
+        </td>
+    </tr>
+</table>
+<section>
+    <fieldset style="width:400px">
+        <legend>Модули</legend>
+        <table>
+            <tr>
+                <td>
+                    Счетоводство:
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.Accounting)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Производство:
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.Production)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Склад:
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.Warehouse)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Търговска система:
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.TradingSystem)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    ТРЗ:
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.Salary)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Графици:
+                </td>
+                <td>
+                    @Html.EditorFor(m => m.Schedules)
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</section>
+
+<script>
+    $(function () { // will trigger when the document is ready
+        $('input').prop('disabled', true);
+        $('select').prop('disabled', true);
+        $('input').prop('readonly', true);
+        $('select').prop('readonly', true);
+    });
+</script>

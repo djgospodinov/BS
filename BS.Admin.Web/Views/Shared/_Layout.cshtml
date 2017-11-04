@@ -17,14 +17,16 @@
             <div class="float-left">
                 @Html.Partial("_LoginPartial")
             </div>
-            @if (User.Identity != null && !string.IsNullOrEmpty(User.Identity.Name))
+            @if (User.Identity != null 
+                && User.Identity.IsAuthenticated 
+                && !string.IsNullOrEmpty(User.Identity.Name))
             {
                 <div class="float-right">
                     <nav>
                         <ul id="menu" style="text-align:center">
                             <li>@Html.ActionLink("Лицензи", "Index", "License")</li>
                             <li>@Html.ActionLink("Потребители на лицензи", "Index", "UserLicense")</li>
-                            @if (BS.Admin.Web.RolesManager.IsAdministrator(User.Identity.Name))
+                            @if (BS.Admin.Web.RolesManager.IsAdministrator(User.Identity))
                             {
                                 <li>@Html.ActionLink("IP Конфигурации", "IPs", "Settings")</li>
                                 <li>@Html.ActionLink("Създаване на потребител", "Register", "Account")</li>

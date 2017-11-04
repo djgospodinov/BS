@@ -69,12 +69,12 @@ namespace BS.Admin.Web.Controllers
         [HttpGet]
         public ActionResult Create() 
         {
-            if (!RolesManager.CanCreateLicense(this.User.Identity.Name)) 
+            if (!RolesManager.CanCreateLicense(this.User.Identity)) 
             {
                 return RedirectToAction("UnAuthorized", "Error");
             }
 
-            var model = new CreateLicenseModel(_userService);
+            var model = new CreateLicenseModel();
             return View(model);
         }
 
@@ -83,7 +83,7 @@ namespace BS.Admin.Web.Controllers
         {
             try
             {
-                if (!RolesManager.CanCreateLicense(this.User.Identity.Name))
+                if (!RolesManager.CanCreateLicense(this.User.Identity))
                 {
                     return RedirectToAction("UnAuthorized", "Error");
                 }
@@ -93,7 +93,7 @@ namespace BS.Admin.Web.Controllers
                     return View(model);
                 }
 
-                var dbModel = model.ToDbModel();
+                var dbModel = model.ToDbModel(_userService);
                 var id = _licenseService.Create(dbModel);
                 if (!string.IsNullOrEmpty(id))
                 {
@@ -107,7 +107,7 @@ namespace BS.Admin.Web.Controllers
             }
 
             ViewBag.ErrorMessage = "Възникна грешка!";
-            return View(new CreateLicenseModel(model, _userService));
+            return View(new CreateLicenseModel(model));
         }
 
         [HttpGet]
@@ -115,7 +115,7 @@ namespace BS.Admin.Web.Controllers
         {
             try
             {
-                if (!RolesManager.CanCreateLicense(this.User.Identity.Name))
+                if (!RolesManager.CanCreateLicense(this.User.Identity))
                 {
                     return RedirectToAction("UnAuthorized", "Error");
                 }
@@ -123,10 +123,9 @@ namespace BS.Admin.Web.Controllers
                 var dbModel = _licenseService.Get(id.ToString());
                 if (dbModel != null)
                 {
-                    var result = new CreateLicenseModel(dbModel, _userService);
+                    var result = new CreateLicenseModel(dbModel);
                     if (result != null)
                     {
-                        result.Users = new UserService().GetAll();
                         return View(result);
                     }
                 }
@@ -148,7 +147,7 @@ namespace BS.Admin.Web.Controllers
                     return View(model);
                 }
 
-                if (_licenseService.Update(model.Id.ToString(), model.ToDbModel()))
+                if (_licenseService.Update(model.Id.ToString(), model.ToDbModel(_userService)))
                 {
                     return RedirectToAction("Index");
                 }
@@ -159,21 +158,28 @@ namespace BS.Admin.Web.Controllers
             }
 
             ViewBag.ErrorMessage = "Възникна грешка!";
-            return View(new CreateLicenseModel(model, _userService));
+            return View(new CreateLicenseModel(model));
         }
 
         public ActionResult Details(string id)
         {
-            if (id == null)
+            try
             {
-                return Content("Not found.");
+                var dbModel = _licenseService.Get(id.ToString());
+                if (dbModel != null)
+                {
+                    var result = new CreateLicenseModel(dbModel);
+                    if (result != null)
+                    {
+                        return View(result);
+                    }
+                }
+            }
+            catch
+            {
             }
 
-            var result = _licenseService.Get(id);
-            if (result == null)
-                throw new ArgumentException("License for id not found", id);
-
-            return View(result);
+            return Content("License not found");
         }
     }
 }

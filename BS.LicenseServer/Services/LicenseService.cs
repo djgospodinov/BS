@@ -32,12 +32,13 @@ namespace BS.LicenseServer.Services
                         Id = result.Id,
                         IsDemo = result.IsDemo,
                         ValidTo = result.ValidTo,
-                        Type = (LicenseType)result.Type,
+                        Type = (LicenseTypeEnum)result.Type,
                         Enabled = result.Enabled ?? false,
                         SubscribedTo = result.SubscribedTo,
                         Created = result.CreatedDate,
                         User = new LicenserInfoModel()
                         {
+                            Id = result.LicenseOwner.Id,
                             Name = result.LicenseOwner.Name,
                             IsCompany = result.LicenseOwner.IsCompany,
                             Email = result.LicenseOwner.Email,
@@ -46,7 +47,7 @@ namespace BS.LicenseServer.Services
                             CompanyId = result.LicenseOwner.CompanyId,
                         },
                         Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
-                        ActivationId = ((LicenseType)result.Type) == LicenseType.PerUser 
+                        ActivationId = ((LicenseTypeEnum)result.Type) == LicenseTypeEnum.PerUser 
                             ? activator != null ? activator.UserId : string.Empty
                             : activator != null ? activator.ComputerId : string.Empty,
                         IsActivated = activator != null
@@ -138,7 +139,7 @@ namespace BS.LicenseServer.Services
                         IsDemo = model.IsDemo,
                         ValidTo = !model.IsDemo ? model.ValidTo : DateTime.Now.AddMonths(1),
                         SubscribedTo = !model.IsDemo ? model.SubscribedTo : DateTime.Now.AddMonths(1),
-                        Type = !model.IsDemo ? (byte)model.Type : (byte)LicenseType.PerComputer,
+                        Type = !model.IsDemo ? (byte)model.Type : (byte)LicenseTypeEnum.PerComputer,
                         LicenseOwner = owner,
                         LicenseModules = model.Modules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList(),
                         Enabled = !model.IsDemo ? false : true,//the real license should be enabled, afterwards e.g. after it is payed
@@ -171,22 +172,23 @@ namespace BS.LicenseServer.Services
                     result.SubscribedTo = model.SubscribedTo;
                     result.IsDemo = model.IsDemo;
                     result.Enabled = model.Enabled;
+                    result.Type = (byte)model.Type;
 
-                    result.LicenseOwner.Name = model.User.Name;
-                    result.LicenseOwner.IsCompany = model.User.IsCompany;
-                    result.LicenseOwner.Email = model.User.Email;
-                    result.LicenseOwner.Phone = model.User.Phone;
-                    result.LicenseOwner.ContactPerson = model.User.ConactPerson;
-                    result.LicenseOwner.CompanyId = model.User.CompanyId;
-
-                    foreach(var module in model.Modules)
+                    if (model.User.Id != result.LicenseOwner.Id) 
                     {
-                        int moduleId = (int)module;
+                        result.LicenseOwner = db.LicenseOwners.First(x => x.Id == model.User.Id);
+                    }
+
+                    var modulesIds = model.Modules.Select(x => (short)x)
+                        .ToList();
+
+                    foreach (var moduleId in modulesIds)
+                    {
                         if (result.LicenseModules.FirstOrDefault(x => x.ModuleId == moduleId) == null) 
                         {
                             result.LicenseModules.Add(new LicenseModule()
                             {
-                                Id = moduleId
+                                ModuleId = moduleId
                             });
                         }
                     }
@@ -194,7 +196,7 @@ namespace BS.LicenseServer.Services
                     var modulesForRemoval = new List<LicenseModule>();
                     foreach (var module in result.LicenseModules) 
                     {
-                        if (model.Modules.FirstOrDefault(x => (int)x == module.ModuleId) > 0) 
+                        if (!modulesIds.Contains(module.ModuleId))
                         {
                             modulesForRemoval.Add(module);
                         }
@@ -202,29 +204,39 @@ namespace BS.LicenseServer.Services
                     
                     foreach (var module in modulesForRemoval) 
                     {
-                        result.LicenseModules.Remove(module);
+                        db.LicenseModules.Remove(module);
                     }
 
-                    var extraInfo = result.LicenseOwner.LicenseOwnerExtraInfoes1.FirstOrDefault();
-                    if (extraInfo == null)
-                        extraInfo = new LicenseOwnerExtraInfo1();
+                    #region Update User - should be in update user service
+                    //result.LicenseOwner = db.LicenseOwners.First(x => x.Id == model.User.Id);
+                    //result.LicenseOwner.Name = model.User.Name;
+                    //result.LicenseOwner.IsCompany = model.User.IsCompany;
+                    //result.LicenseOwner.Email = model.User.Email;
+                    //result.LicenseOwner.Phone = model.User.Phone;
+                    //result.LicenseOwner.ContactPerson = model.User.ConactPerson;
+                    //result.LicenseOwner.CompanyId = model.User.CompanyId;
 
-                    if (model.User is LicenserInfoModel)
-                    {
-                        extraInfo.LicenseOwnerId = result.LicenseOwner.Id;
+                    //var extraInfo = result.LicenseOwner.LicenseOwnerExtraInfoes1.FirstOrDefault();
+                    //if (extraInfo == null)
+                    //    extraInfo = new LicenseOwnerExtraInfo1();
 
-                        var userInfo = (LicenserInfoModel)model.User;
+                    //if (model.User is LicenserInfoModel)
+                    //{
+                    //    extraInfo.LicenseOwnerId = result.LicenseOwner.Id;
 
-                        extraInfo.PostCode = userInfo.PostCode;
-                        extraInfo.PostAddress = userInfo.PostAddress;
-                        extraInfo.RegistrationAddress = userInfo.RegistrationAddress;
-                        extraInfo.MOL = userInfo.MOL;
-                        extraInfo.ContactPerson = userInfo.ConactPerson;
-                        extraInfo.AccountingPerson = userInfo.AccountingPerson;
-                        extraInfo.DDSRegistration = userInfo.DDSRegistration;
+                    //    var userInfo = (LicenserInfoModel)model.User;
 
-                        result.LicenseOwner.LicenseOwnerExtraInfoes1.Add(extraInfo);
-                    }
+                    //    extraInfo.PostCode = userInfo.PostCode;
+                    //    extraInfo.PostAddress = userInfo.PostAddress;
+                    //    extraInfo.RegistrationAddress = userInfo.RegistrationAddress;
+                    //    extraInfo.MOL = userInfo.MOL;
+                    //    extraInfo.ContactPerson = userInfo.ConactPerson;
+                    //    extraInfo.AccountingPerson = userInfo.AccountingPerson;
+                    //    extraInfo.DDSRegistration = userInfo.DDSRegistration;
+
+                    //    result.LicenseOwner.LicenseOwnerExtraInfoes1.Add(extraInfo);
+                    //}
+                    #endregion
 
                     db.SaveChanges();
 
@@ -286,7 +298,7 @@ namespace BS.LicenseServer.Services
                         ValidTo = x.ValidTo,
                         Created = x.CreatedDate,
                         SubscribedTo = x.SubscribedTo,
-                        Type = (LicenseType)(x.Type ?? 1),
+                        Type = (LicenseTypeEnum)(x.Type ?? 1),
                         User = new Common.Models.LicenserInfoModel()
                         {
                             Name = x.LicenseOwner.Name,
@@ -315,8 +327,8 @@ namespace BS.LicenseServer.Services
 
                 result.LicenseActivations.Add(new LicenseActivation() 
                 {
-                    ComputerId =  license.Type == LicenseType.PerComputer ? activationId : string.Empty,
-                    UserId = license.Type == LicenseType.PerUser ? activationId : string.Empty,
+                    ComputerId =  license.Type == LicenseTypeEnum.PerComputer ? activationId : string.Empty,
+                    UserId = license.Type == LicenseTypeEnum.PerUser ? activationId : string.Empty,
                     ComputerCount = 1
                 });
 

@@ -63,7 +63,7 @@ namespace BS.Admin.Web.Controllers
         //[AllowAnonymous]
         public ActionResult Register()
         {
-            if (!RolesManager.IsAdministrator(User.Identity.Name)) 
+            if (!RolesManager.IsAdministrator(User.Identity)) 
             {
                 return RedirectToAction("UnAuthorized", "Error");
             }
@@ -77,7 +77,7 @@ namespace BS.Admin.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model)
         {
-            if (!RolesManager.IsAdministrator(User.Identity.Name))
+            if (!RolesManager.IsAdministrator(User.Identity))
             {
                 return RedirectToAction("UnAuthorized", "Error");
             }
