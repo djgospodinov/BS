@@ -71,22 +71,30 @@ namespace BS.Admin.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    //var result = _service.Create(model);
+                    var result = _userService.Create(model.ToDbModel());
+                    
+                    return SuccessResult();
                 }
-
-                return SuccessResult();
             }
             catch(Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex);
             }
+
+            ViewBag.ErrorMessage = "Възникна грешка";
             return View(model);
         }
 
         [HttpGet]
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
-            return View();
+            var result = _userService.Get(id);
+            if (result != null) 
+            {
+                return View(new CreateLicenseOwnerModel(result));
+            }
+
+            return Content("Потребителят не е намерен!");
         }
 
         [HttpPost]
@@ -96,16 +104,32 @@ namespace BS.Admin.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    //var result = _service.Create(model);
+                    var result = _userService.Update(model.Id, model.ToDbModel());
+                    if (result) 
+                    {
+                        return SuccessResult();
+                    }
                 }
-
-                return SuccessResult();
             }
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex);
             }
+
+            ViewBag.ErrorMessage = "Възникна грешка";
             return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            var result = _userService.Get(id);
+            if (result != null)
+            {
+                return View(new CreateLicenseOwnerModel(result));
+            }
+
+            return Content("Потребителят не е намерен!");
         }
     }
 }

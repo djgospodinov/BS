@@ -14,5 +14,9 @@ namespace BS.Common.Interfaces
         LicenserInfoModel Get(string companyId);
 
         List<LicenserInfoModel> GetAll(bool? isDemo = null);
+
+        bool Create(LicenserInfoModel licenserInfoModel);
+
+        bool Update(int id, LicenserInfoModel licenserInfoModel);
     }
 }

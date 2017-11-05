@@ -194,6 +194,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="DropdownHelper.cs" />
     <Compile Include="Filters\AuthorizeUserAttribute.cs" />
+    <Compile Include="Filters\RequiredIf.cs" />
     <Compile Include="Models\CreateLicenseOwnerModel.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -314,7 +315,6 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -326,13 +326,13 @@
     <Content Include="Views\License\Users.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\License\Details.cshtml" />
-    <Content Include="Views\UserLicense\User.cshtml" />
     <Content Include="Views\License\User.cshtml" />
     <Content Include="Views\UserLicense\Create.cshtml" />
     <Content Include="Views\License\Edit.cshtml" />
     <Content Include="Views\UserLicense\Index.cshtml" />
     <Content Include="Views\Error\UnAuthorized.cshtml" />
     <Content Include="Views\UserLicense\Edit.cshtml" />
+    <Content Include="Views\UserLicense\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

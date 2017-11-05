@@ -1,5 +1,84 @@
-﻿@{
+﻿@model BS.Admin.Web.Models.CreateLicenseOwnerModel
+@{
     ViewBag.Title = "Редакция на потребител";
 }
 
 <h2>@ViewBag.Title</h2>
+<br />
+<br />
+
+<style>
+    label {
+        text-align: right;
+        padding-right: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("Edit", "UserLicense", FormMethod.Post))
+{
+    <span style="color:green">@ViewBag.Message</span>
+    <span style="color:red">@ViewBag.ErrorMessage</span>
+    <table>
+        <tr>
+            <td>@Html.LabelFor(m => m.Id)</td>
+            <td><strong>@Html.Raw(Model.Id)</strong></td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Name)</td>
+            <td>@Html.EditorFor(m => m.Name)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.IsDemo)</td>
+            <td>@Html.CheckBoxFor(m => m.IsDemo, new { @disabled = "disabled" })</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.IsCompany)</td>
+            <td>@Html.EditorFor(m => m.IsCompany)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Phone)</td>
+            <td>@Html.EditorFor(m => m.Phone)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Email)</td>
+            <td>@Html.EditorFor(m => m.Email)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.ContactPerson)</td>
+            <td>@Html.EditorFor(m => m.ContactPerson)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.CompanyId)</td>
+            <td>@Html.EditorFor(m => m.CompanyId)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.EGN)</td>
+            <td>@Html.EditorFor(m => m.EGN)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.PostCode)</td>
+            <td>@Html.EditorFor(m => m.PostCode)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.RegistrationAddress)</td>
+            <td>@Html.EditorFor(m => m.RegistrationAddress)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.PostAddress)</td>
+            <td>@Html.EditorFor(m => m.PostAddress)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.MOL)</td>
+            <td>@Html.EditorFor(m => m.MOL)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.AccountingPerson)</td>
+            <td>@Html.EditorFor(m => m.AccountingPerson)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.DDSRegistration)</td>
+            <td>@Html.EditorFor(m => m.DDSRegistration)</td>
+        </tr>
+    </table>
+    <input type="submit" value="Редакция" />
+}

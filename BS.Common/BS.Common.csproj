@@ -49,6 +49,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="CryptoLogic\AesCryptor.cs" />
     <Compile Include="CryptoLogic\RijndaelCrypto.cs" />
+    <Compile Include="EIKValidator.cs" />
     <Compile Include="Exceptions\LicenseNotFoundException.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces\ILicenseService.cs" />

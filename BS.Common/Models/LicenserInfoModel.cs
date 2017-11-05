@@ -33,9 +33,6 @@ namespace BS.Common.Models
         [Required]
         public string Email { get; set; }
 
-        [DataMember]
-        public string ConactPerson { get; set; }
-
         [Required]
         public string UniqueId
         {
@@ -76,7 +73,7 @@ namespace BS.Common.Models
 
         public override string ToString()
         {
-            var result = string.Format(@"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}, Булстат: {5}", Name, (!IsCompany).ToBgString(), Phone, Email, ConactPerson, CompanyId);
+            var result = string.Format(@"Име: {0}, Физическо лице: {1}, Телефон: {2}, Email: {3}, Лице за контакт: {4}, Булстат: {5}", Name, (!IsCompany).ToBgString(), Phone, Email, ContactPerson, CompanyId);
             if (result.Length > 0)
             {
                 result = result + ' ' + string.Format("Булстат: {0}", CompanyId);

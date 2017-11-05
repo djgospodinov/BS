@@ -43,7 +43,7 @@ namespace BS.LicenseServer.Services
                             IsCompany = result.LicenseOwner.IsCompany,
                             Email = result.LicenseOwner.Email,
                             Phone = result.LicenseOwner.Phone,
-                            ConactPerson = result.LicenseOwner.ContactPerson,
+                            ContactPerson = result.LicenseOwner.ContactPerson,
                             CompanyId = result.LicenseOwner.CompanyId,
                         },
                         Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
@@ -79,7 +79,7 @@ namespace BS.LicenseServer.Services
                             IsCompany = x.LicenseOwner.IsCompany,
                             Email = x.LicenseOwner.Email,
                             Phone = x.LicenseOwner.Phone,
-                            ConactPerson = x.LicenseOwner.ContactPerson,
+                            ContactPerson = x.LicenseOwner.ContactPerson,
                             CompanyId = x.LicenseOwner.CompanyId
                         },
                         Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
@@ -101,7 +101,7 @@ namespace BS.LicenseServer.Services
                                     IsCompany = model.User.IsCompany,
                                     Email = model.User.Email,
                                     Phone = model.User.Phone,
-                                    ContactPerson = model.User.ConactPerson,
+                                    ContactPerson = model.User.ContactPerson,
                                     CompanyId = model.User.CompanyId
                                 };
 
@@ -125,7 +125,7 @@ namespace BS.LicenseServer.Services
                             extraInfo.PostAddress = userInfo.PostAddress;
                             extraInfo.RegistrationAddress = userInfo.RegistrationAddress;
                             extraInfo.MOL = userInfo.MOL;
-                            extraInfo.ContactPerson = userInfo.ConactPerson;
+                            extraInfo.ContactPerson = userInfo.ContactPerson;
                             extraInfo.AccountingPerson = userInfo.AccountingPerson;
                             extraInfo.DDSRegistration = userInfo.DDSRegistration;
 
@@ -305,7 +305,7 @@ namespace BS.LicenseServer.Services
                             IsCompany = x.LicenseOwner.IsCompany,
                             Email = x.LicenseOwner.Email,
                             Phone = x.LicenseOwner.Phone,
-                            ConactPerson = x.LicenseOwner.ContactPerson,
+                            ContactPerson = x.LicenseOwner.ContactPerson,
                             CompanyId = x.LicenseOwner.CompanyId,
                         },
                         Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
