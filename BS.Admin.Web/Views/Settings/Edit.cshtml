@@ -1,0 +1,36 @@
+﻿@model BS.Admin.Web.Models.IpModel
+@{
+    ViewBag.Title = "Редакция";
+}
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("Edit", "Settings", FormMethod.Post))
+{
+    <span style="color:green">@ViewBag.Message</span>
+    <span style="color:red">@ViewBag.ErrorMessage</span>
+
+    <br />
+    <br />
+
+    <table>
+        @if (Model != null && Model.Id > 0)
+        {
+            <tr>
+                <td>@Html.LabelFor(m => m.Id)</td>
+                <td><strong>@Model.Id</strong></td>
+            </tr>
+        }
+
+        <tr>
+            <td>@Html.LabelFor(m => m.IpAddress)</td>
+            <td>@Html.EditorFor(m => m.IpAddress) <span>Формат на въвеждане: <strong>192.168.0.1</strong></span></td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.IsDenied)</td>
+            <td>@Html.CheckBoxFor(m => m.IsDenied)</td>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <input type="submit" value="Редактирай" />
+}

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Web;
 using BS.Common.Models;
 using BS.LicenseServer.Services;
+using BS.LicenseServer;
 
 namespace BS.Api.Extensions
 {
@@ -21,7 +22,7 @@ namespace BS.Api.Extensions
             if (!request.GetRequestContext().IsLocal)
             {
                 var ipAddress = request.GetClientIpAddress();
-                var restritedIps = IpResctrictionService.GetAll();
+                var restritedIps = IpFilterCache.Instance.GetAll();
                 if (restritedIps != null && restritedIps.Any())
                 {
                     if (restritedIps.Any(ip => ipAddress == ip.Address && !ip.Denied))

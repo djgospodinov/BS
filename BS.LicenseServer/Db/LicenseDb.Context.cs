@@ -32,5 +32,7 @@ namespace BS.LicenseServer.Db
         public virtual DbSet<lu_LicenseTypes> lu_LicenseTypes { get; set; }
         public virtual DbSet<LicenseOwnerExtraInfo1> LicenseOwnerExtraInfo1 { get; set; }
         public virtual DbSet<LicenseActivation> LicenseActivations { get; set; }
+        public virtual DbSet<IpFilter> IpFilters { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
     }
 }

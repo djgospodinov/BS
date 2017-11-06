@@ -52,6 +52,7 @@
     <Compile Include="EIKValidator.cs" />
     <Compile Include="Exceptions\LicenseNotFoundException.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Interfaces\IIpFilterService.cs" />
     <Compile Include="Interfaces\ILicenseService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Models\IpFilter.cs" />

@@ -16,12 +16,16 @@ namespace BS.Admin.Web.Models
 
     public class IpModel
     {
+        [Display(Name = "Идентификатор")]
+        public int Id { get; set; }
+
         [Required]
+        [RegularExpression(@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")]
         [Display(Name = "Ip Адрес")]
         public string IpAddress { get; set; }
 
         [Required]
-        [Display(Name = "Забранено")]
+        [Display(Name = "Забранен")]
         public bool IsDenied { get; set; }
     }
 }

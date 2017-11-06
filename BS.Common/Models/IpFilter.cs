@@ -8,6 +8,8 @@ namespace BS.Common.Models
 {
     public class IpAddressElement
     {
+        public int Id { get; set; }
+
         public string Address { get; set; }
 
         /// <summary>

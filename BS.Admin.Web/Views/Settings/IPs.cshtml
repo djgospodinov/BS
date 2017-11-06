@@ -1,5 +1,117 @@
-﻿@{
+﻿@model BS.Admin.Web.Models.IpRestrictionModel
+@{
     ViewBag.Title = "Конфигурации по IP";
 }
 
+<style>
+    .large-width {
+        width: 250px;
+    }
+
+    .small-width {
+        width: 100px;
+    }
+
+    .odd {
+    }
+
+    .even {
+        background: burlywood;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    /*.border-small {
+        border-bottom: 5px solid black;
+    }*/
+</style>
+
 <h2>@ViewBag.Title</h2>
+
+<br />
+
+@using (Html.BeginForm("UseRestriction", "Settings", FormMethod.Post))
+{
+<section>
+    <fieldset style="width:400px">
+        <legend>Настройка</legend>
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.UseIpRestriction)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(m => m.UseIpRestriction) <input type="submit" value="Запази" style="margin-left:50px"/>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</section>
+}
+
+<br />
+
+<section>
+    <fieldset>
+        <legend>Управление на IP</legend>
+
+        <table>
+            <tr>
+                <td colspan="2">@Html.ActionLink("Добави IP", "Add")</td>
+            </tr>
+        </table>
+
+        <table border="1">
+            <tr>
+                <th class="large-width"></th>
+                <th class="large-width">Идентификатор</th>
+                <th class="large-width">IP Адрес</th>
+                <th class="large-width">Забранен</th>
+            </tr>
+
+            @{ var odd = true; }
+            @foreach (var x in Model.IPs)
+            {
+                <tr class="@(odd ? "odd": "even") border-small">
+                    <td class="large-width">
+                        @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
+                        @using (Html.BeginForm("Delete", "Settings", FormMethod.Post, new { id = "deleteIpForm" }))
+                        {
+                            <input type="hidden" value="@x.Id" name="Id" id="Id" />
+                            <a href="javascript:document.getElementById('deleteIpForm').submit()">Изтриване</a>
+                        }
+                    </td>
+                    <td class="large-width">@x.Id</td>
+                    <td class="large-width">@x.IpAddress</td>
+                    <td class="large-width">
+                        @if (x.IsDenied)
+                        {
+                            <input type="checkbox" name="IsDenied" checked="checked" disabled />
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="IsDenied" disabled />
+                        }
+                    </td>
+                </tr>
+                        odd = !odd;
+            }
+        </table>
+
+        <span>Страница: </span>
+        @foreach (var p in (string[])ViewBag.Pages)
+        {
+            if (ViewBag.PageIndex.ToString() == p)
+            {
+                @Html.ActionLink(p.ToString(), "IPs", new { page = p }, new { style = "color: red" })
+            }
+            else
+            {
+                @Html.ActionLink(p.ToString(), "IPs", new { page = p })
+            }
+        }
+
+    </fieldset>
+</section>

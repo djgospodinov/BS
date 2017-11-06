@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LicenseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="IpFilters">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Denied" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="LicenseActivation">
           <Key>
             <PropertyRef Name="Id" />
@@ -82,6 +90,13 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="IsOnline" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UseIPFilter" Type="bit" Nullable="false" />
+        </EntityType>
         <Association Name="FK_LicenseActivation_Licenses">
           <End Role="Licenses" Type="Self.Licenses" Multiplicity="1" />
           <End Role="LicenseActivation" Type="Self.LicenseActivation" Multiplicity="*" />
@@ -143,12 +158,14 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="LicenseDbModelStoreContainer">
+          <EntitySet Name="IpFilters" EntityType="Self.IpFilters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseActivation" EntityType="Self.LicenseActivation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseModules" EntityType="Self.LicenseModules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseOwnerExtraInfo" EntityType="Self.LicenseOwnerExtraInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseOwners" EntityType="Self.LicenseOwners" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Licenses" EntityType="Self.Licenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lu_LicenseModules" EntityType="Self.lu_LicenseModules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lu_LicenseTypes" EntityType="Self.lu_LicenseTypes" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [lu_LicenseTypes].[Id] AS [Id], 
@@ -294,6 +311,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
             <End Role="License" EntitySet="Licenses" />
             <End Role="LicenseActivation" EntitySet="LicenseActivations" />
           </AssociationSet>
+          <EntitySet Name="IpFilters" EntityType="LicenseDbModel.IpFilter" />
+          <EntitySet Name="Settings" EntityType="LicenseDbModel.Setting" />
         </EntityContainer>
         <EntityType Name="lu_LicenseTypes">
           <Key>
@@ -355,6 +374,21 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="IpFilter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Denied" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Setting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UseIPFilter" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -437,6 +471,23 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ComputerId" ColumnName="ComputerId" />
                 <ScalarProperty Name="LicenseId" ColumnName="LicenseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IpFilters">
+            <EntityTypeMapping TypeName="LicenseDbModel.IpFilter">
+              <MappingFragment StoreEntitySet="IpFilters">
+                <ScalarProperty Name="Denied" ColumnName="Denied" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="LicenseDbModel.Setting">
+              <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="UseIPFilter" ColumnName="UseIPFilter" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
