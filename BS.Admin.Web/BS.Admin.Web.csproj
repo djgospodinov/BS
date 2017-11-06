@@ -207,6 +207,7 @@
     <Compile Include="Models\CreateLicenseModel.cs" />
     <Compile Include="Models\IpModel.cs" />
     <Compile Include="Models\SortedLicenseCollection.cs" />
+    <Compile Include="Models\UpdateLicenseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RolesManager.cs" />
   </ItemGroup>

@@ -153,81 +153,55 @@ namespace BS.LicenseServer.Services
             }
         }
 
-        public bool Update(string id, LicenseModel model)
+        public bool Update(string id, UpdateLicenseModel model)
         {
             using (var db = new LicenseDbEntities())
             {
                 var result = db.Licenses.FirstOrDefault(x => x.Id == new Guid(id));
                 if (result != null) 
                 {
-                    result.ValidTo = model.ValidTo;
-                    result.SubscribedTo = model.SubscribedTo;
-                    result.IsDemo = model.IsDemo;
-                    result.Enabled = model.Enabled;
-                    result.Type = (byte)model.Type;
+                    result.ValidTo = model.ValidTo ?? result.ValidTo;
+                    result.SubscribedTo = model.SubscribedTo ?? result.SubscribedTo;
+                    result.IsDemo = model.IsDemo ?? result.IsDemo;
+                    result.Enabled = model.Enabled ?? result.Enabled;
+                    result.Type = (byte?)model.Type ?? result.Type;
 
-                    if (model.User.Id != result.LicenseOwner.Id) 
+                    if (model.UserId != result.LicenseOwner.Id) 
                     {
-                        result.LicenseOwner = db.LicenseOwners.First(x => x.Id == model.User.Id);
+                        result.LicenseOwner = db.LicenseOwners.First(x => x.Id == model.UserId);
                     }
 
-                    var modulesIds = model.Modules.Select(x => (short)x)
+                    #region Modules
+                    if (model.Modules != null) 
+                    {
+                        var modulesIds = model.Modules.Select(x => (short)x)
                         .ToList();
 
-                    foreach (var moduleId in modulesIds)
-                    {
-                        if (result.LicenseModules.FirstOrDefault(x => x.ModuleId == moduleId) == null) 
+                        foreach (var moduleId in modulesIds)
                         {
-                            result.LicenseModules.Add(new LicenseModule()
+                            if (result.LicenseModules.FirstOrDefault(x => x.ModuleId == moduleId) == null)
                             {
-                                ModuleId = moduleId
-                            });
+                                result.LicenseModules.Add(new LicenseModule()
+                                {
+                                    ModuleId = moduleId
+                                });
+                            }
                         }
-                    }
 
-                    var modulesForRemoval = new List<LicenseModule>();
-                    foreach (var module in result.LicenseModules) 
-                    {
-                        if (!modulesIds.Contains(module.ModuleId))
+                        var modulesForRemoval = new List<LicenseModule>();
+                        foreach (var module in result.LicenseModules)
                         {
-                            modulesForRemoval.Add(module);
+                            if (!modulesIds.Contains(module.ModuleId))
+                            {
+                                modulesForRemoval.Add(module);
+                            }
+                        }
+
+                        foreach (var module in modulesForRemoval)
+                        {
+                            db.LicenseModules.Remove(module);
                         }
                     }
-                    
-                    foreach (var module in modulesForRemoval) 
-                    {
-                        db.LicenseModules.Remove(module);
-                    }
-
-                    #region Update User - should be in update user service
-                    //result.LicenseOwner = db.LicenseOwners.First(x => x.Id == model.User.Id);
-                    //result.LicenseOwner.Name = model.User.Name;
-                    //result.LicenseOwner.IsCompany = model.User.IsCompany;
-                    //result.LicenseOwner.Email = model.User.Email;
-                    //result.LicenseOwner.Phone = model.User.Phone;
-                    //result.LicenseOwner.ContactPerson = model.User.ConactPerson;
-                    //result.LicenseOwner.CompanyId = model.User.CompanyId;
-
-                    //var extraInfo = result.LicenseOwner.LicenseOwnerExtraInfoes1.FirstOrDefault();
-                    //if (extraInfo == null)
-                    //    extraInfo = new LicenseOwnerExtraInfo1();
-
-                    //if (model.User is LicenserInfoModel)
-                    //{
-                    //    extraInfo.LicenseOwnerId = result.LicenseOwner.Id;
-
-                    //    var userInfo = (LicenserInfoModel)model.User;
-
-                    //    extraInfo.PostCode = userInfo.PostCode;
-                    //    extraInfo.PostAddress = userInfo.PostAddress;
-                    //    extraInfo.RegistrationAddress = userInfo.RegistrationAddress;
-                    //    extraInfo.MOL = userInfo.MOL;
-                    //    extraInfo.ContactPerson = userInfo.ConactPerson;
-                    //    extraInfo.AccountingPerson = userInfo.AccountingPerson;
-                    //    extraInfo.DDSRegistration = userInfo.DDSRegistration;
-
-                    //    result.LicenseOwner.LicenseOwnerExtraInfoes1.Add(extraInfo);
-                    //}
                     #endregion
 
                     db.SaveChanges();
@@ -256,7 +230,6 @@ namespace BS.LicenseServer.Services
             return false;
         }
 
-
         public string[] CreateMany(List<LicenseModel> model)
         {
             var result = new List<string>();
@@ -273,7 +246,6 @@ namespace BS.LicenseServer.Services
 
             return result.ToArray();
         }
-
 
         public List<LicenseModel> GetAll()
         {
@@ -297,7 +269,6 @@ namespace BS.LicenseServer.Services
                     .ToList();
             }
         }
-
 
         public void Activate(LicenseModel license, string activationId)
         {

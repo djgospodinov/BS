@@ -120,7 +120,7 @@ namespace BS.Admin.Web.Controllers
                     return View(model);
                 }
 
-                if (_licenseService.Update(model.Id.ToString(), model.ToDbModel(_userService)))
+                if (_licenseService.Update(model.Id.ToString(), model.ToUpdateDbModel(_userService)))
                 {
                     return SuccessResult();
                 }

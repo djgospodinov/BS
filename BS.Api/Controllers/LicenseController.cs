@@ -133,7 +133,7 @@ namespace BS.Api.Controllers
         /// <param name="id"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public IHttpActionResult Put(string id, [FromBody]LicenseModel value)
+        public IHttpActionResult Put(string id, [FromBody]UpdateLicenseModel value)
         {
             try
             {

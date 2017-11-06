@@ -19,7 +19,7 @@ namespace BS.Common
 
         string[] CreateMany(List<LicenseModel> model);
 
-        bool Update(string id, LicenseModel model);
+        bool Update(string id, UpdateLicenseModel model);
 
         bool Delete(string id);
 

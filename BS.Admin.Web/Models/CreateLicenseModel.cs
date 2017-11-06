@@ -131,6 +131,53 @@ namespace BS.Admin.Web.Models
             return result;
         }
 
+        public UpdateLicenseModel ToUpdateDbModel(IUserService userService)
+        {
+            var result = new UpdateLicenseModel()
+            {
+                ValidTo = this.ValidTo,
+                SubscribedTo = this.SubscribedTo,
+                IsDemo = this.IsDemo,
+                UserId = this.UserId.Value,
+                Type = (LicenseTypeEnum)this.Type,
+                Enabled = this.Enabled,
+                IsActivated = this.IsActivated,
+            };
+
+            result.Modules = new List<LicenseModulesEnum>();
+            if (this.Accounting)
+            {
+                result.Modules.Add(LicenseModulesEnum.Accounting);
+            }
+
+            if (this.Production)
+            {
+                result.Modules.Add(LicenseModulesEnum.Production);
+            }
+
+            if (this.Warehouse)
+            {
+                result.Modules.Add(LicenseModulesEnum.Warehouse);
+            }
+
+            if (this.TradingSystem)
+            {
+                result.Modules.Add(LicenseModulesEnum.TradingSystem);
+            }
+
+            if (this.Salary)
+            {
+                result.Modules.Add(LicenseModulesEnum.Salary);
+            }
+
+            if (this.Schedules)
+            {
+                result.Modules.Add(LicenseModulesEnum.Schedules);
+            }
+
+            return result;
+        }
+
         public Guid Id { get; set; }
 
         [Required]

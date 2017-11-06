@@ -1,5 +1,6 @@
 ﻿using BS.Common;
 using BS.Common.Exceptions;
+using BS.Common.Models;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -51,18 +52,13 @@ namespace BS.Api.Services
             return id;
         }
 
-        public bool Update(string id, LicenseModel model)
+        public bool Update(string id, UpdateLicenseModel model)
         {
             try 
             {
                 LicenseModel existingModel;
                 if (_licenses.TryGetValue(id, out existingModel)) 
                 {
-                    existingModel.User = model.User;
-                    existingModel.IsDemo = model.IsDemo;
-                    existingModel.Modules = model.Modules;
-                    existingModel.ValidTo = model.ValidTo;
-
                     return true;
                 }
             }
