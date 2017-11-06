@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BS.Admin.Web.Models;
 
 namespace BS.Admin.Web.Controllers
 {
@@ -17,8 +18,18 @@ namespace BS.Admin.Web.Controllers
 
         public ActionResult IPs()
         {
-            return View();
-        }
+            var result = new IpRestrictionModel()
+            {
+                UseIpRestriction = false,
+                IPs = IpResctrictionService.GetAll()
+                    .Select(x => new IpModel()
+                    {
+                        IpAddress = x.Address,
+                        IsDenied = x.Denied
+                    }).ToList()
+        };
 
+            return View(result);
+        }
     }
 }

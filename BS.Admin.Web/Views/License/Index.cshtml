@@ -83,7 +83,7 @@
             @x.IsDemo.ToBgString()
         </td>
         <td class="small-width">
-            @Html.ActionLink(x.User.Name, "User", new { userId = x.User.Id })
+            @Html.ActionLink(x.User.Name, "Details", "UserLicense", new { id = x.User.Id }, null)
         </td>
         <td class="small-width">
             @x.Created.ToShortDateString()

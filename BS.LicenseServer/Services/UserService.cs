@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BS.LicenseServer.Helper;
 
 namespace BS.LicenseServer.Services
 {
@@ -18,7 +19,7 @@ namespace BS.LicenseServer.Services
         {
             using (var db = new LicenseDbEntities())
             {
-                return FromDbModel(db.LicenseOwners.FirstOrDefault(x => x.Id == id));
+                return DbHelper.FromDbModel(db.LicenseOwners.FirstOrDefault(x => x.Id == id));
             }
         }
 
@@ -32,19 +33,9 @@ namespace BS.LicenseServer.Services
             using (var db = new LicenseDbEntities())
             {
                 return db.LicenseOwners
-                    .Where(x => !isDemo.HasValue
-                        || (isDemo.Value && string.IsNullOrEmpty(x.CompanyId)))
-                    .Select(x => new LicenserInfoModel()
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        IsCompany = x.IsCompany,
-                        Email = x.Email,
-                        Phone = x.Phone,
-                        ContactPerson = x.ContactPerson,
-                        CompanyId = x.CompanyId,
-                        IsDemo = string.IsNullOrEmpty(x.CompanyId)
-                    })
+                    .Where(x => !isDemo.HasValue || (isDemo.Value && string.IsNullOrEmpty(x.CompanyId)))
+                    .ToList()
+                    .Select(DbHelper.FromDbModel)
                     .ToList();
             }
         }
@@ -55,7 +46,7 @@ namespace BS.LicenseServer.Services
             {
                 using (var db = new LicenseDbEntities())
                 {
-                    var result = CreateDbModel(model);
+                    var result = DbHelper.CreateDbModel(model);
 
                     db.LicenseOwners.Add(result);
                     db.SaveChanges();
@@ -72,68 +63,6 @@ namespace BS.LicenseServer.Services
             }
         }
 
-        #region Helper Methods
-        private static LicenseOwner CreateDbModel(LicenserInfoModel model, LicenseOwner dbModel = null)
-        {
-            var result = dbModel ?? new LicenseOwner();
-            result.Name = model.Name;
-            result.Phone = model.Phone;
-            result.Email = model.Email;
-            result.ContactPerson = model.ContactPerson;
-            result.CompanyId = model.CompanyId;
-            result.IsCompany = model.IsCompany;
-
-            if (!model.IsDemo)
-            {
-                var extraInfo = result.LicenseOwnerExtraInfoes1.FirstOrDefault();
-                if (extraInfo == null) 
-                {
-                    extraInfo = new LicenseOwnerExtraInfo1();
-                    result.LicenseOwnerExtraInfoes1.Add(extraInfo);
-                }
-
-                extraInfo.AccountingPerson = model.AccountingPerson;
-                extraInfo.ContactPerson = model.ContactPerson;
-                extraInfo.DDSRegistration = model.DDSRegistration;
-                extraInfo.MOL = model.MOL;
-                extraInfo.PostAddress = model.PostAddress;
-                extraInfo.PostCode = model.PostCode;
-                extraInfo.RegistrationAddress = model.RegistrationAddress;
-            }
-            return result;
-        }
-
-        public static LicenserInfoModel FromDbModel(LicenseOwner model)
-        {
-            if (model == null)
-                return null;
-
-            var result = new LicenserInfoModel();
-            result.Id = model.Id;
-            result.Name = model.Name;
-            result.Phone = model.Phone;
-            result.Email = model.Email;
-            result.ContactPerson = model.ContactPerson;
-            result.CompanyId = model.CompanyId;
-            result.IsCompany = model.IsCompany;
-            result.IsDemo = !model.Licenses.Any(x => !x.IsDemo);
-
-            var extraInfo = model.LicenseOwnerExtraInfoes1.FirstOrDefault();
-            if (extraInfo != null)
-            {
-                result.AccountingPerson = extraInfo.AccountingPerson;
-                result.ContactPerson = extraInfo.ContactPerson;
-                result.DDSRegistration = extraInfo.DDSRegistration.HasValue ? extraInfo.DDSRegistration.Value : false;
-                result.MOL = extraInfo.MOL;
-                result.PostAddress = extraInfo.PostAddress;
-                result.PostCode = extraInfo.PostCode.HasValue ? extraInfo.PostCode.Value : 0;
-                result.RegistrationAddress = extraInfo.RegistrationAddress;
-            }
-
-            return result;
-        }
-        #endregion
-
         public bool Update(int id, LicenserInfoModel model)
         {
             try
@@ -143,7 +72,7 @@ namespace BS.LicenseServer.Services
                     var dbModel = db.LicenseOwners.FirstOrDefault(x => x.Id == id);
                     if (dbModel != null) 
                     {
-                        var result = CreateDbModel(model, dbModel);
+                        var result = DbHelper.CreateDbModel(model, dbModel);
 
                         db.SaveChanges();
 

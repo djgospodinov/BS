@@ -51,13 +51,6 @@ namespace BS.Admin.Web.Controllers
             return View(result);
         }
 
-        public ActionResult UserLicense(int id) 
-        {
-            var user = _userService.Get(id);
-
-            return View(user);
-        }
-
         [HttpGet]
         public ActionResult Create() 
         {

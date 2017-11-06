@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
+using BS.Common.Models;
+using BS.LicenseServer.Services;
 
 namespace BS.Api.Extensions
 {
@@ -19,10 +21,10 @@ namespace BS.Api.Extensions
             if (!request.GetRequestContext().IsLocal)
             {
                 var ipAddress = request.GetClientIpAddress();
-                var ipFiltering = ConfigurationManager.GetSection("ipFiltering") as IpFilteringSection;
-                if (ipFiltering != null && ipFiltering.IpAddresses != null && ipFiltering.IpAddresses.Count > 0)
+                var restritedIps = IpResctrictionService.GetAll();
+                if (restritedIps != null && restritedIps.Any())
                 {
-                    if (ipFiltering.IpAddresses.Cast<IpAddressElement>().Any(ip => (ipAddress == ip.Address && !ip.Denied)))
+                    if (restritedIps.Any(ip => ipAddress == ip.Address && !ip.Denied))
                     {
                         return true;
                     }

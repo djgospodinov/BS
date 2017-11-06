@@ -156,3 +156,5 @@ $RECYCLE.BIN/
 .DS_Store
 /packages
 /.vs/config/applicationhost.config
+/BS.Admin.Web/App_Data/ASPNETDB.MDF
+/BS.Admin.Web/App_Data/aspnetdb_log.ldf

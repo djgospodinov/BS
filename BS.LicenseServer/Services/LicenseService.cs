@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using BS.LicenseServer.Helper;
 
 namespace BS.LicenseServer.Services
 {
@@ -36,16 +37,7 @@ namespace BS.LicenseServer.Services
                         Enabled = result.Enabled ?? false,
                         SubscribedTo = result.SubscribedTo,
                         Created = result.CreatedDate,
-                        User = new LicenserInfoModel()
-                        {
-                            Id = result.LicenseOwner.Id,
-                            Name = result.LicenseOwner.Name,
-                            IsCompany = result.LicenseOwner.IsCompany,
-                            Email = result.LicenseOwner.Email,
-                            Phone = result.LicenseOwner.Phone,
-                            ContactPerson = result.LicenseOwner.ContactPerson,
-                            CompanyId = result.LicenseOwner.CompanyId,
-                        },
+                        User = DbHelper.FromDbModel(result.LicenseOwner),
                         Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
                         ActivationId = ((LicenseTypeEnum)result.Type) == LicenseTypeEnum.PerUser 
                             ? activator != null ? activator.UserId : string.Empty
@@ -299,15 +291,7 @@ namespace BS.LicenseServer.Services
                         Created = x.CreatedDate,
                         SubscribedTo = x.SubscribedTo,
                         Type = (LicenseTypeEnum)(x.Type ?? 1),
-                        User = new Common.Models.LicenserInfoModel()
-                        {
-                            Name = x.LicenseOwner.Name,
-                            IsCompany = x.LicenseOwner.IsCompany,
-                            Email = x.LicenseOwner.Email,
-                            Phone = x.LicenseOwner.Phone,
-                            ContactPerson = x.LicenseOwner.ContactPerson,
-                            CompanyId = x.LicenseOwner.CompanyId,
-                        },
+                        User = DbHelper.FromDbModel(x.LicenseOwner),
                         Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
                     })
                     .ToList();
