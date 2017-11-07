@@ -38,7 +38,7 @@ namespace BS.Admin.Web.Controllers
 
             var result = new LicenseSortedCollection() 
             {
-                SortExpression = sort.HasValue ? (int?)sort.Value : null,
+                SortExpression = sort.HasValue ? (int?)sort.Value : (int)SortedLicenseEnum.Created,
                 Asc = asc,
                 Licenses = dbModel
             };

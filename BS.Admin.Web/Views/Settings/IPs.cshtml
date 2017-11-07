@@ -9,7 +9,7 @@
     }
 
     .small-width {
-        width: 100px;
+        width: 150px;
     }
 
     .odd {
@@ -26,6 +26,10 @@
     /*.border-small {
         border-bottom: 5px solid black;
     }*/
+
+    #deleteIpForm {
+        display:inline-block;
+    }
 </style>
 
 <h2>@ViewBag.Title</h2>
@@ -66,9 +70,9 @@
         <table border="1">
             <tr>
                 <th class="large-width"></th>
-                <th class="large-width">Идентификатор</th>
+                <th class="small-width">Идентификатор</th>
                 <th class="large-width">IP Адрес</th>
-                <th class="large-width">Забранен</th>
+                <th class="small-width">Забранен</th>
             </tr>
 
             @{ var odd = true; }
@@ -83,9 +87,9 @@
                             <a href="javascript:document.getElementById('deleteIpForm').submit()">Изтриване</a>
                         }
                     </td>
-                    <td class="large-width">@x.Id</td>
+                    <td class="small-width">@x.Id</td>
                     <td class="large-width">@x.IpAddress</td>
-                    <td class="large-width">
+                    <td class="small-width">
                         @if (x.IsDenied)
                         {
                             <input type="checkbox" name="IsDenied" checked="checked" disabled />

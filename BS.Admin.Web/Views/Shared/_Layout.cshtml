@@ -10,6 +10,21 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
+
+    <style>
+        select {
+        }
+
+        .selectList {
+            width: 220px;
+            height: 25px;
+        }
+
+        .datepicker {
+            width: 220px;
+            height: 22px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -54,7 +69,8 @@
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
         $(function () { // will trigger when the document is ready
-            $('.datepicker').datepicker({ format: 'DD/MM/YYYY HH:mm:ss' }); //Initialise any date pickers
+            debugger;
+            $('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' }); //Initialise any date pickers
         });
     </script>
 </body>

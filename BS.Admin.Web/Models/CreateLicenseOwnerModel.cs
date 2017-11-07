@@ -74,6 +74,7 @@ namespace BS.Admin.Web.Models
 
         [Display(Name = "Email")]
         [Required]
+        [EmailAddressAttribute(ErrorMessage = "Невалиден имейл")]
         public string Email { get; set; }
 
         [Display(Name = "Лице за контакт")]

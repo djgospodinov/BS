@@ -31,6 +31,7 @@ namespace BS.Common.Models
 
         [DataMember]
         [Required]
+        [EmailAddressAttribute(ErrorMessage = "Невалиден имейл")]
         public string Email { get; set; }
 
         [Required]

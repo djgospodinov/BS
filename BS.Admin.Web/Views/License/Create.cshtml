@@ -3,13 +3,6 @@
     ViewBag.Title = "Създаване на лиценз";
 }
 
-<style>
-    select {
-        width: 120px;
-        height: 25px;
-    }
-</style>
-
 <h2>@ViewBag.Title</h2>
 <br />
 <br />
@@ -36,7 +29,7 @@
                 <span>Валиден до:</span>
             </td>
             <td>
-                @Html.TextBoxFor(m => m.ValidTo, new { @Value = Model.ValidTo.ToString("yyyy/MM/dd"), @class = "datepicker" })
+                @Html.TextBoxFor(m => m.ValidTo, new { @Value = Model.ValidTo.ToString("dd/MM/yyyy"), @class = "datepicker" })
             </td>
         </tr>
         <tr>
@@ -44,7 +37,7 @@
                 <span>Абониран до:</span>
             </td>
             <td>
-                @Html.TextBoxFor(m => m.SubscribedTo, new { @Value = Model.SubscribedTo.HasValue ? Model.SubscribedTo.Value.ToString("yyyy/MM/dd") : "", @class = "datepicker" })
+                @Html.TextBoxFor(m => m.SubscribedTo, new { @Value = Model.SubscribedTo.HasValue ? Model.SubscribedTo.Value.ToString("dd/MM/yyyy") : "", @class = "datepicker" })
             </td>
         </tr>
         <tr>
@@ -60,8 +53,7 @@
                 Потребител:
             </td>
             <td>
-                @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers())
-                @Html.ActionLink("Създай потребител", "Create", "UserLicense")
+                @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers(), new { @class = "selectList"})
             </td>
         </tr>
         <tr>
@@ -69,7 +61,7 @@
                 Вид:
             </td>
             <td>
-                @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseTypes())
+                @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseTypes(), new { @class = "selectList" })
             </td>
         </tr>
         <tr>
