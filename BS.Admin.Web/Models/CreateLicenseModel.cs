@@ -13,8 +13,7 @@ namespace BS.Admin.Web.Models
     {
         public CreateLicenseModel() 
         {
-            ValidTo = DateTime.Now.AddMonths(1);
-            SubscribedTo = DateTime.Now.AddMonths(1);
+            
         }
 
         public CreateLicenseModel(BS.Common.LicenseModel model)
@@ -181,10 +180,8 @@ namespace BS.Admin.Web.Models
         public Guid Id { get; set; }
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime ValidTo { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime? SubscribedTo { get; set; }
 
         [Required]

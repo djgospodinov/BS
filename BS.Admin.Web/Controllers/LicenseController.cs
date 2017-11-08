@@ -16,7 +16,7 @@ namespace BS.Admin.Web.Controllers
 {
     public class LicenseController : BaseController
     {
-        public ActionResult Index(int page = 1, SortedLicenseEnum? sort = null, bool asc = true)
+        public ActionResult Index(int page = 1, SortedLicenseEnum? sort = null, bool asc = false)
         {
             int recordsPerPage = 10;
             List<LicenseModel> dbModel = _licenseService.GetAll();
@@ -58,7 +58,11 @@ namespace BS.Admin.Web.Controllers
         [AuthorizeUser(AccessLevel = Const.CreateLicence)]
         public ActionResult Create() 
         {
-            return View(new CreateLicenseModel());
+            return View(new CreateLicenseModel() 
+            { 
+                ValidTo = DateTime.Now.AddMonths(1),
+                SubscribedTo = DateTime.Now.AddMonths(1)
+            });
         }
 
         [HttpPost]

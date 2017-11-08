@@ -10,6 +10,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryui")
+    <script type="text/javascript" src="/scripts/datepicker-bg.js"></script>
 
     <style>
         select {
@@ -69,7 +70,6 @@
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
         $(function () { // will trigger when the document is ready
-            debugger;
             $('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' }); //Initialise any date pickers
         });
     </script>

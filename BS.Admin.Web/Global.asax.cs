@@ -23,6 +23,9 @@ namespace BS.Admin.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            ModelBinders.Binders.Add(typeof(DateTime), new CustomDateBinder());
+            ModelBinders.Binders.Add(typeof(DateTime?), new CustomDateBinder());
         }
     }
 }

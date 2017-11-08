@@ -29,7 +29,7 @@
                 <span>Валиден до:</span>
             </td>
             <td>
-                @Html.TextBoxFor(m => m.ValidTo, new { @Value = Model.ValidTo.ToString("dd/MM/yyyy"), @class = "datepicker" })
+                @Html.TextBoxFor(m => m.ValidTo, new { @Value = Model.ValidTo.ToString(BS.Admin.Web.Const.ShortDatePattern), @class = "datepicker" })
             </td>
         </tr>
         <tr>
@@ -37,7 +37,7 @@
                 <span>Абониран до:</span>
             </td>
             <td>
-                @Html.TextBoxFor(m => m.SubscribedTo, new { @Value = Model.SubscribedTo.HasValue ? Model.SubscribedTo.Value.ToString("dd/MM/yyyy") : "", @class = "datepicker" })
+                @Html.TextBoxFor(m => m.SubscribedTo, new { @Value = Model.SubscribedTo.HasValue ? Model.SubscribedTo.Value.ToString(BS.Admin.Web.Const.ShortDatePattern) : "", @class = "datepicker" })
             </td>
         </tr>
         <tr>

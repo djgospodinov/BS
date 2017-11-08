@@ -20,5 +20,7 @@ namespace BS.Admin.Web
         public const string CreateUserLicence = "CreateUserLicence";
         public const string EditUserLicence = "EditUserLicence";
         #endregion
+
+        public const string ShortDatePattern = "dd/MM/yyyy";
     }
 }
