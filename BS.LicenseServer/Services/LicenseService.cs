@@ -137,8 +137,16 @@ namespace BS.LicenseServer.Services
                         LicenseOwner = owner,
                         LicenseModules = model.Modules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList(),
                         Enabled = !model.IsDemo ? false : true,//the real license should be enabled, afterwards e.g. after it is payed
-                        CreatedDate = DateTime.Now
+                        CreatedDate = DateTime.Now,
                     };
+
+                    if (model.Type == LicenseTypeEnum.PerServer) 
+                    {
+                        result.LicenseActivations.Add(new LicenseActivation() 
+                        {
+                            ComputerCount = model.ComputerCount ?? 5
+                        });
+                    }
 
                     var created = db.Licenses.Add(result);
                     db.SaveChanges();
@@ -261,6 +269,8 @@ namespace BS.LicenseServer.Services
                     {
                         Id = x.Id,
                         IsDemo = x.IsDemo,
+                        Enabled = x.Enabled ?? false,
+                        IsActivated = x.LicenseActivations.Any(),
                         ValidTo = x.ValidTo,
                         Created = x.CreatedDate,
                         SubscribedTo = x.SubscribedTo,

@@ -40,8 +40,10 @@ namespace BS.Common
         [DataMember]
         public bool Enabled { get; set; }
 
-        [DataMember]
         public string ActivationId { get; set; }
+
+        [DataMember]
+        public int? ComputerCount { get; set; }
 
         [DataMember]
         public bool IsActivated { get; set; }

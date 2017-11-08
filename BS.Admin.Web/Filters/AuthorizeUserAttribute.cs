@@ -13,7 +13,7 @@ namespace BS.Admin.Web.Filters
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var isAuthorized = base.AuthorizeCore(httpContext);
+            var isAuthorized = base.AuthorizeCore(httpContext) && httpContext.User.Identity.IsAuthenticated;
             if (!isAuthorized)
             {
                 return false;

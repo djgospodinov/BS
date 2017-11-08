@@ -40,8 +40,21 @@ namespace BS.Api.Controllers
                     return BadRequest(string.Format("No such license with the given Id {0}.", id));
                 }
 
-                if (activator != null) 
+                if (!license.Enabled) 
                 {
+                    return BadRequest(string.Format("LIcense with Id {0} has not been enabled.", id));
+                }
+
+                if (activator != null && license.Type != LicenseTypeEnum.PerServer) 
+                {
+                    if (string.IsNullOrEmpty(license.ActivationId) && activator != null)
+                    {
+                        _service.Activate(license, license.Type == LicenseTypeEnum.PerUser ? activator.UserId :
+                            license.Type == LicenseTypeEnum.PerComputer ? activator.ComputerId : string.Empty);
+
+                        license = _service.Get(id);
+                    }
+
                     if (license.Type == LicenseTypeEnum.PerComputer) 
                     {
                         if (string.IsNullOrEmpty(activator.ComputerId)) 
@@ -66,12 +79,6 @@ namespace BS.Api.Controllers
                         {
                             return BadRequest(string.Format("License is activated for another user Id.", id));
                         }
-                    }
-
-                    if (string.IsNullOrEmpty(license.ActivationId) && activator != null) 
-                    {
-                        _service.Activate(license, license.Type == LicenseTypeEnum.PerUser ? activator.UserId :
-                            license.Type == LicenseTypeEnum.PerComputer ? activator.ComputerId : string.Empty);
                     }
                 }
 
