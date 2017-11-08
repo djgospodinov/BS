@@ -53,13 +53,13 @@
         { 
             <th class="small-width"></th>
         }
-        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Id, asc = Model.IsAscending(1) })</th>
-        <th class="large-width">@Html.ActionLink("Валиден до", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.ValidTo, asc = Model.IsAscending(2) })</th>
-        <th class="small-width">@Html.ActionLink("Демо", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.IsDemo, asc = Model.IsAscending(3) })</th>
-        <th class="small-width">@Html.ActionLink("Потребител", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.User, asc = Model.IsAscending(4) })</th>
-        <th class="small-width">@Html.ActionLink("Създаден на", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Created, asc = Model.IsAscending(5) })</th>
-        <th class="small-width">@Html.ActionLink("Активиран", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Active, asc = Model.IsAscending(6) })</th>
-        <th class="small-width">@Html.ActionLink("Потвърден", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Enabled, asc = Model.IsAscending(7) })</th>
+        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Id, asc = Model.IsAscending(1), page = ViewBag.PageIndex })</th>
+        <th class="large-width">@Html.ActionLink("Валиден до", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.ValidTo, asc = Model.IsAscending(2), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Демо", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.IsDemo, asc = Model.IsAscending(3), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Потребител", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.User, asc = Model.IsAscending(4), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Създаден на", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Created, asc = Model.IsAscending(5), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Активиран", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Active, asc = Model.IsAscending(6), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Потвърден", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Enabled, asc = Model.IsAscending(7), page = ViewBag.PageIndex })</th>
         <th class="large-width">@Html.ActionLink("Вид", "Index", new { sort = BS.Admin.Web.Models.SortedLicenseEnum.Type, asc = Model.IsAscending(8) })</th>
     </tr>
     
@@ -109,11 +109,11 @@
 {
     if (ViewBag.PageIndex.ToString() == p) 
     {
-        @Html.ActionLink(p.ToString(), "Index", new { page = p }, new { style = "color: red" })
+        @Html.ActionLink(p.ToString(), "Index", new { sort = Model.SortExpression, asc = Model.Asc, page = p }, new { style = "color: red" })
     }
     else 
     {
-        @Html.ActionLink(p.ToString(), "Index", new { page = p }) 
+        @Html.ActionLink(p.ToString(), "Index", new { sort = Model.SortExpression, asc = Model.Asc, page = p }) 
     }
 }
 

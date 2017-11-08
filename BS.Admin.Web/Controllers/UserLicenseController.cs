@@ -14,7 +14,7 @@ namespace BS.Admin.Web.Controllers
     public class UserLicenseController : BaseController
     {
         [HttpGet]
-        public ActionResult Index(int page = 1, SortedLicenseEnum? sort = null, bool asc = true)
+        public ActionResult Index(int page = 1, SortedUserLicenseEnum? sort = null, bool asc = true)
         {
             int recordsPerPage = 10;
             List<LicenserInfoModel> dbModel = _userService.GetAll();

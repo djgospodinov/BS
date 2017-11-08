@@ -45,13 +45,13 @@
         {
             <th class="small-width"></th>
         }
-        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.Id, asc = Model.IsAscending(1) })</th>
-        <th class="large-width">@Html.ActionLink("Име", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.Name, asc = Model.IsAscending(2) })</th>
-        <th class="small-width">@Html.ActionLink("Демо", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.IsDemo, asc = Model.IsAscending(3) })</th>
-        <th class="small-width">@Html.ActionLink("Имейл", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.Email, asc = Model.IsAscending(4) })</th>
-        <th class="small-width">@Html.ActionLink("Телефон", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.Phone, asc = Model.IsAscending(5) })</th>
-        <th class="small-width">@Html.ActionLink("Фирма", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.IsCompany, asc = Model.IsAscending(6) })</th>
-        <th class="small-width">@Html.ActionLink("Булстат", "Index", new { SortExpression = BS.Admin.Web.Models.SortedUserLicenseEnum.CompanyId, asc = Model.IsAscending(7) })</th>
+        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.Id, asc = Model.IsAscending(1), page = ViewBag.PageIndex })</th>
+        <th class="large-width">@Html.ActionLink("Име", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.Name, asc = Model.IsAscending(2), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Демо", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.IsDemo, asc = Model.IsAscending(5), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Имейл", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.Email, asc = Model.IsAscending(3), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Телефон", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.Phone, asc = Model.IsAscending(4), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Фирма", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.IsCompany, asc = Model.IsAscending(6), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Булстат", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.CompanyId, asc = Model.IsAscending(7), page = ViewBag.PageIndex })</th>
     </tr>
 
     @{ var odd = true; }
@@ -96,10 +96,10 @@
 {
     if (ViewBag.PageIndex.ToString() == p)
     {
-        @Html.ActionLink(p.ToString(), "Index", new { page = p }, new { style = "color: red" })
+        @Html.ActionLink(p.ToString(), "Index", new { sort = Model.SortExpression, asc = Model.Asc, page = p }, new { style = "color: red" })
     }
     else
     {
-        @Html.ActionLink(p.ToString(), "Index", new { page = p })
+        @Html.ActionLink(p.ToString(), "Index", new { sort = Model.SortExpression, asc = Model.Asc, page = p })
     }
 }

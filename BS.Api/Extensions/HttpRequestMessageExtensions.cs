@@ -8,11 +8,14 @@ using System.Web;
 using BS.Common.Models;
 using BS.LicenseServer.Services;
 using BS.LicenseServer;
+using NLog;
 
 namespace BS.Api.Extensions
 {
     public static class HttpRequestMessageExtensions
     {
+        private static ILogger _logger = LogManager.GetCurrentClassLogger();
+
         private const string HttpContext = "MS_HttpContext";
         private const string RemoteEndpointMessage = "System.ServiceModel.Channels.RemoteEndpointMessageProperty";
         private const string OwinContext = "MS_OwinContext";
@@ -29,6 +32,8 @@ namespace BS.Api.Extensions
                     {
                         return true;
                     }
+
+                    _logger.Log(LogLevel.Info, string.Format("Ip {0} is either not listed or blacklisted,Access to api denied.", ipAddress));
 
                     return false;
                 }

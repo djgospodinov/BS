@@ -41,6 +41,7 @@ namespace BS.Admin.Web.Controllers
             {
                 SortExpression = sort.HasValue ? (int?)sort.Value : (int)SortedLicenseEnum.Created,
                 Asc = asc,
+                Page = page,
                 Licenses = dbModel
             };
             result.Sort();
