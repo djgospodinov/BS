@@ -29,7 +29,6 @@
     <h2>Вход</h2>
 </hgroup>
 
-<section id="loginForm">
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -56,7 +55,6 @@
     </fieldset>
  
 }
-</section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

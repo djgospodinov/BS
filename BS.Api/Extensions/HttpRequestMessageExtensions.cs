@@ -24,18 +24,27 @@ namespace BS.Api.Extensions
         {
             if (!request.GetRequestContext().IsLocal)
             {
-                var ipAddress = request.GetClientIpAddress();
-                var restritedIps = IpFilterCache.Instance.GetAll();
-                if (restritedIps != null && restritedIps.Any())
+                try
                 {
-                    if (restritedIps.Any(ip => ipAddress == ip.Address && !ip.Denied))
+                    var restritedIps = IpFilterCache.Instance.GetAll()
+                        .ToList();
+
+                    if (restritedIps != null && restritedIps.Any())
                     {
-                        return true;
+                        string val = request.GetClientIpAddress();
+                        if (restritedIps.Any(x => x.Address == val && !x.Denied))
+                        {
+                            return true;
+                        }
+
+                        _logger.Log(LogLevel.Info, string.Format("Ip {0} is either not listed or blacklisted,Access to api denied.", val));
+
+                        return false;
                     }
-
-                    _logger.Log(LogLevel.Info, string.Format("Ip {0} is either not listed or blacklisted,Access to api denied.", ipAddress));
-
-                    return false;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log(LogLevel.Error, ex);
                 }
             }
 

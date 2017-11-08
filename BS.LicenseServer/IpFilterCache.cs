@@ -43,7 +43,7 @@ namespace BS.LicenseServer
                         _ipAddress = db.IpFilters.Select(x => new IpAddressElement()
                         {
                             Id = x.Id,
-                            Address = x.Address,
+                            Address = x.Address.Trim(),
                             Denied = x.Denied
                         }).ToList();
                     }
