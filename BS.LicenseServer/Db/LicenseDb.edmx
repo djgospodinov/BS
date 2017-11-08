@@ -57,6 +57,7 @@
           <Property Name="ContactPerson" Type="nvarchar(max)" Nullable="false" />
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="CompanyId" Type="nchar" MaxLength="15" />
+          <Property Name="EGN" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Licenses">
           <Key>
@@ -222,6 +223,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="CompanyId" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LicenseOwnerExtraInfoes1" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwner" ToRole="LicenseOwnerExtraInfo1" />
+          <Property Name="EGN" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -407,7 +409,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
     <EntitySetMapping Name="LicenseOwners">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.LicenseOwner)">
         <MappingFragment StoreEntitySet="LicenseOwners">
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="EGN" ColumnName="EGN" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Email" ColumnName="Email" />

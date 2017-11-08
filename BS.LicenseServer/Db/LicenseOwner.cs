@@ -28,6 +28,7 @@ namespace BS.LicenseServer.Db
         public string ContactPerson { get; set; }
         public string CompanyId { get; set; }
         public string UserId { get; set; }
+        public string EGN { get; set; }
     
         public virtual ICollection<License> Licenses { get; set; }
         public virtual ICollection<LicenseOwnerExtraInfo1> LicenseOwnerExtraInfoes1 { get; set; }

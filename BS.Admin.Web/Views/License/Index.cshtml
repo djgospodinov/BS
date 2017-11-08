@@ -69,8 +69,9 @@
     <tr class="@(odd ? "odd": "even") border-small">
         @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
         {
-        <td class="small-width">
+        <td class="large-width">
             @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
+            @Html.ActionLink("Код", "LicenseCode", new { id = x.Id }, new { @class = "dialog" })
         </td>
         }
         <td class="large-width" style="width: 350px">
@@ -115,3 +116,24 @@
         @Html.ActionLink(p.ToString(), "Index", new { page = p }) 
     }
 }
+
+<script type="text/javascript">
+    $(function () {
+        $('a.dialog').click(function () {
+            var url = $(this).attr('href');
+            var dialog = $('<div style="display:none"></div>').appendTo('body');
+            dialog.load(url, {},
+                function (responseText, textStatus, XMLHttpRequest) {
+                    dialog.dialog({
+                        title: 'Лицензен код',
+                        width: 700,
+                        height: 200,
+                        close: function (event, ui) {
+                            dialog.remove();
+                        }
+                    });
+                });
+            return false;
+        });
+    });
+</script>

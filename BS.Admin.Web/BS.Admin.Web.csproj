@@ -206,6 +206,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateLicenseModel.cs" />
     <Compile Include="Models\IpModel.cs" />
+    <Compile Include="Models\LIcenseCodeModel.cs" />
     <Compile Include="Models\SortedLicenseCollection.cs" />
     <Compile Include="Models\UpdateLicenseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -337,6 +338,7 @@
     <Content Include="Views\UserLicense\Details.cshtml" />
     <Content Include="Views\Settings\Add.cshtml" />
     <Content Include="Views\Settings\Edit.cshtml" />
+    <Content Include="Views\License\LicenseCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

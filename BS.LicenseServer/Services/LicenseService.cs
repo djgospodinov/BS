@@ -86,7 +86,8 @@ namespace BS.LicenseServer.Services
             {
                 using (var db = new LicenseDbEntities())
                 {
-                    var owner = db.LicenseOwners.FirstOrDefault(x => x.CompanyId != null && x.CompanyId == model.User.CompanyId)
+                    var owner = db.LicenseOwners.FirstOrDefault(x => (x.IsCompany && x.CompanyId == model.User.CompanyId)
+                        || x.EGN == model.User.EGN)
                                 ?? new LicenseOwner()
                                 {
                                     Name = model.User.Name,
@@ -94,7 +95,8 @@ namespace BS.LicenseServer.Services
                                     Email = model.User.Email,
                                     Phone = model.User.Phone,
                                     ContactPerson = model.User.ContactPerson,
-                                    CompanyId = model.User.CompanyId
+                                    CompanyId = model.User.CompanyId,
+                                    EGN = model.User.EGN
                                 };
 
                     var extraInfo = owner.LicenseOwnerExtraInfoes1 != null ? owner.LicenseOwnerExtraInfoes1.FirstOrDefault() : null;

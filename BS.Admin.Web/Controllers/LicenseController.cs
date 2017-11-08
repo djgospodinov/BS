@@ -10,6 +10,7 @@ using BS.Admin.Web.Models;
 using BS.Common.Interfaces;
 using BS.Admin.Web.Filters;
 using NLog;
+using Newtonsoft.Json;
 
 namespace BS.Admin.Web.Controllers
 {
@@ -147,6 +148,30 @@ namespace BS.Admin.Web.Controllers
                         return View(result);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, ex);
+            }
+
+            return Content("License not found");
+        }
+
+        public ActionResult LicenseCode(string id)
+        {
+            try
+            {
+                var license = _licenseService.Get(id.ToString());
+
+                var serializedObject = JsonConvert.SerializeObject(license, new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
+
+                return PartialView(new LIcenseCodeModel() 
+                {
+                    Code = StringCipher.Encrypt(serializedObject, Constants.PublicKey)
+                });
             }
             catch (Exception ex)
             {

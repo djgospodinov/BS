@@ -30,3 +30,27 @@ GO
 ALTER TABLE [dbo].[LicenseActivation] CHECK CONSTRAINT [FK_LicenseActivation_Licenses]
 GO
 
+--------------------------------------------8/112017
+CREATE TABLE [dbo].[IpFilters](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Address] [nchar](50) NOT NULL,
+	[Denied] [bit] NOT NULL,
+ CONSTRAINT [PK_IpRestrictions] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Settings](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[UseIPFilter] [bit] NOT NULL,
+ CONSTRAINT [PK_Settings] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE LicenseOwners ADD EGN nchar(10) NULL
+GO
