@@ -54,3 +54,31 @@ GO
 
 ALTER TABLE LicenseOwners ADD EGN nchar(10) NULL
 GO
+
+----------------------------11.15.2017
+ ALTER TABLE [dbo].[lu_LicenseModules] ADD Code NVARCHAR(20) NULL;
+  GO
+
+  UPDATE [dbo].[lu_LicenseModules]
+  SET Code = 'Accounting'
+  WHERE Id = 1
+
+  UPDATE [dbo].[lu_LicenseModules]
+  SET Code = 'Production'
+  WHERE Id = 2
+
+  UPDATE [dbo].[lu_LicenseModules]
+  SET Code = 'Warehouse'
+  WHERE Id = 3
+
+  UPDATE [dbo].[lu_LicenseModules]
+  SET Code = 'TradingSystem'
+  WHERE Id = 4
+
+  UPDATE [dbo].[lu_LicenseModules]
+  SET Code = 'Salary'
+  WHERE Id = 5
+
+  UPDATE [dbo].[lu_LicenseModules]
+  SET Code = 'Schedules'
+  WHERE Id = 6

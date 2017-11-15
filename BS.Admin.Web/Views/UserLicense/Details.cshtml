@@ -67,6 +67,15 @@
         <td>@Html.EditorFor(m => m.DDSRegistration)</td>
     </tr>
 </table>
+<br />
+<br />
+
+<fieldset>
+    <legend><strong>Лицензи на потребител</strong></legend>
+    <br />
+    <br />
+    @{ Html.RenderAction("Search", "License", new { userId = Model.Id }); }
+</fieldset>
 
 <script>
     $(function () { // will trigger when the document is ready

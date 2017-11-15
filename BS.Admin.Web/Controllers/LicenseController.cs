@@ -16,42 +16,56 @@ namespace BS.Admin.Web.Controllers
 {
     public class LicenseController : BaseController
     {
-        public ActionResult Index(int page = 1, SortedLicenseEnum? sort = null, bool asc = false)
+        [HttpGet]
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Search(int page = 1, SortedLicenseEnum? sort = null, bool asc = false, 
+            int? userId = null) 
         {
             int recordsPerPage = 10;
             List<LicenseModel> dbModel = _licenseService.GetAll();
 
-            int records = dbModel.Count;
-            int pageCount = (records + recordsPerPage - 1) / recordsPerPage;
-            if (page > pageCount) 
-            {
-                page = 1;
-            }
-
-            var pages = new string[pageCount];
-            int index = 0;
-            foreach(var p in pages)
-            {
-                pages[index++] = index.ToString();
-            }
-            ViewBag.Pages = pages;
-            ViewBag.PageIndex = page;
-
-            var result = new LicenseSortedCollection() 
+            var result = new LicenseSortedCollection()
             {
                 SortExpression = sort.HasValue ? (int?)sort.Value : (int)SortedLicenseEnum.Created,
                 Asc = asc,
-                Page = page,
-                Licenses = dbModel
+                Licenses = dbModel.Where(x => !userId.HasValue || x.User.Id == userId)
+                    .ToList()
             };
             result.Sort();
+
+            result.Page = Paging(page, recordsPerPage, result.Licenses.Count);
 
             result.Licenses = result.Licenses
                 .Skip((page - 1) * recordsPerPage)
                 .Take(recordsPerPage)
                 .ToList();
 
-            return View(result);
+            ViewBag.ShowUser = !userId.HasValue;
+
+            return PartialView("_Licenses", result);
+        }
+
+        private int Paging(int page, int recordsPerPage, int recordsCount)
+        {
+            int pageCount = (recordsCount + recordsPerPage - 1) / recordsPerPage;
+            if (page > pageCount)
+            {
+                page = 1;
+            }
+
+            var pages = new string[pageCount];
+            int index = 0;
+            foreach (var p in pages)
+            {
+                pages[index++] = index.ToString();
+            }
+            ViewBag.Pages = pages;
+            ViewBag.PageIndex = page;
+            return page;
         }
 
         [HttpGet]
