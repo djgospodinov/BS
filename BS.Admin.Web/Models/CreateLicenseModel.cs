@@ -29,32 +29,32 @@ namespace BS.Admin.Web.Models
             IsActivated = model.IsActivated;
             Created = model.Created;
 
-            if (model.Modules.Contains(LicenseModulesEnum.Accounting))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.Accounting))
             {
                 this.Accounting = true;
             }
 
-            if (model.Modules.Contains(LicenseModulesEnum.Production))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.Production))
             {
                 this.Production = true;
             }
 
-            if (model.Modules.Contains(LicenseModulesEnum.Warehouse))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.Warehouse))
             {
                 this.Warehouse = true;
             }
 
-            if (model.Modules.Contains(LicenseModulesEnum.TradingSystem))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.TradingSystem))
             {
                 this.TradingSystem = true;
             }
 
-            if (model.Modules.Contains(LicenseModulesEnum.Salary))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.Salary))
             {
                 this.Salary = true;
             }
 
-            if (model.Modules.Contains(LicenseModulesEnum.Schedules))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.Schedules))
             {
                 this.Schedules = true;
             }
@@ -96,35 +96,35 @@ namespace BS.Admin.Web.Models
                 Created = this.Created
             };
 
-            result.Modules = new List<LicenseModulesEnum>();
+            result.LicenseModules = new List<LicenseModulesEnum>();
             if (this.Accounting) 
             {
-                result.Modules.Add(LicenseModulesEnum.Accounting);
+                result.LicenseModules.Add(LicenseModulesEnum.Accounting);
             }
 
             if (this.Production)
             {
-                result.Modules.Add(LicenseModulesEnum.Production);
+                result.LicenseModules.Add(LicenseModulesEnum.Production);
             }
 
             if (this.Warehouse)
             {
-                result.Modules.Add(LicenseModulesEnum.Warehouse);
+                result.LicenseModules.Add(LicenseModulesEnum.Warehouse);
             }
 
             if (this.TradingSystem)
             {
-                result.Modules.Add(LicenseModulesEnum.TradingSystem);
+                result.LicenseModules.Add(LicenseModulesEnum.TradingSystem);
             }
 
             if (this.Salary)
             {
-                result.Modules.Add(LicenseModulesEnum.Salary);
+                result.LicenseModules.Add(LicenseModulesEnum.Salary);
             }
 
             if (this.Schedules)
             {
-                result.Modules.Add(LicenseModulesEnum.Schedules);
+                result.LicenseModules.Add(LicenseModulesEnum.Schedules);
             }
 
             return result;

@@ -67,7 +67,7 @@ namespace BS.Common.Models
         public string AccountingPerson { get; set; }
 
         [DataMember]
-        public bool DDSRegistration { get; set; }
+        public bool VATRegistration { get; set; }
         
         [DataMember]
         public string ContactPerson { get; set; }

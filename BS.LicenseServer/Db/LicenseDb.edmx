@@ -72,12 +72,23 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="SubscribedTo" Type="datetime" />
         </EntityType>
+        <EntityType Name="LicensesLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LicenseId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="IsDemo" Type="bit" Nullable="false" />
+          <Property Name="Changes" Type="ntext" Nullable="false" />
+        </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -165,6 +176,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySet Name="LicenseOwnerExtraInfo" EntityType="Self.LicenseOwnerExtraInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseOwners" EntityType="Self.LicenseOwners" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Licenses" EntityType="Self.Licenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LicensesLog" EntityType="Self.LicensesLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lu_LicenseModules" EntityType="Self.lu_LicenseModules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lu_LicenseTypes" EntityType="Self.lu_LicenseTypes" store:Type="Tables" store:Schema="dbo">
@@ -248,6 +260,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="Id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="LicenseModules" Relationship="Self.FK_lu_LicenseModulesLicenseModules" FromRole="lu_LicenseModules" ToRole="LicenseModules" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_LicenseModulesLicenses">
           <End Role="Licenses" Type="Self.License" Multiplicity="1" />
@@ -315,6 +328,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           </AssociationSet>
           <EntitySet Name="IpFilters" EntityType="LicenseDbModel.IpFilter" />
           <EntitySet Name="Settings" EntityType="LicenseDbModel.Setting" />
+          <EntitySet Name="LicensesLogs" EntityType="LicenseDbModel.LicensesLog" />
         </EntityContainer>
         <EntityType Name="lu_LicenseTypes">
           <Key>
@@ -391,6 +405,16 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UseIPFilter" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="LicensesLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LicenseId" Type="Guid" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsDemo" Type="Boolean" Nullable="false" />
+          <Property Name="Changes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -438,7 +462,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
     <EntitySetMapping Name="lu_LicenseModules">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.lu_LicenseModules)">
         <MappingFragment StoreEntitySet="lu_LicenseModules">
-          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -491,6 +516,17 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
             <EntityTypeMapping TypeName="LicenseDbModel.Setting">
               <MappingFragment StoreEntitySet="Settings">
                 <ScalarProperty Name="UseIPFilter" ColumnName="UseIPFilter" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LicensesLogs">
+            <EntityTypeMapping TypeName="LicenseDbModel.LicensesLog">
+              <MappingFragment StoreEntitySet="LicensesLog">
+                <ScalarProperty Name="Changes" ColumnName="Changes" />
+                <ScalarProperty Name="IsDemo" ColumnName="IsDemo" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="LicenseId" ColumnName="LicenseId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

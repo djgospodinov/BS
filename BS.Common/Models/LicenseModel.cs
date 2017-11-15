@@ -29,9 +29,19 @@ namespace BS.Common
         [Required]
         public LicenserInfoModel User { get; set; }
 
-        [DataMember]
         [Required]
-        public List<LicenseModulesEnum> Modules { get; set; }
+        public List<LicenseModulesEnum> LicenseModules { get; set; }
+
+        [DataMember]
+        public List<string> Modules 
+        { 
+            get 
+            {
+                return LicenseModules != null
+                    ? LicenseModules.Select(x => x.ToString()).ToList()
+                    : new List<string>();
+            } 
+        }
 
         [DataMember]
         [Required]
@@ -53,7 +63,7 @@ namespace BS.Common
 
         public override string ToString()
         {
-            var modules = Modules != null ? Modules.Select(x => x.Description()) : new string[0];
+            var modules = LicenseModules != null ? LicenseModules.Select(x => x.Description()) : new string[0];
             return string.Format(
 @"Идентификатор: {0},
 Валиден до: {1},

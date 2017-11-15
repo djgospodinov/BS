@@ -34,5 +34,6 @@ namespace BS.LicenseServer.Db
         public virtual DbSet<LicenseActivation> LicenseActivations { get; set; }
         public virtual DbSet<IpFilter> IpFilters { get; set; }
         public virtual DbSet<Setting> Settings { get; set; }
+        public virtual DbSet<LicensesLog> LicensesLogs { get; set; }
     }
 }

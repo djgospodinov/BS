@@ -38,7 +38,7 @@ namespace BS.LicenseServer.Services
                         SubscribedTo = result.SubscribedTo,
                         Created = result.CreatedDate,
                         User = DbHelper.FromDbModel(result.LicenseOwner),
-                        Modules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
+                        LicenseModules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
                         ActivationId = ((LicenseTypeEnum)result.Type) == LicenseTypeEnum.PerUser 
                             ? activator != null ? activator.UserId : string.Empty
                             : activator != null ? activator.ComputerId : string.Empty,
@@ -74,7 +74,7 @@ namespace BS.LicenseServer.Services
                             ContactPerson = x.LicenseOwner.ContactPerson,
                             CompanyId = x.LicenseOwner.CompanyId
                         },
-                        Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
+                        LicenseModules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
                     })
                     .ToList();
             }
@@ -121,7 +121,7 @@ namespace BS.LicenseServer.Services
                             extraInfo.MOL = userInfo.MOL;
                             extraInfo.ContactPerson = userInfo.ContactPerson;
                             extraInfo.AccountingPerson = userInfo.AccountingPerson;
-                            extraInfo.DDSRegistration = userInfo.DDSRegistration;
+                            extraInfo.DDSRegistration = userInfo.VATRegistration;
 
                             owner.LicenseOwnerExtraInfoes1.Add(extraInfo);
                         }
@@ -135,7 +135,7 @@ namespace BS.LicenseServer.Services
                         SubscribedTo = !model.IsDemo ? model.SubscribedTo : DateTime.Now.AddMonths(1),
                         Type = !model.IsDemo ? (byte)model.Type : (byte)LicenseTypeEnum.PerComputer,
                         LicenseOwner = owner,
-                        LicenseModules = model.Modules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList(),
+                        LicenseModules = model.LicenseModules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList(),
                         Enabled = !model.IsDemo ? false : true,//the real license should be enabled, afterwards e.g. after it is payed
                         CreatedDate = DateTime.Now,
                     };
@@ -276,7 +276,7 @@ namespace BS.LicenseServer.Services
                         SubscribedTo = x.SubscribedTo,
                         Type = (LicenseTypeEnum)(x.Type ?? 1),
                         User = DbHelper.FromDbModel(x.LicenseOwner),
-                        Modules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
+                        LicenseModules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
                     })
                     .ToList();
             }

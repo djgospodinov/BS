@@ -32,7 +32,7 @@ namespace BS.Client
         {
             Authenticate();
 
-            txtRequest.Text = 
+            txtRequest.Text =
 @"{  
    ""ValidTo"":""2018-01-20"",
    ""SubscribedTo"":""2018-01-20"",
@@ -43,7 +43,7 @@ namespace BS.Client
       ""PostAddress"":null,
       ""MOL"":null,
       ""AccountingPerson"":null,
-      ""DDSRegistration"":false,
+      ""VatRegistration"":false,
       ""Name"":""1"",
       ""IsCompany"":true,
       ""Phone"":""1"",
@@ -53,7 +53,12 @@ namespace BS.Client
       ""EGN"":null
    },
    ""Modules"":[  
-      1, 2, 3, 4 , 5 ,6
+      Accounting,
+        Production,
+        Warehouse,
+        TradingSystem,
+        Salary,
+        Schedules
    ],
    ""Type"":1,
    ""Enabled"":false

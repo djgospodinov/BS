@@ -29,7 +29,7 @@ namespace BS.Admin.Web.Models
             PostAddress  = model.PostAddress;
             MOL  = model.MOL;
             AccountingPerson = model.AccountingPerson; 
-            DDSRegistration  = model.DDSRegistration;
+            VATRegistration  = model.VATRegistration;
             ContactPerson = model.ContactPerson;
         }
 
@@ -50,7 +50,7 @@ namespace BS.Admin.Web.Models
                 PostAddress = this.PostAddress,
                 MOL = this.MOL,
                 AccountingPerson = this.AccountingPerson,
-                DDSRegistration = this.DDSRegistration,
+                VATRegistration = this.VATRegistration,
                 ContactPerson = this.ContactPerson
             };
         }
@@ -107,6 +107,6 @@ namespace BS.Admin.Web.Models
         public string AccountingPerson { get; set; }
 
         [Display(Name = "С регистрация по ДДС")]
-        public bool DDSRegistration { get; set; }
+        public bool VATRegistration { get; set; }
     }
 }

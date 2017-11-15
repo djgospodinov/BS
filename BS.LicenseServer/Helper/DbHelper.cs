@@ -32,7 +32,7 @@ namespace BS.LicenseServer.Helper
 
                 extraInfo.AccountingPerson = model.AccountingPerson;
                 extraInfo.ContactPerson = model.ContactPerson;
-                extraInfo.DDSRegistration = model.DDSRegistration;
+                extraInfo.DDSRegistration = model.VATRegistration;
                 extraInfo.MOL = model.MOL;
                 extraInfo.PostAddress = model.PostAddress;
                 extraInfo.PostCode = model.PostCode;
@@ -62,7 +62,7 @@ namespace BS.LicenseServer.Helper
             {
                 result.AccountingPerson = extraInfo.AccountingPerson;
                 result.ContactPerson = extraInfo.ContactPerson;
-                result.DDSRegistration = extraInfo.DDSRegistration ?? false;
+                result.VATRegistration = extraInfo.DDSRegistration ?? false;
                 result.MOL = extraInfo.MOL;
                 result.PostAddress = extraInfo.PostAddress;
                 result.PostCode = extraInfo.PostCode ?? 0;
