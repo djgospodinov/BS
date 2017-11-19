@@ -1,0 +1,67 @@
+﻿@using BS.Common
+@model BS.Admin.Web.Models.UserLicenseSortedCollection
+
+<table border="1">
+    <tr class="border-small">
+        @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
+        {
+            <th class="small-width"></th>
+        }
+        <th class="large-width">@Html.ActionLink("Идентификатор", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.Id, asc = Model.IsAscending(1), page = ViewBag.PageIndex })</th>
+        <th class="large-width">@Html.ActionLink("Име", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.Name, asc = Model.IsAscending(2), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Демо", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.IsDemo, asc = Model.IsAscending(5), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Имейл", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.Email, asc = Model.IsAscending(3), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Телефон", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.Phone, asc = Model.IsAscending(4), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Фирма", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.IsCompany, asc = Model.IsAscending(6), page = ViewBag.PageIndex })</th>
+        <th class="small-width">@Html.ActionLink("Булстат", "Index", new { sort = BS.Admin.Web.Models.SortedUserLicenseEnum.CompanyId, asc = Model.IsAscending(7), page = ViewBag.PageIndex })</th>
+    </tr>
+
+    @{ var odd = true; }
+    @foreach (var x in Model.Users)
+    {
+        <tr class="@(odd ? "odd": "even") border-small">
+            @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
+            {
+                <td class="small-width">
+                    @Html.ActionLink("Редакция", "Edit", new { id = x.Id })
+                </td>
+            }
+            <td class="small-width">
+                @Html.ActionLink(x.Id.ToString(), "Details", new { id = x.Id, title = x.Id.ToString() })
+            </td>
+            <td class="large-width" style="width: 350px">
+                @x.Name
+            </td>
+            <td class="large-width">
+                @x.IsDemo.ToBgString()
+            </td>
+            <td class="small-width">
+                @x.Email
+            </td>
+            <td class="small-width">
+                @x.Phone
+            </td>
+            <td class="small-width">
+                @x.IsCompany.ToBgString()
+            </td>
+            <td class="small-width">
+                @x.CompanyId
+            </td>
+        </tr>
+            odd = !odd;
+    }
+</table>
+<br />
+
+<span>Страница: </span>
+@foreach (var p in (string[])ViewBag.Pages)
+{
+    if (ViewBag.PageIndex.ToString() == p)
+    {
+        @Html.ActionLink(p.ToString(), "Index", new { sort = Model.SortExpression, asc = Model.Asc, page = p }, new { style = "color: red" })
+    }
+    else
+    {
+        @Html.ActionLink(p.ToString(), "Index", new { sort = Model.SortExpression, asc = Model.Asc, page = p })
+    }
+}
