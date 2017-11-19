@@ -17,7 +17,7 @@ Responce:
       "MOL":null,//МОЛ
       "ContactPerson":null,//Лице за контакт
       "AccountingPerson":null,//Счетоводител
-      "DDSRegistration":false,//има ли регистрация по ДДС
+      "VatRegistration":false,//има ли регистрация по ДДС
       "Name":"test123",//име на лицето закупил лиценза/може и фирма
       "IsCompany":true,//дали е фирма
       "Phone":"123",//телефон

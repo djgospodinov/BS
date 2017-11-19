@@ -121,7 +121,7 @@ namespace BS.LicenseServer.Services
                             extraInfo.MOL = userInfo.MOL;
                             extraInfo.ContactPerson = userInfo.ContactPerson;
                             extraInfo.AccountingPerson = userInfo.AccountingPerson;
-                            extraInfo.DDSRegistration = userInfo.VATRegistration;
+                            extraInfo.VatRegistration = userInfo.VATRegistration;
 
                             owner.LicenseOwnerExtraInfoes1.Add(extraInfo);
                         }

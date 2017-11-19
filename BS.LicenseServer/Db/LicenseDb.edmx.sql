@@ -108,7 +108,7 @@ CREATE TABLE [dbo].[LicenseOwnerExtraInfoes] (
     [MOL] nvarchar(250)  NULL,
     [ContactPerson] nvarchar(250)  NULL,
     [AccountingPerson] nvarchar(250)  NULL,
-    [DDSRegistration] bit  NULL
+    [VatRegistration] bit  NULL
 );
 GO
 

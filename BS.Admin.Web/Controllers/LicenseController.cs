@@ -49,6 +49,48 @@ namespace BS.Admin.Web.Controllers
             return PartialView("_Licenses", result);
         }
 
+        [HttpGet]
+        public JsonResult Data(LicenseFilterGridModel filter) 
+        {
+            var dbModel = _licenseService.GetAll()
+                .Where(x => !filter.Тype.HasValue || (int)x.Type == filter.Тype.Value)
+                .ToList();
+            
+            if (!string.IsNullOrEmpty(filter.SortField)) 
+            {
+                bool asc = filter.SortOrder.ToLower() == "asc";
+                switch (filter.SortField.ToLower()) 
+                {
+                    case "type":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.Type).ToList()
+                            : dbModel.OrderByDescending(x => x.Type).ToList();
+                        break;
+                }
+            }
+
+            var data = dbModel
+                .Skip((filter.PageIndex - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .Select(x => new 
+            {
+                Id = string.Format("{0}...", x.Id.ToString().Substring(0, 20)),
+                ValidTo = x.ValidTo.ToShortDateString(),
+                Demo = x.IsDemo,
+                Created = x.Created.ToShortDateString(),
+                Activated = x.IsActivated,
+                Enabled = x.Enabled,
+                Type = (int)x.Type
+            }).ToArray();
+
+            var dataResult = new {
+                data = data,
+                itemsCount = dbModel.Count
+            };
+
+            return Json(dataResult, JsonRequestBehavior.AllowGet);
+        }
+
         private int Paging(int page, int recordsPerPage, int recordsCount)
         {
             int pageCount = (recordsCount + recordsPerPage - 1) / recordsPerPage;

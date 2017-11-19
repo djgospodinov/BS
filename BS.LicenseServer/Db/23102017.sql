@@ -104,3 +104,6 @@ CREATE TABLE [dbo].[LicensesLog](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
+-------------------------------11/15/2017
+EXEC sp_RENAME 'LicenseOwnerExtraInfo.DDSRegistration' , 'VatRegistration', 'COLUMN'
+GO

@@ -22,7 +22,7 @@ namespace BS.LicenseServer.Db
         public string MOL { get; set; }
         public string ContactPerson { get; set; }
         public string AccountingPerson { get; set; }
-        public Nullable<bool> DDSRegistration { get; set; }
+        public Nullable<bool> VatRegistration { get; set; }
     
         public virtual LicenseOwner LicenseOwner { get; set; }
     }

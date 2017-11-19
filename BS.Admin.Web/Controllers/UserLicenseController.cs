@@ -35,11 +35,22 @@ namespace BS.Admin.Web.Controllers
             ViewBag.Pages = pages;
             ViewBag.PageIndex = page;
 
+            var model = new UserIndexModel()
+            {
+                Real = GetUsers(page, sort, asc, recordsPerPage, dbModel, false),
+                Demo = GetUsers(page, sort, asc, recordsPerPage, dbModel, true)
+            };
+
+            return View(model);
+        }
+
+        private static UserLicenseSortedCollection GetUsers(int page, SortedUserLicenseEnum? sort, bool asc, int recordsPerPage, List<LicenserInfoModel> dbModel, bool demo)
+        {
             var result = new UserLicenseSortedCollection()
             {
                 SortExpression = sort.HasValue ? (int?)sort.Value : null,
                 Asc = asc,
-                Users = dbModel
+                Users = dbModel.Where(x => x.IsDemo == demo).ToList()
             };
             result.Sort();
 
@@ -48,7 +59,7 @@ namespace BS.Admin.Web.Controllers
                 .Take(recordsPerPage)
                 .ToList();
 
-            return View(result);
+            return result;
         }
 
         [HttpGet]

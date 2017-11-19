@@ -43,7 +43,7 @@
           <Property Name="MOL" Type="nvarchar" MaxLength="250" />
           <Property Name="ContactPerson" Type="nvarchar" MaxLength="250" />
           <Property Name="AccountingPerson" Type="nvarchar" MaxLength="250" />
-          <Property Name="DDSRegistration" Type="bit" />
+          <Property Name="VatRegistration" Type="bit" />
         </EntityType>
         <EntityType Name="LicenseOwners">
           <Key>
@@ -352,8 +352,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="MOL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ContactPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="AccountingPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="DDSRegistration" Type="Boolean" />
           <NavigationProperty Name="LicenseOwner" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwnerExtraInfo1" ToRole="LicenseOwner" />
+          <Property Name="VatRegistration" Type="Boolean" />
         </EntityType>
         <Association Name="FK_LicenseOwnerExtraInfo_LicenseOwners1">
           <End Type="LicenseDbModel.LicenseOwner" Role="LicenseOwner" Multiplicity="1" />
@@ -480,7 +480,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySetMapping Name="LicenseOwnerExtraInfo1">
             <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwnerExtraInfo1">
               <MappingFragment StoreEntitySet="LicenseOwnerExtraInfo">
-                <ScalarProperty Name="DDSRegistration" ColumnName="DDSRegistration" />
+                <ScalarProperty Name="VatRegistration" ColumnName="VatRegistration" />
                 <ScalarProperty Name="AccountingPerson" ColumnName="AccountingPerson" />
                 <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
                 <ScalarProperty Name="MOL" ColumnName="MOL" />
