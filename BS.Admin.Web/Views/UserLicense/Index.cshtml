@@ -41,14 +41,14 @@
 
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-1">Демо потребители</a></li>
-        <li><a href="#tabs-2">Реални потребители</a></li>
+        <li><a href="#tabs-1">Демо</a></li>
+        <li><a href="#tabs-2">Реални</a></li>
     </ul>
     <div id="tabs-1">
-        @{ Html.RenderPartial("UsersTable", Model.Demo); }
+        @{ Html.RenderPartial("UsersTable", new BS.Admin.Web.Models.UserLicenseGridModel() { Demo = true }); }
     </div>
     <div id="tabs-2">
-        @{ Html.RenderPartial("UsersTable", Model.Real); }
+        @{ Html.RenderPartial("UsersTable", new BS.Admin.Web.Models.UserLicenseGridModel() { Demo = false }); }
     </div>
 </div>
 

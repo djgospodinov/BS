@@ -271,8 +271,6 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
-    <Content Include="Scripts\jquery-ui-1.8.24.js" />
-    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -338,8 +336,7 @@
     <Content Include="Views\Settings\Add.cshtml" />
     <Content Include="Views\Settings\Edit.cshtml" />
     <Content Include="Views\License\LicenseCode.cshtml" />
-    <Content Include="Views\License\_Licenses.cshtml" />
-    <Content Include="Views\UserLicense\UserLicense.cshtml" />
+    <Content Include="Views\Shared\_Licenses.cshtml" />
     <Content Include="Views\UserLicense\UsersTable.cshtml" />
   </ItemGroup>
   <ItemGroup>

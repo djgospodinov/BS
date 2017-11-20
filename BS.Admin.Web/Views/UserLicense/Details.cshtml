@@ -74,7 +74,11 @@
     <legend><strong>Лицензи на потребител</strong></legend>
     <br />
     <br />
-    @{ Html.RenderAction("Search", "License", new { userId = Model.Id }); }
+    @{ Html.RenderPartial("_Licenses", new BS.Admin.Web.Models.LicenseGridModel() 
+       {
+           UserId = Model.Id
+       }); 
+    }
 </fieldset>
 
 <script>

@@ -1,18 +1,14 @@
-﻿@model BS.Admin.Web.Models.UserLicenseGridModel
+﻿@model BS.Admin.Web.Models.LicenseGridModel
 
-@if (Model.Demo) 
-{
-    <div id="jsGrid-demo"></div>
-}
-else 
-{
-    <div id="jsGrid-real"></div>
-}
+<div id="jsGrid"></div>
 
 <script>
     //https://github.com/tabalinas/jsgrid
+    var userId = '@Model.UserId';    
     var loadUrl = "/license/data";
-
+    if (userId != ''){
+        loadUrl += "?userId=" + userId;
+    }
 
     $(function () {
         var countries = [
@@ -22,7 +18,7 @@ else
             { Name: "За Сървър", Id: 3 },
         ];
 
-        $("#jsGrid-@Model.DemoId").jsGrid({
+        $("#jsGrid").jsGrid({
             height: "550px",
             width: "100%",
 
@@ -62,7 +58,7 @@ else
                 {
                     type: "control",
                     itemTemplate: function (value, item) {
-                        if (item.EditUrl != undefined && item.EditUrl != null && item.EditUrl != '') {
+                        if (item.EditUrl != undefined && item.EditUrl != null && item.EditUrl != ''){
                             var $link = $("<a class='jsgrid-button jsgrid-edit-button' style='padding-left:15px' href=" + item.EditUrl + ">");
                             return $("<div>").append($link);
                         }

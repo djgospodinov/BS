@@ -22,38 +22,23 @@ namespace BS.Admin.Web.Controllers
             return View();
         }
 
-        public ActionResult Search(int page = 1, SortedLicenseEnum? sort = null, bool asc = false, 
-            int? userId = null) 
-        {
-            int recordsPerPage = 10;
-            List<LicenseModel> dbModel = _licenseService.GetAll();
-
-            var result = new LicenseSortedCollection()
-            {
-                SortExpression = sort.HasValue ? (int?)sort.Value : (int)SortedLicenseEnum.Created,
-                Asc = asc,
-                Licenses = dbModel.Where(x => !userId.HasValue || x.User.Id == userId)
-                    .ToList()
-            };
-            result.Sort();
-
-            result.Page = Paging(page, recordsPerPage, result.Licenses.Count);
-
-            result.Licenses = result.Licenses
-                .Skip((page - 1) * recordsPerPage)
-                .Take(recordsPerPage)
-                .ToList();
-
-            ViewBag.ShowUser = !userId.HasValue;
-
-            return PartialView("_Licenses", result);
-        }
-
         [HttpGet]
         public JsonResult Data(LicenseFilterGridModel filter) 
         {
-            var dbModel = _licenseService.GetAll()
-                .Where(x => !filter.Тype.HasValue || (int)x.Type == filter.Тype.Value)
+            var dbModel = _licenseService.GetAll();
+
+            if (filter.UserId.HasValue) 
+            {
+                dbModel = dbModel.Where(x => x.User.Id == filter.UserId.Value)
+                    .ToList();
+            }
+
+            dbModel = dbModel
+                .Where(x => (filter.Type == 0 || (int)x.Type == filter.Type)
+                    && (!filter.Demo.HasValue || x.IsDemo == filter.Demo.Value)
+                    && (!filter.Activated.HasValue || x.IsActivated == filter.Activated.Value)
+                    && (!filter.Enabled.HasValue || x.Enabled == filter.Enabled.Value)
+                    && (string.IsNullOrEmpty(filter.UserName) || x.User.Name.StartsWith(filter.UserName, StringComparison.CurrentCultureIgnoreCase)))
                 .ToList();
             
             if (!string.IsNullOrEmpty(filter.SortField)) 
@@ -77,10 +62,14 @@ namespace BS.Admin.Web.Controllers
                 Id = string.Format("{0}...", x.Id.ToString().Substring(0, 20)),
                 ValidTo = x.ValidTo.ToShortDateString(),
                 Demo = x.IsDemo,
+                UserName = x.User.Name,
                 Created = x.Created.ToShortDateString(),
                 Activated = x.IsActivated,
                 Enabled = x.Enabled,
-                Type = (int)x.Type
+                Type = (int)x.Type,
+                EditUrl = RolesManager.CanCreateLicense(User.Identity) 
+                    ? string.Format("../License/Edit/{0}", x.Id)
+                    : string.Empty
             }).ToArray();
 
             var dataResult = new {
@@ -89,25 +78,6 @@ namespace BS.Admin.Web.Controllers
             };
 
             return Json(dataResult, JsonRequestBehavior.AllowGet);
-        }
-
-        private int Paging(int page, int recordsPerPage, int recordsCount)
-        {
-            int pageCount = (recordsCount + recordsPerPage - 1) / recordsPerPage;
-            if (page > pageCount)
-            {
-                page = 1;
-            }
-
-            var pages = new string[pageCount];
-            int index = 0;
-            foreach (var p in pages)
-            {
-                pages[index++] = index.ToString();
-            }
-            ViewBag.Pages = pages;
-            ViewBag.PageIndex = page;
-            return page;
         }
 
         [HttpGet]
@@ -196,6 +166,7 @@ namespace BS.Admin.Web.Controllers
             return View(new CreateLicenseModel(model));
         }
 
+        [HttpGet]
         public ActionResult Details(string id)
         {
             try
@@ -218,6 +189,7 @@ namespace BS.Admin.Web.Controllers
             return Content("License not found");
         }
 
+        [HttpGet]
         public ActionResult LicenseCode(string id)
         {
             try

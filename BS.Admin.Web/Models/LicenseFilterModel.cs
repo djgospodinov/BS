@@ -5,6 +5,23 @@ using System.Web;
 
 namespace BS.Admin.Web.Models
 {
+    public class LicenseGridModel 
+    {
+        public int? UserId { get; set; }
+    }
+
+    public class UserLicenseGridModel
+    {
+        public bool Demo { get; set; }
+        public string DemoId 
+        { 
+            get 
+            {
+                return Demo ? "demo" : "real";
+            } 
+        }
+    }
+
     public class FilterGridModelBase
     {
         public int PageIndex { get; set; }
@@ -17,8 +34,12 @@ namespace BS.Admin.Web.Models
     public class LicenseFilterGridModel : FilterGridModelBase
     {
         public string Id { get; set; }
-        
-        public int? Тype  { get; set; }
+        public int? UserId { get; set; }
+        public string UserName { get; set; }
+        public bool? Demo { get; set; }
+        public bool? Activated { get; set; }
+        public bool? Enabled { get; set; }
+        public int Type { get; set; }
         
     }
 }
