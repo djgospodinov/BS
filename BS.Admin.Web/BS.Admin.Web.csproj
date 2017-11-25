@@ -188,12 +188,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Const.cs" />
+    <Compile Include="Logic\Const.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
-    <Compile Include="CustomDateBinder.cs" />
-    <Compile Include="DropdownHelper.cs" />
+    <Compile Include="Logic\CustomDateBinder.cs" />
+    <Compile Include="Logic\DropdownHelper.cs" />
     <Compile Include="Filters\AuthorizeUserAttribute.cs" />
     <Compile Include="Filters\RequiredIf.cs" />
     <Compile Include="Models\CreateLicenseOwnerModel.cs" />
@@ -209,11 +209,9 @@
     <Compile Include="Models\IpModel.cs" />
     <Compile Include="Models\LIcenseCodeModel.cs" />
     <Compile Include="Models\LicenseFilterModel.cs" />
-    <Compile Include="Models\SortedLicenseCollection.cs" />
     <Compile Include="Models\UpdateLicenseModel.cs" />
-    <Compile Include="Models\UserIndexModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RolesManager.cs" />
+    <Compile Include="Logic\RolesManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\accordion.css" />

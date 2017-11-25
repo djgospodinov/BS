@@ -80,6 +80,8 @@ namespace BS.Admin.Web.Controllers
             return Json(dataResult, JsonRequestBehavior.AllowGet);
         }
 
+        #region CRUD
+
         [HttpGet]
         [AuthorizeUser(AccessLevel = Const.CreateLicence)]
         public ActionResult Create() 
@@ -213,5 +215,7 @@ namespace BS.Admin.Web.Controllers
 
             return Content("License not found");
         }
+
+        #endregion
     }
 }

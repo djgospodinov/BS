@@ -1,4 +1,5 @@
-﻿using BS.Admin.Web.Models;
+﻿using BS.Admin.Web.Filters;
+using BS.Admin.Web.Models;
 using BS.Common.Interfaces;
 using BS.Common.Models;
 using BS.LicenseServer.Services;
@@ -19,6 +20,7 @@ namespace BS.Admin.Web.Controllers
             return View();
         }
 
+        [HttpGet]
         public JsonResult Data(UserLicenseFilterGridModel filter)
         {
             var dbModel = _userService.GetAll()
@@ -69,13 +71,17 @@ namespace BS.Admin.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        #region CRUD
+
         [HttpGet]
+        [AuthorizeUser(AccessLevel = Const.CreateUserLicence)]
         public ActionResult Create() 
         {
             return View();
         }
 
         [HttpPost]
+        [AuthorizeUser(AccessLevel = Const.CreateUserLicence)]
         public ActionResult Create(CreateLicenseOwnerModel model)
         {
             try 
@@ -97,6 +103,7 @@ namespace BS.Admin.Web.Controllers
         }
 
         [HttpGet]
+        [AuthorizeUser(AccessLevel = Const.EditUserLicence)]
         public ActionResult Edit(int id)
         {
             var result = _userService.Get(id);
@@ -109,6 +116,7 @@ namespace BS.Admin.Web.Controllers
         }
 
         [HttpPost]
+        [AuthorizeUser(AccessLevel = Const.EditUserLicence)]
         public ActionResult Edit(CreateLicenseOwnerModel model)
         {
             try
@@ -142,5 +150,7 @@ namespace BS.Admin.Web.Controllers
 
             return Content("Потребителят не е намерен!");
         }
+
+        #endregion
     }
 }
