@@ -13,7 +13,7 @@ namespace BS.Common.Interfaces
 
         LicenserInfoModel Get(string companyId);
 
-        List<LicenserInfoModel> GetAll(bool? isDemo = null);
+        List<LicenserInfoModel> GetAll();
 
         bool Create(LicenserInfoModel licenserInfoModel);
 

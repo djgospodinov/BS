@@ -13,6 +13,15 @@ namespace BS.Admin.Web.Models
     public class UserLicenseGridModel
     {
         public bool Demo { get; set; }
+
+        public string Url 
+        {
+            get 
+            {
+                return string.Format("{0}?demo={1}", "UserLicense/Data", Demo);
+            } 
+        }
+
         public string DemoId 
         { 
             get 
@@ -41,5 +50,15 @@ namespace BS.Admin.Web.Models
         public bool? Enabled { get; set; }
         public int Type { get; set; }
         
+    }
+
+    public class UserLicenseFilterGridModel : FilterGridModelBase
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public bool? Company { get; set; }
+        public string CompanyId { get; set; }
+        public bool Demo { get; set; }
     }
 }

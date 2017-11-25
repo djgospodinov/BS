@@ -30,7 +30,7 @@ namespace BS.Admin.Web
 
         public static IEnumerable<SelectListItem> LicenseUsers()
         {
-            var result = new SelectList(_service.GetAll().Select(x => new { Id = x.Id, Name = string.Format(string.Format("{0}({1})", x.Name, x.UniqueId)) }), "Id", "Name");
+            var result = new SelectList(_service.GetAll().ToList().Select(x => new { Id = x.Id, Name = string.Format(string.Format("{0}({1})", x.Name, x.UniqueId)) }), "Id", "Name");
 
             return result;
         }

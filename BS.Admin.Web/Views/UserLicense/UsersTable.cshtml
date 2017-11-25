@@ -11,8 +11,6 @@ else
 
 <script>
     //https://github.com/tabalinas/jsgrid
-    var loadUrl = "/license/data";
-
 
     $(function () {
         var countries = [
@@ -41,9 +39,10 @@ else
             deleteConfirm: "Do you really want to delete client?",
             controller: {
                 loadData: function (filter) {
+                    debugger;
                     return $.ajax({
                         type: "GET",
-                        url: loadUrl,
+                        url: "@Model.Url",
                         data: filter,
                         dataType: "json"
                     });
@@ -52,13 +51,11 @@ else
 
             fields: [
                 { name: "Id", title: "Идентификатор", type: "text", width: 150, filtering: false },
-                { name: "ValidTo", title: "Валиден до", type: "text", width: 100 },
-                { name: "Demo", title: "Демо", type: "checkbox", width: 50 },
-                { name: "UserName", title: "Потребител", type: "text", width: 150 },
-                { name: "Created", title: "Създаден на", type: "text", width: 100 },
-                { name: "Activated", title: "Активиран", type: "checkbox", width: 60 },
-                { name: "Enabled", title: "Потвърден", type: "checkbox", width: 60 },
-                { name: "Type", title: "Вид", type: "select", items: countries, valueField: "Id", textField: "Name" },
+                { name: "Name", title: "Име", type: "text", width: 150 },
+                { name: "Email", title: "Имейл", type: "text", width: 150 },
+                { name: "Phone", title: "Телефон", type: "text", width: 100 },
+                { name: "Company", title: "Фирма", type: "checkbox", width: 60 },
+                { name: "CompanyId", title: "Булстат", type: "text", width: 60 },
                 {
                     type: "control",
                     itemTemplate: function (value, item) {

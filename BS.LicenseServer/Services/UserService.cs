@@ -28,13 +28,11 @@ namespace BS.LicenseServer.Services
             throw new NotImplementedException();
         }
 
-        public List<Common.Models.LicenserInfoModel> GetAll(bool? isDemo = null)
+        public List<Common.Models.LicenserInfoModel> GetAll()
         {
             using (var db = new LicenseDbEntities())
             {
                 return db.LicenseOwners
-                    .Where(x => !isDemo.HasValue || (isDemo.Value && string.IsNullOrEmpty(x.CompanyId)))
-                    .ToList()
                     .Select(DbHelper.FromDbModel)
                     .ToList();
             }

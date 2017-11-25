@@ -14,52 +14,59 @@ namespace BS.Admin.Web.Controllers
     public class UserLicenseController : BaseController
     {
         [HttpGet]
-        public ActionResult Index(int page = 1, SortedUserLicenseEnum? sort = null, bool asc = true)
+        public ActionResult Index()
         {
-            int recordsPerPage = 10;
-            List<LicenserInfoModel> dbModel = _userService.GetAll();
-
-            int records = dbModel.Count;
-            int pageCount = (records + recordsPerPage - 1) / recordsPerPage;
-            if (page > pageCount)
-            {
-                page = 1;
-            }
-
-            var pages = new string[pageCount];
-            int index = 0;
-            foreach (var p in pages)
-            {
-                pages[index++] = index.ToString();
-            }
-            ViewBag.Pages = pages;
-            ViewBag.PageIndex = page;
-
-            var model = new UserIndexModel()
-            {
-                Real = GetUsers(page, sort, asc, recordsPerPage, dbModel, false),
-                Demo = GetUsers(page, sort, asc, recordsPerPage, dbModel, true)
-            };
-
-            return View(model);
+            return View();
         }
 
-        private static UserLicenseSortedCollection GetUsers(int page, SortedUserLicenseEnum? sort, bool asc, int recordsPerPage, List<LicenserInfoModel> dbModel, bool demo)
+        public JsonResult Data(UserLicenseFilterGridModel filter)
         {
-            var result = new UserLicenseSortedCollection()
-            {
-                SortExpression = sort.HasValue ? (int?)sort.Value : null,
-                Asc = asc,
-                Users = dbModel.Where(x => x.IsDemo == demo).ToList()
-            };
-            result.Sort();
-
-            result.Users = result.Users
-                .Skip((page - 1) * recordsPerPage)
-                .Take(recordsPerPage)
+            var dbModel = _userService.GetAll()
+                .Where(x => x.IsDemo == filter.Demo
+                    && (string.IsNullOrEmpty(filter.Name) || x.Name.StartsWith(filter.Name, StringComparison.CurrentCultureIgnoreCase))
+                    && (string.IsNullOrEmpty(filter.Email) || x.Email.StartsWith(filter.Email, StringComparison.CurrentCultureIgnoreCase))
+                    && (string.IsNullOrEmpty(filter.Phone) || x.Phone.StartsWith(filter.Phone, StringComparison.CurrentCultureIgnoreCase))
+                    && (string.IsNullOrEmpty(filter.CompanyId) || x.CompanyId.StartsWith(filter.CompanyId, StringComparison.CurrentCultureIgnoreCase))
+                    && (!filter.Company.HasValue || x.IsCompany == filter.Company))
                 .ToList();
 
-            return result;
+            if (!string.IsNullOrEmpty(filter.SortField))
+            {
+                bool asc = filter.SortOrder.ToLower() == "asc";
+                switch (filter.SortField.ToLower())
+                {
+                    case "name":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.Name).ToList()
+                            : dbModel.OrderByDescending(x => x.Name).ToList();
+                        break;
+                }
+            }
+
+            var data = dbModel
+                .Skip((filter.PageIndex - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .Select(x => new 
+                { 
+                    Id = x.Id,
+                    Name = x.Name,
+                    Demo = x.IsDemo,
+                    Email = x.Email,
+                    Phone = x.Phone,
+                    Company = x.IsCompany,
+                    CompanyId = x.CompanyId,
+                    EditUrl = RolesManager.CanCreateLicense(User.Identity)
+                        ? string.Format("../UserLicense/Edit/{0}", x.Id)
+                        : string.Empty
+                })
+                .ToList();
+
+            var result = new {
+                data = data,
+                itemsCount = dbModel.Count
+            };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
