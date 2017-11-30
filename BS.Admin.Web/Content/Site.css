@@ -94,8 +94,8 @@ h5, h6 {
 /* main layout
 ----------------------------------------------------------*/
 .content-wrapper {
-    margin: 0 auto;
-    max-width: 1500px;
+    margin-left:50px;
+    margin-right:50px;
 }
 
 #body {

@@ -57,6 +57,7 @@ namespace BS.Admin.Web.Controllers
                     Phone = x.Phone,
                     Company = x.IsCompany,
                     CompanyId = x.CompanyId,
+                    DetailUrl = string.Format("../UserLicense/Details/{0}", x.Id),
                     EditUrl = RolesManager.CanCreateLicense(User.Identity)
                         ? string.Format("../UserLicense/Edit/{0}", x.Id)
                         : string.Empty

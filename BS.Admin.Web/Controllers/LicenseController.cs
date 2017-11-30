@@ -40,18 +40,55 @@ namespace BS.Admin.Web.Controllers
                     && (!filter.Enabled.HasValue || x.Enabled == filter.Enabled.Value)
                     && (string.IsNullOrEmpty(filter.UserName) || x.User.Name.StartsWith(filter.UserName, StringComparison.CurrentCultureIgnoreCase)))
                 .ToList();
-            
-            if (!string.IsNullOrEmpty(filter.SortField)) 
+
+            if (!string.IsNullOrEmpty(filter.SortField))
             {
-                bool asc = filter.SortOrder.ToLower() == "asc";
-                switch (filter.SortField.ToLower()) 
+                #region Sort
+                bool asc = filter.SortOrder.ToUpper() == "ASC";
+                switch (filter.SortField.ToUpper())
                 {
-                    case "type":
+                    case "ID":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.Id).ToList()
+                            : dbModel.OrderByDescending(x => x.Id).ToList();
+                        break;
+                    case "VALIDTO":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.ValidTo).ToList()
+                            : dbModel.OrderByDescending(x => x.ValidTo).ToList();
+                        break;
+                    case "DEMO":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.IsDemo).ToList()
+                            : dbModel.OrderByDescending(x => x.IsDemo).ToList();
+                        break;
+                    case "USERNAME":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.User.Name).ToList()
+                            : dbModel.OrderByDescending(x => x.User.Name).ToList();
+                        break;
+                    case "CREATED":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.Created).ToList()
+                            : dbModel.OrderByDescending(x => x.Created).ToList();
+                        break;
+                    case "ACTIVATED":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.IsActivated).ToList()
+                            : dbModel.OrderByDescending(x => x.IsActivated).ToList();
+                        break;
+                    case "ENABLED":
+                        dbModel = asc
+                            ? dbModel.OrderBy(x => x.Enabled).ToList()
+                            : dbModel.OrderByDescending(x => x.Enabled).ToList();
+                        break;
+                    case "TYPE":
                         dbModel = asc
                             ? dbModel.OrderBy(x => x.Type).ToList()
                             : dbModel.OrderByDescending(x => x.Type).ToList();
                         break;
                 }
+                #endregion
             }
 
             var data = dbModel

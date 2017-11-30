@@ -39,7 +39,6 @@ else
             deleteConfirm: "Do you really want to delete client?",
             controller: {
                 loadData: function (filter) {
-                    debugger;
                     return $.ajax({
                         type: "GET",
                         url: "@Model.Url",
@@ -59,12 +58,19 @@ else
                 {
                     type: "control",
                     itemTemplate: function (value, item) {
+                        var div = $("<div>");
+
                         if (item.EditUrl != undefined && item.EditUrl != null && item.EditUrl != '') {
                             var $link = $("<a class='jsgrid-button jsgrid-edit-button' style='padding-left:15px' href=" + item.EditUrl + ">");
-                            return $("<div>").append($link);
+                            div.append($link);
                         }
 
-                        return "";
+                        if (item.DetailUrl != undefined && item.DetailUrl != null && item.DetailUrl != '') {
+                            var $link = $("<a class='jsgrid-button jsgrid-update-button' style='padding-left:15px' href=" + item.DetailUrl + ">");
+                            div.append($link);
+                        }
+
+                        return div;
                     }
                 }
             ]

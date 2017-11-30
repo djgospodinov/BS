@@ -1,34 +1,4 @@
-﻿@using BS.Common
-@model BS.Admin.Web.Models.UserIndexModel
-@{
-    ViewBag.Title = "Потребители на лицензи";
-}
-
-<style>
-    .large-width {
-        width: 200px;
-    }
-
-    .small-width {
-        width: 100px;
-    }
-
-    .odd {
-    }
-
-    .even {
-        background: burlywood;
-    }
-
-    td {
-        text-align: center;
-    }
-
-    /*.border-small {
-        border-bottom: 5px solid black;
-    }*/
-</style>
-<h2>@ViewBag.Title</h2>
+﻿<h2>Потребители на лицензи</h2>
 <br />
 @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
 {

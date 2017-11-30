@@ -12,43 +12,79 @@
     @Scripts.Render("~/bundles/jqueryui")
     <script type="text/javascript" src="/scripts/datepicker-bg.js"></script>
     
-    <link type="text/css" rel="stylesheet" href="/scripts/jsgrid.min.css" />
-    <link type="text/css" rel="stylesheet" href="/scripts/jsgrid-theme.min.css" />
+    <link type="text/css" rel="stylesheet" href="/content/jsgrid.min.css" />
+    <link type="text/css" rel="stylesheet" href="/content/jsgrid-theme.min.css" />
 
     <script type="text/javascript" src="/scripts/jsgrid.js"></script>
+    <script type="text/javascript" src="/scripts/jsgrid-bg.js"></script>
 
-    <style>
-        select {
-        }
+    <script type="text/javascript">
+        (function (jsGrid, $, undefined) {
 
-        .selectList {
-            width: 250px;
-            height: 25px;
-        }
+            var Field = jsGrid.Field;
 
-        .datepicker {
-            width: 220px;
-            height: 22px;
-        }
-        .large-width {
-            width: 200px;
-        }
+            function DateField(config) {
+                Field.call(this, config);
+            }
 
-        .small-width {
-            width: 100px;
-        }
+            DateField.prototype = new Field({
 
-        .odd {
-        }
+                autosearch: true,
+                readOnly: false,
 
-        .even {
-            background: burlywood;
-        }
+                filterTemplate: function () {
+                    //if (!this.filtering)
+                    //    return "";
 
-        td {
-            text-align: center;
-        }
-    </style>
+                    //var el = $("<input>").datepicker({ dateFormat: 'dd/mm/yy' });
+
+                    //return $('<div>')
+                    //    .append(el)
+                    //    .append('<span>-</span>')
+                    //    .append(el);
+                    return '';
+                },
+
+                insertTemplate: function () {
+                    if (!this.inserting)
+                        return "";
+
+                    return this.insertControl = this._createTextBox();
+                },
+
+                editTemplate: function (value) {
+                    if (!this.editing)
+                        return this.itemTemplate.apply(this, arguments);
+
+                    var $result = this.editControl = this._createTextBox();
+                    $result.val(value);
+                    return $result;
+                },
+
+                filterValue: function () {
+                    //return this.filterControl.val();
+                    return null;
+                },
+
+                insertValue: function () {
+                    return this.insertControl.val();
+                },
+
+                editValue: function () {
+                    return this.editControl.val();
+                },
+
+                _createTextBox: function () {
+                    return $("<input>").attr("type", "text")
+                        .prop("readonly", !!this.readOnly);
+                }
+            });
+
+            jsGrid.fields.date = jsGrid.DateField = DateField;
+
+        }(jsGrid, jQuery));
+    </script>
+
 </head>
 <body>
     <header>
@@ -94,6 +130,12 @@
     <script type="text/javascript">
         $(function () { // will trigger when the document is ready
             $('.datepicker').datepicker({ dateFormat: 'dd/mm/yy' }); //Initialise any date pickers
+
+            jsGrid.locale("bg");
+            $('.jsgrid-search-button').prop('title', 'Търсене');
+            $('.jsgrid-clear-filter-button').prop('title', 'Изчисти филтър');
+            $('.jsgrid-clear-filter-button').prop('title', 'Изчисти филтър');
+            $('.jsgrid-edit-button').prop('title', 'Редакция');
         });
     </script>
 </body>
