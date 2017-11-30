@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 using BS.LicenseServer.Helper;
+using Newtonsoft.Json;
 
 namespace BS.LicenseServer.Services
 {
@@ -38,8 +39,16 @@ namespace BS.LicenseServer.Services
                         SubscribedTo = result.SubscribedTo,
                         Created = result.CreatedDate,
                         User = DbHelper.FromDbModel(result.LicenseOwner),
-                        LicenseModules = result.LicenseModules.Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
-                        ActivationId = ((LicenseTypeEnum)result.Type) == LicenseTypeEnum.PerUser 
+                        LicenseModules = result.LicenseModules
+                            .Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
+                        Modules = result.LicenseModules
+                            .Select(x => new LicenseModuleModel() 
+                            {
+                                Id = x.Id,
+                                Code = x.lu_LicenseModules.Code,
+                                ValidTo = x.ValidTo
+                            }).ToList(),
+                        ActivationId = ((LicenseTypeEnum)result.Type) == LicenseTypeEnum.PerUser
                             ? activator != null ? activator.UserId : string.Empty
                             : activator != null ? activator.ComputerId : string.Empty,
                         IsActivated = activator != null
@@ -74,7 +83,14 @@ namespace BS.LicenseServer.Services
                             ContactPerson = x.LicenseOwner.ContactPerson,
                             CompanyId = x.LicenseOwner.CompanyId
                         },
-                        LicenseModules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList()
+                        LicenseModules = x.LicenseModules.Select(m => (LicenseModulesEnum)m.ModuleId).ToList(),
+                        Modules = x.LicenseModules
+                           .Select(m => new LicenseModuleModel()
+                           {
+                               Id = m.Id,
+                               Code = m.lu_LicenseModules.Code,
+                               ValidTo = m.ValidTo
+                           }).ToList(),
                     })
                     .ToList();
             }
@@ -151,7 +167,14 @@ namespace BS.LicenseServer.Services
                     var created = db.Licenses.Add(result);
                     db.SaveChanges();
 
-                    return created.Id.ToString();
+                    var id = created.Id;
+
+                    if (id != Guid.Empty)
+                    {
+                        LogLicenseChange(db, result, id, LicenseLogChangeTypeEnum.Create);
+                    }
+
+                    return id.ToString();
                 }
             }
             catch (Exception ex)
@@ -215,6 +238,8 @@ namespace BS.LicenseServer.Services
                     #endregion
 
                     db.SaveChanges();
+
+                    LogLicenseChange(db, result, result.Id, LicenseLogChangeTypeEnum.Update);
 
                     return true;
                 }
@@ -302,5 +327,22 @@ namespace BS.LicenseServer.Services
                 db.SaveChanges();
             }
         }
+
+        #region Helper methods
+        private static void LogLicenseChange(LicenseDbEntities db, License result, Guid id, LicenseLogChangeTypeEnum changeType)
+        {
+            db.LicensesLogs.Add(new LicensesLog()
+            {
+                LicenseId = id,
+                Date = DateTime.Now,
+                IsDemo = result.IsDemo,
+                Changes = JsonConvert.SerializeObject(result, new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                }),
+                ChangeType = (int)changeType
+            });
+        }
+        #endregion
     }
 }

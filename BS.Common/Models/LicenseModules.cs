@@ -27,4 +27,11 @@ namespace BS.Common.Models
         [Description("Графици")]
         Schedules = 6
     }
+
+    public class LicenseModuleModel
+    {
+        public int Id { get; set; }
+        public string Code { get; set; }
+        public DateTime ValidTo { get; set; }
+    }
 }

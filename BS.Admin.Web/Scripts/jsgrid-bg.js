@@ -5,7 +5,7 @@
             noDataContent: "Няма записи",
             deleteConfirm: "Наистина ли искате да изтриете?",
             pagerFormat: "Страници: {first} {prev} {pages} {next} {last} &nbsp;&nbsp; {pageIndex} от {pageCount}",
-            pagePrevText: "Predi[na",
+            pagePrevText: "Предишна",
             pageNextText: "Следваща",
             pageFirstText: "Първа",
             pageLastText: "Последна",

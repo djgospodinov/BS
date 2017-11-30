@@ -17,6 +17,7 @@ namespace BS.LicenseServer.Db
         public int Id { get; set; }
         public System.Guid LicensesId { get; set; }
         public short ModuleId { get; set; }
+        public System.DateTime ValidTo { get; set; }
     
         public virtual License License { get; set; }
         public virtual lu_LicenseModules lu_LicenseModules { get; set; }

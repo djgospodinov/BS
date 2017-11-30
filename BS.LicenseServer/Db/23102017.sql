@@ -107,3 +107,10 @@ GO
 -------------------------------11/15/2017
 EXEC sp_RENAME 'LicenseOwnerExtraInfo.DDSRegistration' , 'VatRegistration', 'COLUMN'
 GO
+--------------------------------01/12/2017
+ALTER TABLE LicenseModules ADD ValidTo DATETIME NOT NULL DEFAULT GETDATE();
+GO
+ALTER TABLE LicensesLog ADD ChangeType INT NOT NULL;
+GO
+ALTER TABLE Licenses ADD WorkstationsCount INT NOT NULL DEFAULT 1;
+GO

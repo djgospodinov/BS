@@ -8,6 +8,12 @@ using System.Runtime.Serialization;
 
 namespace BS.Common
 {
+    public enum LicenseLogChangeTypeEnum 
+    { 
+        Create = 1,
+        Update = 2
+    }
+
     [DataContract]
     public class LicenseModel
     {
@@ -33,15 +39,7 @@ namespace BS.Common
         public List<LicenseModulesEnum> LicenseModules { get; set; }
 
         [DataMember]
-        public List<string> Modules 
-        { 
-            get 
-            {
-                return LicenseModules != null
-                    ? LicenseModules.Select(x => x.ToString()).ToList()
-                    : new List<string>();
-            } 
-        }
+        public List<LicenseModuleModel> Modules { get; set; }
 
         [DataMember]
         [Required]

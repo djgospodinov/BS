@@ -19,5 +19,6 @@ namespace BS.LicenseServer.Db
         public System.DateTime Date { get; set; }
         public bool IsDemo { get; set; }
         public string Changes { get; set; }
+        public int ChangeType { get; set; }
     }
 }
