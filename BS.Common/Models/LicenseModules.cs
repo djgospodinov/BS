@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,10 +29,15 @@ namespace BS.Common.Models
         Schedules = 6
     }
 
+    [DataContract]
     public class LicenseModuleModel
     {
         public int Id { get; set; }
+
+        [DataMember]
         public string Code { get; set; }
+
+        [DataMember]
         public DateTime ValidTo { get; set; }
     }
 }

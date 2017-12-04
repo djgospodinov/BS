@@ -47,13 +47,11 @@ namespace BS.Api.Controllers
 
                 if (activator != null && license.Type != LicenseTypeEnum.PerServer) 
                 {
-                    if (string.IsNullOrEmpty(license.ActivationId) && activator != null)
-                    {
-                        _service.Activate(license, license.Type == LicenseTypeEnum.PerUser ? activator.UserId :
-                            license.Type == LicenseTypeEnum.PerComputer ? activator.ComputerId : string.Empty);
+                    //TODO:
+                    _service.Activate(license, license.Type == LicenseTypeEnum.PerUser ? activator.UserId :
+                        license.Type == LicenseTypeEnum.PerComputer ? activator.ComputerId : string.Empty);
 
                         license = _service.Get(id);
-                    }
 
                     if (license.Type == LicenseTypeEnum.PerComputer) 
                     {

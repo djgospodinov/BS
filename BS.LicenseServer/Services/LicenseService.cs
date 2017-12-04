@@ -156,13 +156,10 @@ namespace BS.LicenseServer.Services
                         CreatedDate = DateTime.Now,
                     };
 
-                    if (model.Type == LicenseTypeEnum.PerServer) 
+                    result.LicenseActivations.Add(new LicenseActivation() 
                     {
-                        result.LicenseActivations.Add(new LicenseActivation() 
-                        {
-                            ComputerCount = model.ComputerCount ?? 5
-                        });
-                    }
+                        ComputerCount = model.ComputerCount ?? 1
+                    });
 
                     var created = db.Licenses.Add(result);
                     db.SaveChanges();
@@ -313,6 +310,11 @@ namespace BS.LicenseServer.Services
             {
                 var result = db.Licenses.FirstOrDefault(x => x.Id == license.Id);
                 if (result == null) 
+                {
+                    throw new Exception(string.Format("License not found with Id: {0}", license.Id));
+                }
+
+                if (result.LicenseActivations.Count >= result.WorkstationsCount) 
                 {
                     throw new Exception(string.Format("License not found with Id: {0}", license.Id));
                 }
