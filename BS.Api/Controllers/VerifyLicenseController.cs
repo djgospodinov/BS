@@ -30,11 +30,13 @@ namespace BS.Api.Controllers
 
         [HttpPost]
         [Route("api/verifylicense/{id}")]
-        public IHttpActionResult Index(string id, LicenseActivation activator)
+        public IHttpActionResult Index(string id, LicenseActivation activation)
         {
             try
             {
                 var license = this._service.Get(id);
+
+                #region Validation
                 if (license == null)
                 {
                     return BadRequest(string.Format("No such license with the given Id {0}.", id));
@@ -45,40 +47,16 @@ namespace BS.Api.Controllers
                     return BadRequest(string.Format("LIcense with Id {0} has not been enabled.", id));
                 }
 
-                if (activator != null && license.Type != LicenseTypeEnum.PerServer) 
+                if (activation == null)
                 {
-                    //TODO:
-                    _service.Activate(license, license.Type == LicenseTypeEnum.PerUser ? activator.UserId :
-                        license.Type == LicenseTypeEnum.PerComputer ? activator.ComputerId : string.Empty);
-
-                        license = _service.Get(id);
-
-                    if (license.Type == LicenseTypeEnum.PerComputer) 
-                    {
-                        if (string.IsNullOrEmpty(activator.ComputerId)) 
-                        {
-                            return BadRequest(string.Format("ComputerID must be provided for license with type PerComputer.", id));
-                        }
-
-                        if (!license.ActivationId.Equals(activator.ComputerId)) 
-                        {
-                            return BadRequest(string.Format("License is activated for another computer Id.", id));
-                        }
-                    }
-
-                    if (license.Type == LicenseTypeEnum.PerUser) 
-                    {
-                        if (string.IsNullOrEmpty(activator.UserId)) 
-                        {
-                            return BadRequest(string.Format("UserID must be provided for license with type PerUser.", id));
-                        }
-
-                        if (!license.ActivationId.Equals(activator.UserId))
-                        {
-                            return BadRequest(string.Format("License is activated for another user Id.", id));
-                        }
-                    }
+                    return BadRequest("No activation key supplied.");
                 }
+
+                if (!_service.CheckOrActivate(license, activation.ActivationKey, activation.ComputerName)) 
+                {
+                    return BadRequest("Cannot activate license.");
+                }
+                #endregion
 
                 var serializedObject = JsonConvert.SerializeObject(license, new JsonSerializerSettings() 
                     {

@@ -114,3 +114,6 @@ ALTER TABLE LicensesLog ADD ChangeType INT NOT NULL;
 GO
 ALTER TABLE Licenses ADD WorkstationsCount INT NOT NULL DEFAULT 1;
 GO
+
+ALTER TABLE LicenseActivation ADD ComputerName NVARCHAR(256) NULL;
+GO

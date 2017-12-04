@@ -96,9 +96,10 @@ namespace BS.Api.Services
         }
 
 
-        public void Activate(LicenseModel license, string activationId)
+        public bool CheckOrActivate(LicenseModel license, string activationId, string computerName)
         {
-            
+            return false;
         }
+
     }
 }

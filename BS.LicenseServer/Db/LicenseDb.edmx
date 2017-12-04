@@ -22,6 +22,7 @@
           <Property Name="ComputerId" Type="nvarchar" MaxLength="256" />
           <Property Name="UserId" Type="nvarchar" MaxLength="256" />
           <Property Name="ComputerCount" Type="int" />
+          <Property Name="ComputerName" Type="nvarchar" MaxLength="256" />
         </EntityType>
         <EntityType Name="LicenseModules">
           <Key>
@@ -382,6 +383,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="UserId" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="ComputerCount" Type="Int32" />
           <NavigationProperty Name="License" Relationship="LicenseDbModel.FK_LicenseActivation_Licenses" FromRole="LicenseActivation" ToRole="License" />
+          <Property Name="ComputerName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_LicenseActivation_Licenses">
           <End Type="LicenseDbModel.License" Role="License" Multiplicity="1" />
@@ -503,6 +505,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySetMapping Name="LicenseActivations">
             <EntityTypeMapping TypeName="LicenseDbModel.LicenseActivation">
               <MappingFragment StoreEntitySet="LicenseActivation">
+                <ScalarProperty Name="ComputerName" ColumnName="ComputerName" />
                 <ScalarProperty Name="ComputerCount" ColumnName="ComputerCount" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ComputerId" ColumnName="ComputerId" />
