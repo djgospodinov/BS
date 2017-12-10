@@ -158,3 +158,4 @@ $RECYCLE.BIN/
 /.vs/config/applicationhost.config
 /BS.Admin.Web/App_Data/ASPNETDB.MDF
 /BS.Admin.Web/App_Data/aspnetdb_log.ldf
+/.vs/BS.Api/v15/Server/sqlite3
