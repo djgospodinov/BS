@@ -168,7 +168,11 @@ namespace BS.LicenseServer.Services
 
                     if (id != Guid.Empty)
                     {
-                        LogLicenseChange(db, result, id, LicenseLogChangeTypeEnum.Create);
+                        LogLicenseChange(db, result.IsDemo, 
+                            JsonConvert.SerializeObject(model, new JsonSerializerSettings()
+                        {
+                            NullValueHandling = NullValueHandling.Ignore
+                        }), id, LicenseLogChangeTypeEnum.Create);
                     }
 
                     return id.ToString();
@@ -236,7 +240,11 @@ namespace BS.LicenseServer.Services
 
                     db.SaveChanges();
 
-                    LogLicenseChange(db, result, result.Id, LicenseLogChangeTypeEnum.Update);
+                    LogLicenseChange(db, result.IsDemo,
+                        JsonConvert.SerializeObject(model, new JsonSerializerSettings()
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    }), result.Id, LicenseLogChangeTypeEnum.Update);
 
                     return true;
                 }
@@ -349,19 +357,22 @@ namespace BS.LicenseServer.Services
         }
 
         #region Helper methods
-        private static void LogLicenseChange(LicenseDbEntities db, License result, Guid id, LicenseLogChangeTypeEnum changeType)
+        private static void LogLicenseChange(LicenseDbEntities db, 
+            bool isDemo,
+            string result, 
+            Guid id, 
+            LicenseLogChangeTypeEnum changeType)
         {
             db.LicensesLogs.Add(new LicensesLog()
             {
                 LicenseId = id,
                 Date = DateTime.Now,
-                IsDemo = result.IsDemo,
-                Changes = JsonConvert.SerializeObject(result, new JsonSerializerSettings()
-                {
-                    NullValueHandling = NullValueHandling.Ignore
-                }),
+                IsDemo = isDemo,
+                Changes = result,
                 ChangeType = (int)changeType
             });
+
+            db.SaveChanges();
         }
         #endregion
     }

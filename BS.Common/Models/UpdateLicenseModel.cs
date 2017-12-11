@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BS.Common.Models
 {
-     [DataContract]
+    [DataContract]
     public class UpdateLicenseModel
     {
         [DataMember]
