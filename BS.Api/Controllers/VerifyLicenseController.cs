@@ -77,7 +77,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrorMessages.BadRequest);
+                return BadRequestWithError(ApiError.GeneralError);
             }
         }
 
