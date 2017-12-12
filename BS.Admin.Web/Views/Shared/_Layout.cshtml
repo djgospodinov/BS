@@ -103,7 +103,7 @@
                             <li>@Html.ActionLink("Потребители на лицензи", "Index", "UserLicense")</li>
                             @if (BS.Admin.Web.RolesManager.IsAdministrator(User.Identity))
                             {
-                                <li>@Html.ActionLink("IP Конфигурации", "IPs", "Settings")</li>
+                                @*<li>@Html.ActionLink("IP Конфигурации", "IPs", "Settings")</li>*@
                                 <li>@Html.ActionLink("Създаване на потребител", "Register", "Account")</li>
                             }
                         </ul>

@@ -49,7 +49,8 @@ namespace BS.Api.Controllers
                         string.Format("LIcense with Id {0} has not been enabled.", id));
                 }
 
-                if (activation == null)
+                if (activation == null
+                    || string.IsNullOrEmpty(activation.ActivationKey))
                 {
                     return BadRequestWithError(ApiError.NoActivationKey, "No activation key supplied.");
                 }
