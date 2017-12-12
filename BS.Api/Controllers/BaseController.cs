@@ -15,8 +15,38 @@ namespace BS.Api.Controllers
 {
     public enum ApiError
     {
-        GeneralError = 1,
-
+        /// <summary>
+        /// Error when there is an unexpected exception
+        /// </summary>
+        GeneralError = 100,
+        /// <summary>
+        /// License not found in the License server DB
+        /// </summary>
+        LicenseNotFound = 200,
+        /// <summary>
+        /// License is not enabled
+        /// </summary>
+        LicenseNotEnabled = 201,
+        /// <summary>
+        /// License cannot be activated
+        /// </summary>
+        LicenseActivationFailed = 202,
+        /// <summary>
+        /// Could not create a license
+        /// </summary>
+        LicenseCreateFailed = 300,
+        /// <summary>
+        /// Could not update a license
+        /// </summary>
+        LicenseUpdateFailed = 301,
+        /// <summary>
+        /// Cannot delete a license
+        /// </summary>
+        LicenseDeleteFailed = 302,
+        /// <summary>
+        /// Activation key is not supplied
+        /// </summary>
+        NoActivationKey = 400,
     }
 
     public class ApiErrorMessages
@@ -41,21 +71,4 @@ namespace BS.Api.Controllers
             return ResponseMessage(response);
         }
     }
-
-    //public class BadRequestWithErrorResult : IHttpActionResult
-    //{
-    //    private string _message;
-
-    //    public BadRequestWithErrorResult(string message)
-    //    {
-    //        _message = message;
-    //    }
-
-    //    public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
-    //    {
-    //        var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
-    //        response.Content = new StringContent(_message);
-    //        return Task.FromResult(response);
-    //    }
-    //}
 }

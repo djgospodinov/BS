@@ -37,7 +37,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrorMessages.BadRequest);
+                return BadRequestWithError(ApiError.GeneralError);
             }
         }
 
@@ -58,7 +58,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrorMessages.BadRequest);
+                return BadRequestWithError(ApiError.GeneralError);
             }
         }
 
@@ -89,10 +89,10 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrorMessages.BadRequest);
+                return BadRequestWithError(ApiError.GeneralError);
             }
 
-            return BadRequest("Cannot create licence.");
+            return BadRequestWithError(ApiError.LicenseCreateFailed, "Cannot create licence.");
         }
 
         // POST api/license
@@ -109,7 +109,7 @@ namespace BS.Api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest("Cannot create licence.");
+                    return BadRequestWithError(ApiError.LicenseCreateFailed, "Cannot create licence.");
                 }
 
                 var result = string.Join(",", _service.CreateMany(model));
@@ -120,10 +120,11 @@ namespace BS.Api.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Log(NLog.LogLevel.Error, ex);
                 return BadRequest(ex.Message);
             }
 
-            return BadRequest("Cannot create licences.");
+            return BadRequestWithError(ApiError.LicenseCreateFailed, "Cannot create licences.");
         }
 
         // PUT api/license/5
@@ -146,10 +147,11 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrorMessages.BadRequest);
+                return BadRequestWithError(ApiError.GeneralError);
             }
 
-            return BadRequest(string.Format("Cannot update license {0}.", id));
+            return BadRequestWithError(ApiError.LicenseUpdateFailed,
+                string.Format("Cannot update license {0}.", id));
         }
 
         // DELETE api/license/5
@@ -171,10 +173,11 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrorMessages.BadRequest);
+                return BadRequestWithError(ApiError.GeneralError);
             }
 
-            return BadRequest(string.Format("Cannot delete license {0}.", id));
+            return BadRequestWithError(ApiError.LicenseDeleteFailed,
+                string.Format("Cannot delete license {0}.", id));
         }
     }
 }

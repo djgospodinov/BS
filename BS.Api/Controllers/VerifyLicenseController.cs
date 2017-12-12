@@ -39,22 +39,24 @@ namespace BS.Api.Controllers
                 #region Validation
                 if (license == null)
                 {
-                    return BadRequest(string.Format("No such license with the given Id {0}.", id));
+                    return BadRequestWithError(ApiError.LicenseNotFound, 
+                        string.Format("No such license with the given Id {0}.", id));
                 }
 
                 if (!license.Enabled) 
                 {
-                    return BadRequest(string.Format("LIcense with Id {0} has not been enabled.", id));
+                    return BadRequestWithError(ApiError.LicenseNotEnabled,
+                        string.Format("LIcense with Id {0} has not been enabled.", id));
                 }
 
                 if (activation == null)
                 {
-                    return BadRequest("No activation key supplied.");
+                    return BadRequestWithError(ApiError.NoActivationKey, "No activation key supplied.");
                 }
 
                 if (!_service.CheckOrActivate(license, activation.ActivationKey, activation.ComputerName)) 
                 {
-                    return BadRequest("Cannot activate license.");
+                    return BadRequestWithError(ApiError.LicenseActivationFailed, "Cannot activate license.");
                 }
                 #endregion
 
@@ -100,7 +102,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequest(ApiErrorMessages.BadRequest);
+                return BadRequestWithError(ApiError.GeneralError);
             }
         }
 	}
