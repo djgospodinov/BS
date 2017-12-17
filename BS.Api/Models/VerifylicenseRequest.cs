@@ -5,7 +5,7 @@ using System.Web;
 
 namespace BS.Api.Models
 {
-    public class LicenseActivation
+    public class VerifyLicenseRequest
     {
         public string ActivationKey { get; set; }
         public string ComputerName { get; set; }

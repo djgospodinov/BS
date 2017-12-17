@@ -53,7 +53,7 @@ namespace BS.Client
       ""EGN"":null
    },
    ""Modules"":[  
-      Accounting,
+        Accounting,
         Production,
         Warehouse,
         TradingSystem,
@@ -118,7 +118,8 @@ namespace BS.Client
 
             if (_client != null)
             {
-                HttpResponseMessage response = await _client.PostAsync(string.Format("/api/verifylicense/{0}", licenseId), null);
+                var content = new StringContent("{ActivationKey:'123', ComputerName: 'pcname1'}", Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _client.PostAsync(string.Format("/api/verifylicense/{0}", licenseId), content);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseResult = await response.Content.ReadAsAsync<Dictionary<string, string>>();

@@ -317,33 +317,45 @@ namespace BS.LicenseServer.Services
             bool result = false;
             using (var db = new LicenseDbEntities()) 
             {
-                var licneseDb = db.Licenses.FirstOrDefault(x => x.Id == license.Id);
-                if (licneseDb == null)
+                var licenseDb = db.Licenses.FirstOrDefault(x => x.Id == license.Id);
+                if (licenseDb == null)
                     return false;
 
                 switch (license.Type) 
                 {
                     case LicenseTypeEnum.PerComputer:
                         bool found = false;
-                        foreach(var activation in licneseDb.LicenseActivations)
+                        foreach(var activation in licenseDb.LicenseActivations)
                         {
                             if (activation.ComputerId == activationKey)
+                            {
                                 found = true;
+                                break;
+                            }
                         }
-                        
-                        if (!found && licneseDb.LicenseActivations.Count >= licneseDb.WorkstationsCount)
-                            result = false;
 
-                        licneseDb.LicenseActivations.Add(new LicenseActivation() { ComputerId = activationKey, ComputerName = computerName });
-                        result = true;
+                        if (found)
+                        {
+                            result = true;
+                        }
+                        else
+                        {
+                            if (licenseDb.LicenseActivations.Count >= licenseDb.WorkstationsCount)
+                            {
+                                result = false;
+                            }
+                            else
+                            {
+                                licenseDb.LicenseActivations.Add(new LicenseActivation() { ComputerId = activationKey, ComputerName = computerName });
+                                result = true;
+                            }
+                        }
                         break;
                     case LicenseTypeEnum.PerUser:
-                        if(licneseDb.LicenseActivations.Count == 0)
-                            licneseDb.LicenseActivations.Add(new LicenseActivation() { UserId = activationKey, ComputerName = computerName });
+                        if(licenseDb.LicenseActivations.Count == 0)
+                            licenseDb.LicenseActivations.Add(new LicenseActivation() { UserId = activationKey, ComputerName = computerName });
 
-                        if (!licneseDb.LicenseActivations.Any(x => x.UserId == activationKey))
-                            result = false;
-                        result = true;
+                        result = licenseDb.LicenseActivations.Any(x => x.UserId == activationKey);
                         break;
                     case LicenseTypeEnum.PerServer:
                         result = true;

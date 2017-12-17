@@ -30,7 +30,7 @@ namespace BS.Api.Controllers
 
         [HttpPost]
         [Route("api/verifylicense/{id}")]
-        public IHttpActionResult Index(string id, LicenseActivation activation)
+        public IHttpActionResult Index([FromUri]string id, [FromBody]VerifyLicenseRequest request)
         {
             try
             {
@@ -49,13 +49,13 @@ namespace BS.Api.Controllers
                         string.Format("LIcense with Id {0} has not been enabled.", id));
                 }
 
-                if (activation == null
-                    || string.IsNullOrEmpty(activation.ActivationKey))
+                if (request == null
+                    || string.IsNullOrEmpty(request.ActivationKey))
                 {
                     return BadRequestWithError(ApiError.NoActivationKey, "No activation key supplied.");
                 }
 
-                if (!_service.CheckOrActivate(license, activation.ActivationKey, activation.ComputerName)) 
+                if (!_service.CheckOrActivate(license, request.ActivationKey, request.ComputerName)) 
                 {
                     return BadRequestWithError(ApiError.LicenseActivationFailed, "Cannot activate license.");
                 }

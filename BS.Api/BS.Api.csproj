@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -175,7 +176,7 @@
     <Compile Include="Controllers\VerifyLicenseController.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Filters\IpFilterAttribute.cs" />
-    <Compile Include="Models\LicenseActivation.cs" />
+    <Compile Include="Models\VerifyLicenseRequest.cs" />
     <Compile Include="Models\LicenseMessage.cs" />
     <Compile Include="Models\VerifyLicenseMessage.cs" />
     <Compile Include="Models\LoginModel.cs" />
