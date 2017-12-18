@@ -34,27 +34,17 @@ namespace BS.Admin.Web.Models
                 this.Accounting = true;
             }
 
-            if (model.LicenseModules.Contains(LicenseModulesEnum.Production))
-            {
-                this.Production = true;
-            }
-
-            if (model.LicenseModules.Contains(LicenseModulesEnum.Warehouse))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.Store))
             {
                 this.Warehouse = true;
             }
 
-            if (model.LicenseModules.Contains(LicenseModulesEnum.TradingSystem))
-            {
-                this.TradingSystem = true;
-            }
-
-            if (model.LicenseModules.Contains(LicenseModulesEnum.Salary))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.Payroll))
             {
                 this.Salary = true;
             }
 
-            if (model.LicenseModules.Contains(LicenseModulesEnum.Schedules))
+            if (model.LicenseModules.Contains(LicenseModulesEnum.Schedule))
             {
                 this.Schedules = true;
             }
@@ -74,9 +64,9 @@ namespace BS.Admin.Web.Models
             Created = model.Created;
             
             Accounting = model.Accounting;
-            Production = model.Production;
+            //Production = model.Production;
             Warehouse = model.Warehouse;
-            TradingSystem = model.TradingSystem;
+            //TradingSystem = model.TradingSystem;
             Salary = model.Salary;
             Schedules = model.Schedules;
         }
@@ -102,29 +92,19 @@ namespace BS.Admin.Web.Models
                 result.LicenseModules.Add(LicenseModulesEnum.Accounting);
             }
 
-            if (this.Production)
-            {
-                result.LicenseModules.Add(LicenseModulesEnum.Production);
-            }
-
             if (this.Warehouse)
             {
-                result.LicenseModules.Add(LicenseModulesEnum.Warehouse);
-            }
-
-            if (this.TradingSystem)
-            {
-                result.LicenseModules.Add(LicenseModulesEnum.TradingSystem);
+                result.LicenseModules.Add(LicenseModulesEnum.Store);
             }
 
             if (this.Salary)
             {
-                result.LicenseModules.Add(LicenseModulesEnum.Salary);
+                result.LicenseModules.Add(LicenseModulesEnum.Payroll);
             }
 
             if (this.Schedules)
             {
-                result.LicenseModules.Add(LicenseModulesEnum.Schedules);
+                result.LicenseModules.Add(LicenseModulesEnum.Schedule);
             }
 
             return result;
@@ -149,29 +129,19 @@ namespace BS.Admin.Web.Models
                 result.Modules.Add(LicenseModulesEnum.Accounting);
             }
 
-            if (this.Production)
-            {
-                result.Modules.Add(LicenseModulesEnum.Production);
-            }
-
             if (this.Warehouse)
             {
-                result.Modules.Add(LicenseModulesEnum.Warehouse);
-            }
-
-            if (this.TradingSystem)
-            {
-                result.Modules.Add(LicenseModulesEnum.TradingSystem);
+                result.Modules.Add(LicenseModulesEnum.Store);
             }
 
             if (this.Salary)
             {
-                result.Modules.Add(LicenseModulesEnum.Salary);
+                result.Modules.Add(LicenseModulesEnum.Payroll);
             }
 
             if (this.Schedules)
             {
-                result.Modules.Add(LicenseModulesEnum.Schedules);
+                result.Modules.Add(LicenseModulesEnum.Schedule);
             }
 
             return result;
@@ -206,11 +176,11 @@ namespace BS.Admin.Web.Models
         #region Modules
         public bool Accounting { get; set; }
 
-        public bool Production { get; set; }
+        //public bool Production { get; set; }
 
         public bool Warehouse { get; set; }
 
-        public bool TradingSystem { get; set; }
+        //public bool TradingSystem { get; set; }
 
         public bool Salary { get; set; }
 

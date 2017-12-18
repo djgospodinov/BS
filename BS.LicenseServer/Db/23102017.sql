@@ -1,4 +1,4 @@
-ALTER TABLE [dbo].[Licenses] DROP CONSTRAINT DF__Licenses__Workst__5BE2A6F2
+﻿ALTER TABLE [dbo].[Licenses] DROP CONSTRAINT DF__Licenses__Workst__5BE2A6F2
 GO
 
 ALTER TABLE [dbo].[Licenses] DROP COLUMN [WorkstationCount]
@@ -117,3 +117,25 @@ GO
 
 ALTER TABLE LicenseActivation ADD ComputerName NVARCHAR(256) NULL;
 GO
+
+---------------------------------
+DELETE FROM [dbo].[lu_LicenseModules]
+WHERE ID > 4
+
+DELETE FROM [dbo].[LicenseModules]
+WHERE ModuleId > 4
+
+UPDATE [lu_LicenseModules]
+SET Name = 'ТРЗ и личен състав',
+	Code = 'Payroll'
+WHERE Id = 2
+
+UPDATE [lu_LicenseModules]
+SET Name = 'Складов софтуер',
+	Code = 'Store'
+WHERE Id = 3
+
+UPDATE [lu_LicenseModules]
+SET Name = 'Графици на работа',
+	Code = 'Schedule'
+WHERE Id = 4
