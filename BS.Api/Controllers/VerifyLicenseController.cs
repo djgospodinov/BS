@@ -34,7 +34,7 @@ namespace BS.Api.Controllers
         {
             try
             {
-                var license = this._service.Get(id);
+                var license = _service.Get(id);
 
                 #region Validation
                 if (license == null)
