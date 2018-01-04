@@ -28,6 +28,12 @@ namespace BS.Api.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Returns a message containing the encrypted license
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/verifylicense/{id}")]
         public IHttpActionResult Index([FromUri]string id, [FromBody]VerifyLicenseRequest request)
@@ -83,7 +89,12 @@ namespace BS.Api.Controllers
                 return BadRequestWithError(ApiError.GeneralError);
             }
         }
-
+        
+        /// <summary>
+        /// Returns a message containing the not encrypted license
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/verifylicense/test/{id}")]
         public IHttpActionResult NoEncryption(string id)

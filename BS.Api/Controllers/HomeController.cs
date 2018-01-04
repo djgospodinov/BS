@@ -12,7 +12,8 @@ namespace BS.Api.Controllers
         // GET: /Home/
         public ActionResult Index()
         {
-            return Content("BS Api is running!");
+            //return Content("BS Api is running!");
+            return RedirectToAction("Index", "Help", new { Area = "Api" });
         }
 	}
 }
