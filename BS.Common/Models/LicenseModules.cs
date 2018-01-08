@@ -29,9 +29,15 @@ namespace BS.Common.Models
     {
         public int Id { get; set; }
 
+        /// <summary>
+        /// the code of the module, possible values are: Accounting, Payroll, Store, Schedule
+        /// </summary>
         [DataMember]
         public string Code { get; set; }
 
+        /// <summary>
+        /// when the module can be used to
+        /// </summary>
         [DataMember]
         public DateTime ValidTo { get; set; }
     }

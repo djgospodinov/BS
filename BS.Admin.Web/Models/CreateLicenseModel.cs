@@ -28,6 +28,7 @@ namespace BS.Admin.Web.Models
             Enabled = model.Enabled;
             IsActivated = model.IsActivated;
             Created = model.Created;
+            WorkstationsCount = model.WorkstationsCount ?? 1;
 
             if (model.LicenseModules.Contains(LicenseModulesEnum.Accounting))
             {
@@ -62,7 +63,8 @@ namespace BS.Admin.Web.Models
             Enabled = model.Enabled;
             IsActivated = model.IsActivated;
             Created = model.Created;
-            
+            WorkstationsCount = model.WorkstationsCount;
+
             Accounting = model.Accounting;
             //Production = model.Production;
             Warehouse = model.Warehouse;
@@ -83,7 +85,8 @@ namespace BS.Admin.Web.Models
                 Type = (LicenseTypeEnum)this.Type,
                 Enabled = this.Enabled,
                 IsActivated = this.IsActivated,
-                Created = this.Created
+                Created = this.Created,
+                WorkstationsCount = this.WorkstationsCount
             };
 
             result.LicenseModules = new List<LicenseModulesEnum>();
@@ -121,6 +124,7 @@ namespace BS.Admin.Web.Models
                 Type = (LicenseTypeEnum)this.Type,
                 Enabled = this.Enabled,
                 IsActivated = this.IsActivated,
+                ComputerCount = this.WorkstationsCount
             };
 
             result.Modules = new List<LicenseModulesEnum>();
@@ -169,9 +173,9 @@ namespace BS.Admin.Web.Models
 
         public DateTime Created { get; set; }
 
-        public List<LicenseTypeEnum> Types { get; set; }
-
-        public List<LicenserInfoModel> Users { get; set; }
+        [Required]
+        [Range(0, int.MaxValue)]
+        public int WorkstationsCount { get; set; }
 
         #region Modules
         public bool Accounting { get; set; }

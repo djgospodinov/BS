@@ -245,7 +245,7 @@ namespace BS.Api.Areas.HelpPage
             HelpPageSampleGenerator sampleGenerator = config.GetHelpPageSampleGenerator();
             GenerateUriParameters(apiModel, modelGenerator);
             GenerateRequestModelDescription(apiModel, modelGenerator, sampleGenerator);
-            GenerateResourceDescription(apiModel, modelGenerator);
+            GenerateResourceDescription(apiModel, modelGenerator, config);
             GenerateSamples(apiModel, sampleGenerator);
 
             return apiModel;
@@ -375,10 +375,15 @@ namespace BS.Api.Areas.HelpPage
             }
         }
 
-        private static void GenerateResourceDescription(HelpPageApiModel apiModel, ModelDescriptionGenerator modelGenerator)
+        private static void GenerateResourceDescription(HelpPageApiModel apiModel, 
+            ModelDescriptionGenerator modelGenerator, HttpConfiguration config)
         {
+            var actualResponseType = config.GetHelpPageSampleGenerator()
+                .ActualHttpMessageTypes
+                .FirstOrDefault(x => x.Key.ActionName == apiModel.ApiDescription.ActionDescriptor.ActionName);
+
             ResponseDescription response = apiModel.ApiDescription.ResponseDescription;
-            Type responseType = response.ResponseType ?? response.DeclaredType;
+            Type responseType = (actualResponseType.Value ?? response.ResponseType) ?? response.DeclaredType;
             if (responseType != null && responseType != typeof(void))
             {
                 apiModel.ResourceDescription = modelGenerator.GetOrCreateModelDescription(responseType);

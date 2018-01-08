@@ -26,7 +26,6 @@
             </td>
         </tr>
     }
-
     <tr>
         <td>
             <span>Валиден до:</span>
@@ -65,6 +64,14 @@
         </td>
         <td>
             @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseUsers())
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Брой компютри:
+        </td>
+        <td>
+            @Html.EditorFor(m => m.WorkstationsCount)
         </td>
     </tr>
     <tr>

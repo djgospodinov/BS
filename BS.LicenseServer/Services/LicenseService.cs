@@ -38,6 +38,7 @@ namespace BS.LicenseServer.Services
                         Enabled = result.Enabled ?? false,
                         SubscribedTo = result.SubscribedTo,
                         Created = result.CreatedDate,
+                        WorkstationsCount = result.WorkstationsCount,
                         User = DbHelper.FromDbModel(result.LicenseOwner),
                         LicenseModules = result.LicenseModules
                             .Select(x => (LicenseModulesEnum)x.ModuleId).ToList(),
@@ -74,6 +75,7 @@ namespace BS.LicenseServer.Services
                         IsDemo = x.IsDemo,
                         ValidTo = x.ValidTo,
                         Created = x.CreatedDate,
+                        WorkstationsCount = x.WorkstationsCount,
                         User = new Common.Models.LicenserInfoModel()
                         {
                             Name = x.LicenseOwner.Name,
@@ -151,15 +153,15 @@ namespace BS.LicenseServer.Services
                         SubscribedTo = !model.IsDemo ? model.SubscribedTo : DateTime.Now.AddMonths(1),
                         Type = !model.IsDemo ? (byte)model.Type : (byte)LicenseTypeEnum.PerComputer,
                         LicenseOwner = owner,
-                        LicenseModules = model.LicenseModules.Select(x => new LicenseModule() { ModuleId = (short)x }).ToList(),
+                        LicenseModules = model.LicenseModules.Select(x => new LicenseModule()
+                        {
+                            ModuleId = (short)x,
+                            ValidTo = model.ValidTo
+                        }).ToList(),
                         Enabled = !model.IsDemo ? false : true,//the real license should be enabled, afterwards e.g. after it is payed
                         CreatedDate = DateTime.Now,
+                        WorkstationsCount = model.Type == LicenseTypeEnum.PerUser ? 1 : model.WorkstationsCount.Value
                     };
-
-                    result.LicenseActivations.Add(new LicenseActivation() 
-                    {
-                        ComputerCount = model.ComputerCount ?? 1
-                    });
 
                     var created = db.Licenses.Add(result);
                     db.SaveChanges();
@@ -199,6 +201,7 @@ namespace BS.LicenseServer.Services
                     result.IsDemo = model.IsDemo ?? result.IsDemo;
                     result.Enabled = model.Enabled ?? result.Enabled;
                     result.Type = (byte?)model.Type ?? result.Type;
+                    result.WorkstationsCount = model.Type == LicenseTypeEnum.PerUser ? 1 : model.ComputerCount;
 
                     if (model.UserId != result.LicenseOwner.Id) 
                     {
@@ -217,7 +220,8 @@ namespace BS.LicenseServer.Services
                             {
                                 result.LicenseModules.Add(new LicenseModule()
                                 {
-                                    ModuleId = moduleId
+                                    ModuleId = moduleId,
+                                    ValidTo = result.ValidTo
                                 });
                             }
                         }

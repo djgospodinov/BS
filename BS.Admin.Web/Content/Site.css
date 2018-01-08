@@ -754,3 +754,18 @@ tr.pager td {
             margin: 0;
         }
 }
+
+.selectList {
+    width: 250px;
+    height: 25px;
+}
+
+input[type=number] {
+    width: 50px;
+    height:15px;
+}
+
+.datepicker {
+    width: 150px;
+    height: 15px;
+}

@@ -13,17 +13,16 @@
     <span style="color:red">@ViewBag.ErrorMessage</span>
     <table>
         @if (Model != null && Model.Id != Guid.Empty)
-        {
-            <tr>
-                <td>
-                    <span>Идентификатор:</span>
-                </td>
-                <td>
-                    @Html.Raw(Model.Id)
-                </td>
-            </tr>
-        }
-
+    {
+        <tr>
+            <td>
+                <span>Идентификатор:</span>
+            </td>
+            <td>
+                @Html.Raw(Model.Id)
+            </td>
+        </tr>
+}
         <tr>
             <td>
                 <span>Валиден до:</span>
@@ -53,7 +52,7 @@
                 Потребител:
             </td>
             <td>
-                @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers(), new { @class = "selectList"})
+                @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers(), new { @class = "selectList" })
             </td>
         </tr>
         <tr>
@@ -62,6 +61,14 @@
             </td>
             <td>
                 @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseTypes(), new { @class = "selectList" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Брой компютри:
+            </td>
+            <td>
+                @Html.EditorFor(m => m.WorkstationsCount)
             </td>
         </tr>
         <tr>

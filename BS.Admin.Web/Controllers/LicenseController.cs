@@ -125,8 +125,8 @@ namespace BS.Admin.Web.Controllers
         {
             return View(new CreateLicenseModel() 
             { 
-                ValidTo = DateTime.Now.AddMonths(1),
-                SubscribedTo = DateTime.Now.AddMonths(1)
+                ValidTo = DateTime.Now.AddYears(10),
+                SubscribedTo = DateTime.Now.AddMonths(12)
             });
         }
 

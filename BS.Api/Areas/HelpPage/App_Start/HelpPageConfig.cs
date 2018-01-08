@@ -3,6 +3,7 @@
 ////#define Handle_PageResultOfT
 
 using BS.Api.Models;
+using BS.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
+using System.Xml;
 #if Handle_PageResultOfT
 using System.Web.Http.OData;
 #endif
@@ -35,6 +37,23 @@ namespace BS.Api.Areas.HelpPage
         public static void Register(HttpConfiguration config)
         {
             // Uncomment the following to use the documentation from XML documentation file.
+            //config.SetDocumentationProvider(
+            //    new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
+
+            XmlDocument apiDoc = new XmlDocument();
+            apiDoc.Load(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml"));
+            XmlDocument contractsDoc = new XmlDocument();
+            contractsDoc.Load(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocumentCommon.xml"));
+            if (contractsDoc.DocumentElement != null && apiDoc.DocumentElement != null)
+            {
+                XmlNodeList nodes = contractsDoc.DocumentElement.ChildNodes;
+                foreach (XmlNode node in nodes)
+                {
+                    XmlNode copiedNode = apiDoc.ImportNode(node, true);
+                    apiDoc.DocumentElement.AppendChild(copiedNode);
+                }
+                apiDoc.Save(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml"));
+            }
             config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
 
             //// Uncomment the following to use "sample string" as the sample for all actions that have string as the body parameter or return type.
@@ -62,7 +81,18 @@ namespace BS.Api.Areas.HelpPage
 
             // Uncomment the following to use "[0]=foo&[1]=bar" directly as the sample for all actions that support form URL encoded format
             // and have IEnumerable<string> as the body parameter or return type.
-            config.SetSampleForType("[0]=foo&[1]=bar", new MediaTypeHeaderValue("application/x-www-form-urlencoded"), typeof(IEnumerable<string>));
+            config.SetSampleForType(
+                @"{
+  ""ActivationKey"": ""123"",
+  ""ComputerName"": ""pcname-1""
+}", new MediaTypeHeaderValue("application/json"), typeof(VerifyLicenseRequest));
+
+            config.SetSampleForType(
+    @"{
+  ""ActivationKey"": ""123"",
+  ""ComputerName"": ""pcname-1""
+}", new MediaTypeHeaderValue("text/json"), typeof(VerifyLicenseRequest));
+
 
             //// Uncomment the following to use "1234" directly as the request sample for media type "text/plain" on the controller named "Values"
             //// and action named "Put".
@@ -78,7 +108,9 @@ namespace BS.Api.Areas.HelpPage
 
             // Uncomment the following to correct the sample response when the action returns an HttpResponseMessage with ObjectContent<string>.
             // The sample will be generated as if the controller named "Values" and action named "Post" were returning a string.
-            config.SetActualResponseType(typeof(VerifyLicenseMessage), "VerifyLicense", "Index");
+            config.SetActualResponseType(typeof(VerifyLicenseMessage), "VerifyLicense", "GetEncrypted");
+            config.SetActualResponseType(typeof(LicenseMessage), "VerifyLicense", "GetNotEncrypted");
+            config.SetActualResponseType(typeof(LicenseModel), "License", "Get");
         }
 
 #if Handle_PageResultOfT

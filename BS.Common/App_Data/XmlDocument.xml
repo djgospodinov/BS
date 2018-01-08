@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BS.Common</name>
+    </assembly>
+    <members>
+        <member name="T:BS.Common.AesCryptor">
+            <summary>
+            https://nciphers.com/aes/
+            </summary>
+        </member>
+        <member name="P:BS.Common.Models.IpAddressElement.Denied">
+            <summary>
+            this will be used for blacklist/whitelist
+            </summary>
+        </member>
+        <member name="P:BS.Common.Models.LicenseModuleModel.Code">
+            <summary>
+            the code of the module, possible values are: Accounting, Payroll, Store, Schedule
+            </summary>
+        </member>
+        <member name="P:BS.Common.Models.LicenseModuleModel.ValidTo">
+            <summary>
+            when the module can be used to
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.Id">
+            <summary>
+            License Id
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.ValidTo">
+            <summary>
+            datetime showing when the license is valid to
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.SubscribedTo">
+            <summary>
+            shows when the license has subscription for support
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.IsDemo">
+            <summary>
+            if the license is demo or not
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.User">
+            <summary>
+            information about the user that bought the license
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.Modules">
+            <summary>
+            what license modules have been bought
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.Type">
+            <summary>
+            the type of the license.possible values are PerComputer, PerUser, PerServer
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.Enabled">
+            <summary>
+            is the license enabled, shows if the license is paid
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.WorkstationsCount">
+            <summary>
+            how many workstations can be used for this license, this is valid only for PerComputer type.
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.IsActivated">
+            <summary>
+            is the license activated, shows if the license is send activation key
+            </summary>
+        </member>
+        <member name="P:BS.Common.LicenseModel.Created">
+            <summary>
+            when has been created
+            </summary>
+        </member>
+    </members>
+</doc>

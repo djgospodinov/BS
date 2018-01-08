@@ -96,8 +96,12 @@ namespace BS.Api.Areas.HelpPage
             string controllerName = api.ActionDescriptor.ControllerDescriptor.ControllerName;
             string actionName = api.ActionDescriptor.ActionName;
             IEnumerable<string> parameterNames = api.ParameterDescriptions.Select(p => p.Name);
-            Collection<MediaTypeFormatter> formatters;
+            List<MediaTypeFormatter> formatters;
             Type type = ResolveType(api, controllerName, actionName, parameterNames, sampleDirection, out formatters);
+
+            formatters = formatters.Where(x => x.SupportedMediaTypes.Any(v => v.MediaType == "application/json"))
+                .ToList();
+
             var samples = new Dictionary<MediaTypeHeaderValue, object>();
 
             // Use the samples provided directly for actions
@@ -217,7 +221,7 @@ namespace BS.Api.Areas.HelpPage
             string controllerName = api.ActionDescriptor.ControllerDescriptor.ControllerName;
             string actionName = api.ActionDescriptor.ActionName;
             IEnumerable<string> parameterNames = api.ParameterDescriptions.Select(p => p.Name);
-            Collection<MediaTypeFormatter> formatters;
+            List<MediaTypeFormatter> formatters;
             return ResolveType(api, controllerName, actionName, parameterNames, SampleDirection.Request, out formatters);
         }
 
@@ -231,7 +235,8 @@ namespace BS.Api.Areas.HelpPage
         /// <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
         /// <param name="formatters">The formatters.</param>
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", Justification = "This is only used in advanced scenarios.")]
-        public virtual Type ResolveType(ApiDescription api, string controllerName, string actionName, IEnumerable<string> parameterNames, SampleDirection sampleDirection, out Collection<MediaTypeFormatter> formatters)
+        public virtual Type ResolveType(ApiDescription api, string controllerName, string actionName, IEnumerable<string> parameterNames, SampleDirection sampleDirection, 
+            out List<MediaTypeFormatter> formatters)
         {
             if (!Enum.IsDefined(typeof(SampleDirection), sampleDirection))
             {
@@ -246,7 +251,7 @@ namespace BS.Api.Areas.HelpPage
                 ActualHttpMessageTypes.TryGetValue(new HelpPageSampleKey(sampleDirection, controllerName, actionName, new[] { "*" }), out type))
             {
                 // Re-compute the supported formatters based on type
-                Collection<MediaTypeFormatter> newFormatters = new Collection<MediaTypeFormatter>();
+                var newFormatters = new List<MediaTypeFormatter>();
                 foreach (var formatter in api.ActionDescriptor.Configuration.Formatters)
                 {
                     if (IsFormatSupported(sampleDirection, formatter, type))
@@ -263,12 +268,12 @@ namespace BS.Api.Areas.HelpPage
                     case SampleDirection.Request:
                         ApiParameterDescription requestBodyParameter = api.ParameterDescriptions.FirstOrDefault(p => p.Source == ApiParameterSource.FromBody);
                         type = requestBodyParameter == null ? null : requestBodyParameter.ParameterDescriptor.ParameterType;
-                        formatters = api.SupportedRequestBodyFormatters;
+                        formatters = api.SupportedRequestBodyFormatters.ToList();
                         break;
                     case SampleDirection.Response:
                     default:
                         type = api.ResponseDescription.ResponseType ?? api.ResponseDescription.DeclaredType;
-                        formatters = api.SupportedResponseFormatters;
+                        formatters = api.SupportedResponseFormatters.ToList();
                         break;
                 }
             }

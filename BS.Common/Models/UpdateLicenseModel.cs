@@ -37,5 +37,6 @@ namespace BS.Common.Models
 
         [DataMember]
         public bool? IsActivated { get; set; }
+        public int ComputerCount { get; set; }
     }
 }

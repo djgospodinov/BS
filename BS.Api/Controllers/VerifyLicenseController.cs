@@ -29,14 +29,15 @@ namespace BS.Api.Controllers
         }
 
         /// <summary>
-        /// Returns a message containing the encrypted license
+        /// Verifies if license is valid for the given activation rule and if so, 
+        /// returns a message containing the encrypted license
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">the id of the license</param>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/verifylicense/{id}")]
-        public IHttpActionResult Index([FromUri]string id, [FromBody]VerifyLicenseRequest request)
+        [Route("api/verifylicense/{id}/encrypted")]
+        public IHttpActionResult GetEncrypted([FromUri]string id, [FromBody]VerifyLicenseRequest request)
         {
             try
             {
@@ -89,26 +90,48 @@ namespace BS.Api.Controllers
                 return BadRequestWithError(ApiError.GeneralError);
             }
         }
-        
+
         /// <summary>
-        /// Returns a message containing the not encrypted license
+        /// Verifies if license is valid for the given activation rule and if so, 
+        /// returns a message containing the license information
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">the id of the license</param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("api/verifylicense/test/{id}")]
-        public IHttpActionResult NoEncryption(string id)
+        [Route("api/verifylicense/{id}")]
+        public IHttpActionResult GetNotEncrypted([FromUri]string id, [FromBody]VerifyLicenseRequest request)
         {
             try
             {
-                if (!AllowedTestRequests) 
+                var license = _service.Get(id);
+
+                #region Validation
+                if (license == null)
                 {
-                    return NotFound();
+                    return BadRequestWithError(ApiError.LicenseNotFound,
+                        string.Format("No such license with the given Id {0}.", id));
                 }
 
-                var result = this._service.Get(id);
+                if (!license.Enabled)
+                {
+                    return BadRequestWithError(ApiError.LicenseNotEnabled,
+                        string.Format("LIcense with Id {0} has not been enabled.", id));
+                }
 
-                return Ok<LicenseModel>(result);
+                if (request == null
+                    || string.IsNullOrEmpty(request.ActivationKey))
+                {
+                    return BadRequestWithError(ApiError.NoActivationKey, "No activation key supplied.");
+                }
+
+                if (!_service.CheckOrActivate(license, request.ActivationKey, request.ComputerName))
+                {
+                    return BadRequestWithError(ApiError.LicenseActivationFailed, "Cannot activate license.");
+                }
+                #endregion
+
+                return Ok<LicenseMessage>(new LicenseMessage(license));
             }
             catch (Exception ex)
             {
@@ -117,5 +140,5 @@ namespace BS.Api.Controllers
                 return BadRequestWithError(ApiError.GeneralError);
             }
         }
-	}
+    }
 }
