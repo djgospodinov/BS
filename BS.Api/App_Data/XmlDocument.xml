@@ -503,44 +503,49 @@
       <returns>
       </returns>
     </member>
-    <member name="F:BS.Api.Controllers.ApiError.GeneralError">
+    <member name="T:BS.Api.Controllers.ApiErrorEnum">
+      <summary>
+            Api errors enum
+            </summary>
+    </member>
+    <member name="F:BS.Api.Controllers.ApiErrorEnum.GeneralError">
       <summary>
             Error when there is an unexpected exception
             </summary>
     </member>
-    <member name="F:BS.Api.Controllers.ApiError.LicenseNotFound">
+    <member name="F:BS.Api.Controllers.ApiErrorEnum.LicenseNotFound">
       <summary>
             License not found in the License server DB
             </summary>
     </member>
-    <member name="F:BS.Api.Controllers.ApiError.LicenseNotEnabled">
+    <member name="F:BS.Api.Controllers.ApiErrorEnum.LicenseNotEnabled">
       <summary>
             License is not enabled
             </summary>
     </member>
-    <member name="F:BS.Api.Controllers.ApiError.LicenseActivationFailed">
+    <member name="F:BS.Api.Controllers.ApiErrorEnum.LicenseActivationFailed">
       <summary>
             License cannot be activated
             </summary>
     </member>
-    <member name="F:BS.Api.Controllers.ApiError.LicenseCreateFailed">
+    <member name="F:BS.Api.Controllers.ApiErrorEnum.LicenseCreateFailed">
       <summary>
-            Could not create a license
+            Cannot create a license
             </summary>
     </member>
-    <member name="F:BS.Api.Controllers.ApiError.LicenseUpdateFailed">
+    <member name="F:BS.Api.Controllers.ApiErrorEnum.LicenseUpdateFailed">
       <summary>
-            Could not update a license
+            Cannot update a license
             </summary>
     </member>
-    <member name="F:BS.Api.Controllers.ApiError.LicenseDeleteFailed">
+    <member name="F:BS.Api.Controllers.ApiErrorEnum.LicenseDeleteFailed">
       <summary>
             Cannot delete a license
             </summary>
     </member>
-    <member name="F:BS.Api.Controllers.ApiError.NoActivationKey">
+    <member name="F:BS.Api.Controllers.ApiErrorEnum.NoActivationKey">
       <summary>
-            Activation key is not supplied
+            Activation key is missing
             </summary>
     </member>
     <member name="M:BS.Api.Controllers.LicenseController.Get(System.String)">

@@ -34,4 +34,9 @@
             @Html.DisplayFor(m => group, "ApiGroup")
         }
     </section>
+
+    <p>
+        <h2>Errors</h2>
+        @{ Html.RenderAction("Errors"); }
+    </p>
 </div>

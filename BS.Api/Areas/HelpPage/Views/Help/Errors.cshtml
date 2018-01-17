@@ -1,0 +1,20 @@
+﻿@model List<BS.Api.Areas.HelpPage.Models.HelpErrorModel>
+<table class="help-page-table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var err in Model)
+        {
+        <tr>
+            <td>@err.Code</td>
+            <td>@err.Name</td>
+            <td>@err.Description</td>
+        </tr>
+        }
+    </tbody>
+</table>

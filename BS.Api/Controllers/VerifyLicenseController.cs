@@ -46,25 +46,25 @@ namespace BS.Api.Controllers
                 #region Validation
                 if (license == null)
                 {
-                    return BadRequestWithError(ApiError.LicenseNotFound, 
+                    return BadRequestWithError(ApiErrorEnum.LicenseNotFound, 
                         string.Format("No such license with the given Id {0}.", id));
                 }
 
                 if (!license.Enabled) 
                 {
-                    return BadRequestWithError(ApiError.LicenseNotEnabled,
+                    return BadRequestWithError(ApiErrorEnum.LicenseNotEnabled,
                         string.Format("LIcense with Id {0} has not been enabled.", id));
                 }
 
                 if (request == null
                     || string.IsNullOrEmpty(request.ActivationKey))
                 {
-                    return BadRequestWithError(ApiError.NoActivationKey, "No activation key supplied.");
+                    return BadRequestWithError(ApiErrorEnum.NoActivationKey, "No activation key supplied.");
                 }
 
                 if (!_service.CheckOrActivate(license, request.ActivationKey, request.ComputerName)) 
                 {
-                    return BadRequestWithError(ApiError.LicenseActivationFailed, "Cannot activate license.");
+                    return BadRequestWithError(ApiErrorEnum.LicenseActivationFailed, "Cannot activate license.");
                 }
                 #endregion
 
@@ -87,7 +87,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequestWithError(ApiError.GeneralError);
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
             }
         }
 
@@ -109,25 +109,25 @@ namespace BS.Api.Controllers
                 #region Validation
                 if (license == null)
                 {
-                    return BadRequestWithError(ApiError.LicenseNotFound,
+                    return BadRequestWithError(ApiErrorEnum.LicenseNotFound,
                         string.Format("No such license with the given Id {0}.", id));
                 }
 
                 if (!license.Enabled)
                 {
-                    return BadRequestWithError(ApiError.LicenseNotEnabled,
+                    return BadRequestWithError(ApiErrorEnum.LicenseNotEnabled,
                         string.Format("LIcense with Id {0} has not been enabled.", id));
                 }
 
                 if (request == null
                     || string.IsNullOrEmpty(request.ActivationKey))
                 {
-                    return BadRequestWithError(ApiError.NoActivationKey, "No activation key supplied.");
+                    return BadRequestWithError(ApiErrorEnum.NoActivationKey, "No activation key supplied.");
                 }
 
                 if (!_service.CheckOrActivate(license, request.ActivationKey, request.ComputerName))
                 {
-                    return BadRequestWithError(ApiError.LicenseActivationFailed, "Cannot activate license.");
+                    return BadRequestWithError(ApiErrorEnum.LicenseActivationFailed, "Cannot activate license.");
                 }
                 #endregion
 
@@ -137,7 +137,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequestWithError(ApiError.GeneralError);
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
             }
         }
     }

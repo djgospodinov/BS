@@ -185,6 +185,7 @@
     <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterAnnotation.cs" />
     <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterDescription.cs" />
     <Compile Include="Areas\HelpPage\ModelDescriptions\SimpleTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\Models\HelpErrorModel.cs" />
     <Compile Include="Areas\HelpPage\Models\HelpPageApiModel.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleGenerator.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleKey.cs" />
@@ -264,6 +265,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Errors.cshtml" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <PropertyGroup>

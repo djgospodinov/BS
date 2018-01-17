@@ -37,7 +37,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequestWithError(ApiError.GeneralError);
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
             }
         }
 
@@ -60,7 +60,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequestWithError(ApiError.GeneralError);
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
             }
         }
 
@@ -86,7 +86,7 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequestWithError(ApiError.GeneralError);
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
             }
         }
 
@@ -116,10 +116,10 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequestWithError(ApiError.GeneralError);
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
             }
 
-            return BadRequestWithError(ApiError.LicenseCreateFailed, "Cannot create licence.");
+            return BadRequestWithError(ApiErrorEnum.LicenseCreateFailed, "Cannot create licence.");
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace BS.Api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequestWithError(ApiError.LicenseCreateFailed, "Cannot create licence.");
+                    return BadRequestWithError(ApiErrorEnum.LicenseCreateFailed, "Cannot create licence.");
                 }
 
                 var result = string.Join(",", _service.CreateMany(model));
@@ -150,7 +150,7 @@ namespace BS.Api.Controllers
                 return BadRequest(ex.Message);
             }
 
-            return BadRequestWithError(ApiError.LicenseCreateFailed, "Cannot create licences.");
+            return BadRequestWithError(ApiErrorEnum.LicenseCreateFailed, "Cannot create licences.");
         }
 
         /// <summary>
@@ -174,10 +174,10 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequestWithError(ApiError.GeneralError);
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
             }
 
-            return BadRequestWithError(ApiError.LicenseUpdateFailed,
+            return BadRequestWithError(ApiErrorEnum.LicenseUpdateFailed,
                 string.Format("Cannot update license {0}.", id));
         }
 
@@ -201,10 +201,10 @@ namespace BS.Api.Controllers
             {
                 _logger.Log(NLog.LogLevel.Error, ex);
 
-                return BadRequestWithError(ApiError.GeneralError);
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
             }
 
-            return BadRequestWithError(ApiError.LicenseDeleteFailed, string.Format("Cannot delete license {0}.", id));
+            return BadRequestWithError(ApiErrorEnum.LicenseDeleteFailed, string.Format("Cannot delete license {0}.", id));
         }
     }
 }

@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Mvc;
 using BS.Api.Areas.HelpPage.ModelDescriptions;
 using BS.Api.Areas.HelpPage.Models;
+using BS.Api.Controllers;
+using BS.Common;
 
 namespace BS.Api.Areas.HelpPage.Controllers
 {
@@ -58,6 +61,23 @@ namespace BS.Api.Areas.HelpPage.Controllers
             }
 
             return View(ErrorViewName);
+        }
+
+        public ActionResult Errors()
+        {
+            var model = new List<HelpErrorModel>();
+
+            foreach (ApiErrorEnum error in Enum.GetValues(typeof(ApiErrorEnum)))
+            {
+                model.Add(new HelpErrorModel()
+                {
+                    Code = (int)error,
+                    Name = error.ToString(),
+                    Description = error.Description()
+                });
+            }
+
+            return View(model);
         }
     }
 }

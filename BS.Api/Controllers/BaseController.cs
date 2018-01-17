@@ -10,42 +10,54 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net;
 using System.Threading;
+using System.ComponentModel;
 
 namespace BS.Api.Controllers
 {
-    public enum ApiError
+    /// <summary>
+    /// Api errors enum
+    /// </summary>
+    public enum ApiErrorEnum
     {
         /// <summary>
         /// Error when there is an unexpected exception
         /// </summary>
+        [Description("Error when there is an unexpected exception")]
         GeneralError = 100,
         /// <summary>
         /// License not found in the License server DB
         /// </summary>
+        [Description("License not found in the License server DB")]
         LicenseNotFound = 200,
         /// <summary>
         /// License is not enabled
         /// </summary>
+        [Description("License is not enabled")]
         LicenseNotEnabled = 201,
         /// <summary>
         /// License cannot be activated
         /// </summary>
+        [Description("License cannot be activated")]
         LicenseActivationFailed = 202,
         /// <summary>
-        /// Could not create a license
+        /// Cannot create a license
         /// </summary>
+        [Description("Cannot create a license")]
         LicenseCreateFailed = 300,
         /// <summary>
-        /// Could not update a license
+        /// Cannot update a license
         /// </summary>
+        [Description("Cannot update a license")]
         LicenseUpdateFailed = 301,
         /// <summary>
         /// Cannot delete a license
         /// </summary>
+        [Description("Cannot delete a license")]
         LicenseDeleteFailed = 302,
         /// <summary>
-        /// Activation key is not supplied
+        /// Activation key is missing
         /// </summary>
+        [Description("Activation key is missing")]
         NoActivationKey = 400,
     }
 
@@ -59,7 +71,7 @@ namespace BS.Api.Controllers
     {
         protected ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        protected IHttpActionResult BadRequestWithError(ApiError error, string message = null)
+        protected IHttpActionResult BadRequestWithError(ApiErrorEnum error, string message = null)
         {
             var response = Request.CreateResponse(HttpStatusCode.BadRequest,
                 new
