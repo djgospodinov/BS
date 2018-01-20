@@ -29,10 +29,10 @@ namespace BS.Admin.Web.Controllers
             _userService = userService;
         }
 
-        protected ActionResult SuccessResult()
+        protected ActionResult SuccessResult(int tabIndex)
         {
             ViewBag.Message = "Успешно създаден!";
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { tabIndex = tabIndex });
         }
     }
 }

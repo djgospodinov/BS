@@ -15,9 +15,9 @@ namespace BS.Admin.Web.Controllers
     public class UserLicenseController : BaseController
     {
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int tabIndex = 0)
         {
-            return View();
+            return View(tabIndex); 
         }
 
         [HttpGet]
@@ -91,7 +91,7 @@ namespace BS.Admin.Web.Controllers
                 {
                     var result = _userService.Create(model.ToDbModel());
                     
-                    return SuccessResult();
+                    return SuccessResult(model.IsDemo ? 1 : 0);
                 }
             }
             catch(Exception ex)
@@ -127,7 +127,8 @@ namespace BS.Admin.Web.Controllers
                     var result = _userService.Update(model.Id, model.ToDbModel());
                     if (result) 
                     {
-                        return SuccessResult();
+                        var dbModel = _userService.Get(model.Id);
+                        return SuccessResult(dbModel.IsDemo ? 1 : 0);
                     }
                 }
             }

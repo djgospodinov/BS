@@ -1,4 +1,5 @@
-﻿<h2>Потребители на лицензи</h2>
+﻿@model int
+<h2>Фирмени данни</h2>
 <br />
 @if (BS.Admin.Web.RolesManager.CanCreateLicense(User.Identity))
 {
@@ -11,19 +12,19 @@
 
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-1">Демо</a></li>
-        <li><a href="#tabs-2">Реални</a></li>
+        <li><a href="#tabs-1">Реални</a></li>
+        <li><a href="#tabs-2">Демо</a></li>
     </ul>
     <div id="tabs-1">
-        @{ Html.RenderPartial("UsersTable", new BS.Admin.Web.Models.UserLicenseGridModel() { Demo = true }); }
+        @{ Html.RenderPartial("UsersTable", new BS.Admin.Web.Models.UserLicenseGridModel() { Demo = false }); }
     </div>
     <div id="tabs-2">
-        @{ Html.RenderPartial("UsersTable", new BS.Admin.Web.Models.UserLicenseGridModel() { Demo = false }); }
+        @{ Html.RenderPartial("UsersTable", new BS.Admin.Web.Models.UserLicenseGridModel() { Demo = true }); }
     </div>
 </div>
 
 <script>
     $(function () {
-        $("#tabs").tabs();
+        $("#tabs").tabs({ active: @Model });
     });
 </script>
