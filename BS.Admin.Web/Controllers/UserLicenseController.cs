@@ -91,7 +91,7 @@ namespace BS.Admin.Web.Controllers
                 {
                     var result = _userService.Create(model.ToDbModel());
                     
-                    return SuccessResult(model.IsDemo ? 1 : 0);
+                    return Success(model.IsDemo ? 1 : 0);
                 }
             }
             catch(Exception ex)
@@ -128,7 +128,7 @@ namespace BS.Admin.Web.Controllers
                     if (result) 
                     {
                         var dbModel = _userService.Get(model.Id);
-                        return SuccessResult(dbModel.IsDemo ? 1 : 0);
+                        return Success(dbModel.IsDemo ? 1 : 0);
                     }
                 }
             }

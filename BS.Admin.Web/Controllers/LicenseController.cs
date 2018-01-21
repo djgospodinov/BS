@@ -144,7 +144,7 @@ namespace BS.Admin.Web.Controllers
                 var id = _licenseService.Create(model.ToDbModel(_userService));
                 if (!string.IsNullOrEmpty(id))
                 {
-                    return SuccessResult(model.IsDemo ? 1 : 0);
+                    return Success(model.IsDemo ? 1 : 0);
                 }
             }
             catch (Exception ex)
@@ -193,7 +193,7 @@ namespace BS.Admin.Web.Controllers
 
                 if (_licenseService.Update(model.Id.ToString(), model.ToUpdateDbModel(_userService)))
                 {
-                    return SuccessResult(model.IsDemo ? 1 : 0);
+                    return Success(model.IsDemo ? 1 : 0);
                 }
             }
             catch (Exception ex)

@@ -80,5 +80,27 @@
             <td>@Html.EditorFor(m => m.VATRegistration)</td>
         </tr>
     </table>
-    <input type="submit" value="Редакция" />
+
+    <div style="margin-left:50px;margin-top:20px;">
+        <input type="submit" value="Редакция" />
+
+        @Html.ActionLink("Отказ", "Cancel", new { tabIndex = Model.IsDemo ? 1 : 0 }, 
+            new { @class = "link-button", onclick = "return confirmChanges();" })
+    </div>
 }
+
+<script>
+    function confirmChanges() {
+        if (isChanged) {
+            return confirm('Отазване от промените?');
+        }
+        return true;
+    }
+
+    var isChanged = false;
+    $(function () { // will trigger when the document is ready
+        $('input,select,textarea').change(function () {
+            isChanged = true;
+        });
+    });
+</script>
