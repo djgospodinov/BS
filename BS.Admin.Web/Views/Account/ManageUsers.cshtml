@@ -1,0 +1,57 @@
+﻿@model BS.Admin.Web.Models.RegisteredUserGridModel
+
+<div id="jsGrid"></div>
+
+<script>
+    //https://github.com/tabalinas/jsgrid
+    var loadUrl = "/account/data";
+
+    $(function () {
+
+        $("#jsGrid").jsGrid({
+            height: "550px",
+            width: "100%",
+
+            filtering: true,
+            inserting: false,
+            editing: false,
+            sorting: true,
+            paging: true,
+            autoload: true,
+
+            pageLoading: true,
+
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: loadUrl,
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+            },
+
+            fields: [
+                { name: "Id", title: "Идентификатор", type: "text", width: 50, filtering: false },
+                { name: "Name", title: "Потребител", type: "text", width: 150 },
+                { name: "Role", title: "Роля", type: "text", width: 150 },
+                {
+                    type: "control",
+                    itemTemplate: function (value, item) {
+                        if (item.EditUrl != undefined && item.EditUrl != null && item.EditUrl != ''){
+                            var $link = $("<a class='jsgrid-button jsgrid-edit-button' style='padding-left:15px' href=" + item.EditUrl + ">");
+                            return $("<div>").append($link);
+                        }
+
+                        return "";
+                    }
+                }
+            ]
+        });
+
+    });
+</script>

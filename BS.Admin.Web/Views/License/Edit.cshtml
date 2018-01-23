@@ -68,11 +68,11 @@
             <td>
                 Брой компютри:
             </td>
-            <td> 
+            <td>
                 @Html.EditorFor(m => m.WorkstationsCount)
             </td>
         </tr>
-           
+
         <tr>
             <td>
                 Потвърден:
@@ -128,6 +128,27 @@
                 </tr>
             </table>
         </fieldset>
-    </section>
-    <input type="submit" value="Редактирай" />
+    </section> 
+    <div style="margin-left:50px;margin-top:20px;">
+        <input type="submit" value="Редакция" />
+
+        @Html.ActionLink("Отказ", "Cancel", null,
+                 new { @class = "link-button", onclick = "return confirmChanges();" })
+    </div>
 }
+
+<script>
+    function confirmChanges() {
+        if (isChanged) {
+            return confirm('Отазване от промените?');
+        }
+        return true;
+    }
+
+    var isChanged = false;
+    $(function () { // will trigger when the document is ready
+        $('input,select,textarea').change(function () {
+            isChanged = true;
+        });
+    });
+</script>

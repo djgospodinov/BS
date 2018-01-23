@@ -34,5 +34,19 @@ namespace BS.Admin.Web
 
             return result;
         }
+
+        private static List<object> AllRoles = new List<object>()
+                {
+                    new { Id = 1, Name = "Administrator" },
+                    new { Id = 2, Name = "SuperUser" },
+                    new { Id = 3, Name = "NormalUser" },
+                };
+
+        public static SelectList Roles()
+        {
+            var result = new SelectList(AllRoles, "Id", "Name");
+
+            return result;
+        }
     }
 }

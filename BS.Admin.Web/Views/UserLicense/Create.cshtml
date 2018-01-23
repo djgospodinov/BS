@@ -56,7 +56,7 @@
         </tr>
         <tr>
             <td>@Html.LabelFor(m => m.PostCode)</td>
-            <td>@Html.EditorFor(m => m.PostCode)</td>
+            <td>@Html.TextBoxFor(m => m.PostCode, new { @class = "number" })</td>
         </tr>
         <tr>
             <td>@Html.LabelFor(m => m.RegistrationAddress)</td>

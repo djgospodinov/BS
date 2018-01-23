@@ -773,7 +773,7 @@ tr.pager td {
     height: 25px;
 }
 
-input[type=number] {
+.number {
     width: 50px;
     height:15px;
 }

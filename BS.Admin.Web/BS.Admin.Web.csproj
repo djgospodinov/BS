@@ -59,6 +59,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -190,6 +192,33 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Db\BSAdminDb.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BSAdminDb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\BSAdminDb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BSAdminDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\BSAdminDb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BSAdminDb.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Db\UserProfile.cs">
+      <DependentUpon>BSAdminDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\webpages_Membership.cs">
+      <DependentUpon>BSAdminDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\webpages_OAuthMembership.cs">
+      <DependentUpon>BSAdminDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\webpages_Roles.cs">
+      <DependentUpon>BSAdminDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Logic\Const.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -208,9 +237,11 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CreateLicenseModel.cs" />
+    <Compile Include="Models\EditAccountModel.cs" />
     <Compile Include="Models\IpModel.cs" />
     <Compile Include="Models\LIcenseCodeModel.cs" />
     <Compile Include="Models\LicenseFilterModel.cs" />
+    <Compile Include="Models\RegisteredUserGridModel.cs" />
     <Compile Include="Models\UpdateLicenseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logic\RolesManager.cs" />
@@ -257,8 +288,25 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Db\BSAdminDb.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BSAdminDb.edmx</DependentUpon>
+      <LastGenOutput>BSAdminDb.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Db\BSAdminDb.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BSAdminDb.edmx</DependentUpon>
+      <LastGenOutput>BSAdminDb.cs</LastGenOutput>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <EntityDeploy Include="Db\BSAdminDb.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BSAdminDb.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Db\BSAdminDb.edmx.diagram">
+      <DependentUpon>BSAdminDb.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\publish.pubxml" />
     <Content Include="Scripts\datepicker-bg.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
@@ -340,6 +388,9 @@
     <Content Include="Views\License\LicenseCode.cshtml" />
     <Content Include="Views\Shared\_Licenses.cshtml" />
     <Content Include="Views\UserLicense\UsersTable.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\ManageUsers.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -356,6 +407,9 @@
       <Project>{6581c01f-0905-4f5f-9482-822854641f00}</Project>
       <Name>BS.LicenseServer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

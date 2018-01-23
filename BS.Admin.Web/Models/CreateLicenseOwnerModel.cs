@@ -83,11 +83,11 @@ namespace BS.Admin.Web.Models
 
         [Display(Name = "Булстат")]
         [RequiredIf("IsCompany", true)]
-        [Range(0, int.MaxValue, ErrorMessage = "Въведете само цифри.")]
+        [Range(0, 99999999999, ErrorMessage = "Въведете само цифри.")]
         public int? CompanyId { get; set; }
 
         [Display(Name = "ЕГН")]
-        [Range(0, int.MaxValue, ErrorMessage = "Въведете само цифри.")]
+        [Range(0, 99999999999, ErrorMessage = "Въведете само цифри.")]
         [RequiredIf("IsCompany", false)]
         public int? EGN { get; set; }
 

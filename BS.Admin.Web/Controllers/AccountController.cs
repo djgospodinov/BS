@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using BS.Admin.Web.Filters;
 using BS.Admin.Web.Models;
+using BS.Admin.Web.Db;
 
 namespace BS.Admin.Web.Controllers
 {
@@ -17,6 +18,8 @@ namespace BS.Admin.Web.Controllers
     [InitializeSimpleMembership]
     public class AccountController : Controller
     {
+        private readonly BSAdminDbEntities _db = new BSAdminDbEntities();
+
         //
         // GET: /Account/Login
 
@@ -88,10 +91,11 @@ namespace BS.Admin.Web.Controllers
                 try
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    Roles.AddUsersToRole(new[] { model.UserName }, model.IsSuperUser ? Const.SuperUserRoleName : Const.NormalUserRoleName);
+                    Roles.AddUsersToRole(new[] { model.UserName }, 
+                        roleName: model.IsSuperUser ? Const.SuperUserRoleName : Const.NormalUserRoleName);
 
                     ViewBag.Message = "Потребителя е създаден успешно!";
-                    return View(model);
+                    return RedirectToAction("Index");
                 }
                 catch (MembershipCreateUserException e)
                 {
@@ -105,6 +109,138 @@ namespace BS.Admin.Web.Controllers
 
         //
         // POST: /Account/Disassociate
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+            var result = _db.UserProfiles.First(x => x.UserId == id);
+            var model = new EditAccountModel();
+            model.UserId = id;
+            model.UserName = result.UserName;
+            model.RoleId = result.webpages_Roles.FirstOrDefault()?.RoleId ?? 2;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(EditAccountModel model)
+        {
+            if (!RolesManager.IsAdministrator(User.Identity))
+            {
+                return RedirectToAction("UnAuthorized", "Error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Attempt to register the user
+                try
+                {
+                    var result = _db.UserProfiles.FirstOrDefault(x => x.UserId == model.UserId);
+                    if (result != null)
+                    {
+                        if (!string.IsNullOrEmpty(model.NewPassword))
+                        {
+                            WebSecurity.ChangePassword(result.UserName, model.NewPassword, model.ConfirmPassword);
+                        }
+
+                        string roleName = null;
+                        switch (model.RoleId)
+                        {
+                            case 1:
+                                roleName = "Administrator";
+                                break;
+                            case 2:
+                                roleName = "SuperUser";
+                                break;
+                            case 3:
+                                roleName = "NormalUser";
+                                break;
+                        }
+
+                        if (!Roles.IsUserInRole(result.UserName, roleName))
+                        {
+                            var roles = Roles.GetRolesForUser(result.UserName);
+                            if (roles.Length > 0)
+                            {
+                                Roles.RemoveUserFromRoles(result.UserName, roles);
+                            }
+                            
+                            Roles.AddUserToRole(result.UserName, roleName);
+                        }
+
+
+                        result.UserName = model.UserName;
+                        _db.SaveChanges();
+                    }
+
+                    ViewBag.Message = "Потребителя е редактиран успешно!";
+                    return RedirectToAction("Index");
+                }
+                catch (MembershipCreateUserException e)
+                {
+                    ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        public ActionResult Cancel()
+        {
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public JsonResult Data(LicenseFilterGridModel filter)
+        {
+            var dbModel = _db.UserProfiles
+                .ToList()
+                .Select(x => new
+            {
+                Id = x.UserId,
+                Name = x.UserName,
+                Role = x.webpages_Roles.FirstOrDefault()?.RoleName ?? "NormalUser",
+                EditUrl = string.Format("../Account/Edit/{0}", x.UserId)
+            }).ToList();
+
+            //if (filter.UserId.HasValue)
+            //{
+            //    dbModel = dbModel.Where(x => x.User.Id == filter.UserId.Value)
+            //        .ToList();
+            //}
+
+            //var data = dbModel
+            //    .Skip((filter.PageIndex - 1) * filter.PageSize)
+            //    .Take(filter.PageSize)
+            //    .Select(x => new
+            //    {
+            //        Id = string.Format("{0}...", x.Id.ToString().Substring(0, 20)),
+            //        ValidTo = x.ValidTo.ToShortDateString(),
+            //        Demo = x.IsDemo,
+            //        UserName = x.User.Name,
+            //        Created = x.Created.ToShortDateString(),
+            //        Activated = x.IsActivated,
+            //        Enabled = x.Enabled,
+            //        Type = (int)x.Type,
+            //        EditUrl = RolesManager.CanCreateLicense(User.Identity)
+            //        ? string.Format("../License/Edit/{0}", x.Id)
+            //        : string.Empty
+            //    }).ToArray();
+
+            var dataResult = new
+            {
+                data = dbModel,
+                itemsCount = dbModel.Count
+            };
+
+            return Json(dataResult, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -275,12 +411,12 @@ namespace BS.Admin.Web.Controllers
                 // Insert a new user into the database
                 using (UsersContext db = new UsersContext())
                 {
-                    UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
+                    Models.UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
                     // Check if user already exists
                     if (user == null)
                     {
                         // Insert name into the profile table
-                        db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
+                        db.UserProfiles.Add(new Models.UserProfile { UserName = model.UserName });
                         db.SaveChanges();
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);

@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Потребители";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+@if (BS.Admin.Web.RolesManager.IsAdministrator(User.Identity))
+{
+    @Html.ActionLink("Създай потребител", "Register", "Account")
+}
+
+<br />
+<br />
+<br />
+@{ Html.RenderPartial("ManageUsers", new BS.Admin.Web.Models.RegisteredUserGridModel()); }

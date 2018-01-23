@@ -1,0 +1,56 @@
+﻿@model BS.Admin.Web.Models.EditAccountModel
+@{
+    ViewBag.Title = "Редакция на потребител";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Edit", "Account", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.UserId);
+
+    <span style="color:green">@ViewBag.Message</span>
+    <span style="color:red">@ViewBag.ErrorMessage</span>
+    <table>
+        <tr>
+            <td>Потребителско име:</td>
+            <td>@Html.TextBoxFor(m => m.UserName)</td>
+        </tr>
+        <tr>
+            <td>Нова парола:</td>
+            <td>@Html.PasswordFor(m => m.NewPassword)</td>
+        </tr>
+        <tr>
+            <td>Потвърди парола:</td>
+            <td>@Html.PasswordFor(m => m.ConfirmPassword)</td>
+        </tr>
+        <tr>
+            <td>Роля:</td>
+            <td>@Html.DropDownListFor(m => m.RoleId, BS.Admin.Web.DropdownHelper.Roles(), new { @class = "selectList"})</td>
+        </tr>
+
+    </table>
+
+    <div style="margin-left:50px;margin-top:20px;">
+        <input type="submit" value="Редакция" />
+
+        @Html.ActionLink("Отказ", "Cancel", null,
+                      new { @class = "link-button", onclick = "return confirmChanges();" })
+    </div>
+}
+
+<script>
+    function confirmChanges() {
+        if (isChanged) {
+            return confirm('Отазване от промените?');
+        }
+        return true;
+    }
+
+    var isChanged = false;
+    $(function () { // will trigger when the document is ready
+        $('input,select,textarea').change(function () {
+            isChanged = true;
+        });
+    });
+</script>

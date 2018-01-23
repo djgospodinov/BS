@@ -243,7 +243,7 @@ namespace BS.LicenseServer.Services
                     #endregion
 
                     db.SaveChanges();
-
+                    
                     LogLicenseChange(db, result.IsDemo,
                         JsonConvert.SerializeObject(model, new JsonSerializerSettings()
                     {
