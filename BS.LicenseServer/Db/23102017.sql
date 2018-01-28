@@ -139,3 +139,6 @@ UPDATE [lu_LicenseModules]
 SET Name = 'Графици на работа',
 	Code = 'Schedule'
 WHERE Id = 4
+
+----------------------------------------28/01/2018
+  ALTER TABLE [dbo].[LicensesLog] ADD ChangedBy BIGINT NOT NULL DEFAULT 0;

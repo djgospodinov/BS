@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="LicenseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LicenseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="IpFilters">
           <Key>
             <PropertyRef Name="Id" />
@@ -85,6 +85,7 @@
           <Property Name="IsDemo" Type="bit" Nullable="false" />
           <Property Name="Changes" Type="ntext" Nullable="false" />
           <Property Name="ChangeType" Type="int" Nullable="false" />
+          <Property Name="ChangedBy" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -422,6 +423,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="IsDemo" Type="Boolean" Nullable="false" />
           <Property Name="Changes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ChangeType" Type="Int32" Nullable="false" />
+          <Property Name="ChangedBy" Type="Int64" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -534,6 +536,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySetMapping Name="LicensesLogs">
             <EntityTypeMapping TypeName="LicenseDbModel.LicensesLog">
               <MappingFragment StoreEntitySet="LicensesLog">
+                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
                 <ScalarProperty Name="ChangeType" ColumnName="ChangeType" />
                 <ScalarProperty Name="Changes" ColumnName="Changes" />
                 <ScalarProperty Name="IsDemo" ColumnName="IsDemo" />

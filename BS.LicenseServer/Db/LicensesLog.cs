@@ -20,5 +20,6 @@ namespace BS.LicenseServer.Db
         public bool IsDemo { get; set; }
         public string Changes { get; set; }
         public int ChangeType { get; set; }
+        public long ChangedBy { get; set; }
     }
 }

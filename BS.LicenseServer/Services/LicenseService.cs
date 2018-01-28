@@ -13,9 +13,14 @@ using Newtonsoft.Json;
 
 namespace BS.LicenseServer.Services
 {
-    public class LicenseService : ILicenseService
+    public class LicenseService : Service, ILicenseService 
     {
         private static ILogger _logger = LogManager.GetCurrentClassLogger();
+
+        public LicenseService(int? userId) 
+            : base(userId)
+        {
+        }
 
         public LicenseModel Get(string id)
         {
@@ -373,7 +378,7 @@ namespace BS.LicenseServer.Services
         }
 
         #region Helper methods
-        private static void LogLicenseChange(LicenseDbEntities db, 
+        private void LogLicenseChange(LicenseDbEntities db, 
             bool isDemo,
             string result, 
             Guid id, 
@@ -385,7 +390,8 @@ namespace BS.LicenseServer.Services
                 Date = DateTime.Now,
                 IsDemo = isDemo,
                 Changes = result,
-                ChangeType = (int)changeType
+                ChangeType = (int)changeType,
+                ChangedBy = UserId ?? 0
             });
 
             db.SaveChanges();

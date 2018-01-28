@@ -108,6 +108,7 @@
     <Compile Include="Services\DemoLicenseService.cs" />
     <Compile Include="Services\IpFilterService.cs" />
     <Compile Include="Services\LicenseService.cs" />
+    <Compile Include="Services\Service.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

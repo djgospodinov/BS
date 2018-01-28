@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebMatrix.WebData;
 
 namespace BS.Admin.Web.Controllers
 {
@@ -19,7 +20,7 @@ namespace BS.Admin.Web.Controllers
         protected static ILogger _logger = LogManager.GetCurrentClassLogger();
 
         public BaseController()
-            :this(new LicenseService(), new UserService())
+            :this(new LicenseService(WebSecurity.CurrentUserId), new UserService())
         {
         }
 
