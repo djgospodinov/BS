@@ -20,7 +20,7 @@ namespace BS.Admin.Web.Controllers
         protected static ILogger _logger = LogManager.GetCurrentClassLogger();
 
         public BaseController()
-            :this(new LicenseService(WebSecurity.CurrentUserId), new UserService())
+            :this(new LicenseService(WebSecurity.Initialized ? (int?)WebSecurity.CurrentUserId : null), new UserService())
         {
         }
 

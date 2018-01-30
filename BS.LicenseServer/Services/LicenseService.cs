@@ -175,11 +175,9 @@ namespace BS.LicenseServer.Services
 
                     if (id != Guid.Empty)
                     {
-                        LogLicenseChange(db, result.IsDemo, 
-                            JsonConvert.SerializeObject(model, new JsonSerializerSettings()
-                        {
-                            NullValueHandling = NullValueHandling.Ignore
-                        }), id, LicenseLogChangeTypeEnum.Create);
+                        LogLicenseChange(db, result.IsDemo,
+                            null,
+                            Serialize(result), id);
                     }
 
                     return id.ToString();
@@ -199,8 +197,10 @@ namespace BS.LicenseServer.Services
             using (var db = new LicenseDbEntities())
             {
                 var result = db.Licenses.FirstOrDefault(x => x.Id == new Guid(id));
-                if (result != null) 
+                if (result != null)
                 {
+                    string beforeUpdate = Serialize(result);
+
                     result.ValidTo = model.ValidTo ?? result.ValidTo;
                     result.SubscribedTo = model.SubscribedTo ?? result.SubscribedTo;
                     result.IsDemo = model.IsDemo ?? result.IsDemo;
@@ -208,13 +208,13 @@ namespace BS.LicenseServer.Services
                     result.Type = (byte?)model.Type ?? result.Type;
                     result.WorkstationsCount = model.Type == LicenseTypeEnum.PerUser ? 1 : model.ComputerCount;
 
-                    if (model.UserId != result.LicenseOwner.Id) 
+                    if (model.UserId != result.LicenseOwner.Id)
                     {
                         result.LicenseOwner = db.LicenseOwners.First(x => x.Id == model.UserId);
                     }
 
                     #region Modules
-                    if (model.Modules != null) 
+                    if (model.Modules != null)
                     {
                         var modulesIds = model.Modules.Select(x => (short)x)
                         .ToList();
@@ -248,18 +248,28 @@ namespace BS.LicenseServer.Services
                     #endregion
 
                     db.SaveChanges();
-                    
+
                     LogLicenseChange(db, result.IsDemo,
-                        JsonConvert.SerializeObject(model, new JsonSerializerSettings()
-                    {
-                        NullValueHandling = NullValueHandling.Ignore
-                    }), result.Id, LicenseLogChangeTypeEnum.Update);
+                        beforeUpdate,
+                        Serialize(result), result.Id);
 
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private static string Serialize(License result)
+        {
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new EFContractResolver();
+            settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            settings.Formatting = Formatting.Indented;
+
+            var beforeUpdate = JsonConvert.SerializeObject(result, settings);
+            return beforeUpdate;
         }
 
         public bool Delete(string id)
@@ -380,17 +390,17 @@ namespace BS.LicenseServer.Services
         #region Helper methods
         private void LogLicenseChange(LicenseDbEntities db, 
             bool isDemo,
-            string result, 
-            Guid id, 
-            LicenseLogChangeTypeEnum changeType)
+            string oldObject,
+            string newObject, 
+            Guid id)
         {
             db.LicensesLogs.Add(new LicensesLog()
             {
                 LicenseId = id,
                 Date = DateTime.Now,
                 IsDemo = isDemo,
-                Changes = result,
-                ChangeType = (int)changeType,
+                Old = oldObject,
+                New = newObject,
                 ChangedBy = UserId ?? 0
             });
 

@@ -83,8 +83,8 @@
           <Property Name="LicenseId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="IsDemo" Type="bit" Nullable="false" />
-          <Property Name="Changes" Type="ntext" Nullable="false" />
-          <Property Name="ChangeType" Type="int" Nullable="false" />
+          <Property Name="Old" Type="ntext" />
+          <Property Name="New" Type="ntext" Nullable="false" />
           <Property Name="ChangedBy" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
@@ -421,9 +421,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="LicenseId" Type="Guid" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDemo" Type="Boolean" Nullable="false" />
-          <Property Name="Changes" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ChangeType" Type="Int32" Nullable="false" />
           <Property Name="ChangedBy" Type="Int64" Nullable="false" />
+          <Property Name="Old" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="New" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -536,9 +536,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySetMapping Name="LicensesLogs">
             <EntityTypeMapping TypeName="LicenseDbModel.LicensesLog">
               <MappingFragment StoreEntitySet="LicensesLog">
+                <ScalarProperty Name="New" ColumnName="New" />
+                <ScalarProperty Name="Old" ColumnName="Old" />
                 <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
-                <ScalarProperty Name="ChangeType" ColumnName="ChangeType" />
-                <ScalarProperty Name="Changes" ColumnName="Changes" />
                 <ScalarProperty Name="IsDemo" ColumnName="IsDemo" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="LicenseId" ColumnName="LicenseId" />

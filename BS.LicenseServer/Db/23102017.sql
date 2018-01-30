@@ -142,3 +142,31 @@ WHERE Id = 4
 
 ----------------------------------------28/01/2018
   ALTER TABLE [dbo].[LicensesLog] ADD ChangedBy BIGINT NOT NULL DEFAULT 0;
+  --------------------------------------31/01/2018
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+DROP TABLE [dbo].[LicensesLog]
+GO
+
+CREATE TABLE [dbo].[LicensesLog](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[LicenseId] [uniqueidentifier] NOT NULL,
+	[Date] [datetime] NOT NULL,
+	[IsDemo] [bit] NOT NULL,
+	[Old] [ntext] NULL,
+	[New] [ntext] NOT NULL,
+	[ChangedBy] [bigint] NOT NULL,
+ CONSTRAINT [PK_LicensesLog] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[LicensesLog] ADD  DEFAULT ((0)) FOR [ChangedBy]
+GO

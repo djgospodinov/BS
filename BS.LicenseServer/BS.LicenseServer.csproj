@@ -102,6 +102,7 @@
     <Compile Include="Db\Setting.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFContractResolver.cs" />
     <Compile Include="Helper\DbHelper.cs" />
     <Compile Include="IpFilterCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

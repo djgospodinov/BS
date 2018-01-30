@@ -18,8 +18,8 @@ namespace BS.LicenseServer.Db
         public System.Guid LicenseId { get; set; }
         public System.DateTime Date { get; set; }
         public bool IsDemo { get; set; }
-        public string Changes { get; set; }
-        public int ChangeType { get; set; }
         public long ChangedBy { get; set; }
+        public string Old { get; set; }
+        public string New { get; set; }
     }
 }

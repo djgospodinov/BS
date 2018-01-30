@@ -8,12 +8,6 @@ using System.Runtime.Serialization;
 
 namespace BS.Common
 {
-    public enum LicenseLogChangeTypeEnum 
-    { 
-        Create = 1,
-        Update = 2
-    }
-
     [DataContract]
     public class LicenseModel
     {
