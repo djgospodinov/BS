@@ -81,12 +81,16 @@ namespace BS.Admin.Web.Controllers
                             : data.OrderByDescending(x => x.ResponseStatusCode).ToList();
                         break;
                     default:
-                        data = asc 
+                        data = asc
                             ? data.OrderBy(x => x.ResponseTimestamp).ToList()
                             : data.OrderByDescending(x => x.ResponseTimestamp).ToList();
                         break;
                 }
                 #endregion
+            }
+            else
+            {
+                data = data.OrderByDescending(x => x.ResponseTimestamp).ToList();
             }
 
             var dataResult = new

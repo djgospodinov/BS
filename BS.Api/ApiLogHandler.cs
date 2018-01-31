@@ -39,7 +39,7 @@ namespace BS.Api
                     // Update the API log entry with response info
                     apiLogEntry.ResponseStatusCode = (int)response.StatusCode;
 
-                    if (request.RequestUri.AbsolutePath != "/" && request.RequestUri.AbsolutePath != "/help")
+                    if (request.RequestUri.AbsolutePath != "/" && request.RequestUri.AbsolutePath.ToUpper() != "/HELP")
                     {
                         apiLogEntry.ResponseTimestamp = DateTime.Now;
 
