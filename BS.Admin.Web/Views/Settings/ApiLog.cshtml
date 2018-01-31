@@ -1,0 +1,67 @@
+﻿<div id="jsGrid-api-log"></div>
+
+<script>
+    //https://github.com/tabalinas/jsgrid
+
+    $(function () {
+        var countries = [
+            { Name: "", Id: 0 },
+            { Name: "За Компютър", Id: 1 },
+            { Name: "За Потребител", Id: 2 },
+            { Name: "За Сървър", Id: 3 },
+        ];
+
+        $("#jsGrid-api-log").jsGrid({
+            height: "550px",
+            width: "100%",
+
+            filtering: true,
+            inserting: false,
+            editing: false,
+            sorting: true,
+            paging: true,
+            autoload: true,
+
+            pageLoading: true,
+
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            deleteConfirm: "Do you really want to delete client?",
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/settings/apilogdata",
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+            },
+
+            fields: [
+               // { name: "Id", title: "Id", type: "text", width: 150, filtering: false },
+                { name: "RequestUri", title: "Uri", type: "text", width: 50 },
+                { name: "AbsoluteUri", title: "Absolute Uri", type: "text", width: 150 },
+                { name: "RequestMethod", title: "Method", type: "text", width: 50 },
+                { name: "RequestIpAddress", title: "IpAdress", type: "text", width: 50 },
+                { name: "ResponseTimestamp", title: "Timestamp", type: "date", width: 50 },
+                { name: "ResponseStatusCode", title: "StatusCode", type: "text", width: 50 },
+                {
+                    type: "control",
+                    itemTemplate: function (value, item) {
+                        var div = $("<div>");
+
+                        if (item.DetailUrl != undefined && item.DetailUrl != null && item.DetailUrl != '') {
+                            var $link = $("<a class='jsgrid-button jsgrid-search-button' style='padding-left:15px' href=" + item.DetailUrl + ">");
+                            div.append($link);
+                        }
+
+                        return div;
+                    }
+                }
+            ]
+        });
+
+    });
+</script>

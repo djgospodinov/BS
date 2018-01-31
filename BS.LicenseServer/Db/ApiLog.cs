@@ -23,5 +23,7 @@ namespace BS.LicenseServer.Db
         public string ResponseContentBody { get; set; }
         public Nullable<int> ResponseStatusCode { get; set; }
         public Nullable<System.DateTime> ResponseTimestamp { get; set; }
+        public string AbsoluteUri { get; set; }
+        public string Host { get; set; }
     }
 }

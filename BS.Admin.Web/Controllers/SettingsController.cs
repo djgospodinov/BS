@@ -15,6 +15,7 @@ namespace BS.Admin.Web.Controllers
     public class SettingsController : BaseController
     {
         private readonly IIpFilterService _service;
+        private readonly ApiLogService _apiLogService = new ApiLogService();
 
         public SettingsController()
             : this(new IpFilterService())
@@ -29,6 +30,53 @@ namespace BS.Admin.Web.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public JsonResult ApiLogData(ApiLogFilterGridModel filter)
+        {
+            var dbModel = _apiLogService.GetLogs();
+            var data = dbModel
+                .Where(x => (string.IsNullOrEmpty(filter.RequestUri.ToUpper()) || x.RequestUri.Contains(filter.RequestUri.ToUpper()))
+                    && (string.IsNullOrEmpty(filter.AbsoluteUri) || x.AbsoluteUri.ToUpper().Contains(filter.AbsoluteUri.ToUpper()))
+                    && (string.IsNullOrEmpty(filter.RequestMethod) || x.RequestMethod.ToUpper() == filter.RequestMethod.ToUpper())
+                    && (string.IsNullOrEmpty(filter.RequestIpAddress) || x.RequestIpAddress.Contains(filter.RequestIpAddress))
+                    && (!filter.ResponseStatusCode.HasValue || x.ResponseStatusCode == filter.ResponseStatusCode))
+                .ToList();
+
+            var dataResult = new
+            {
+                data = data
+                    .OrderByDescending(x => x.ResponseTimestamp)
+                    .Skip((filter.PageIndex - 1) * filter.PageSize)
+                    .Take(filter.PageSize)
+                    .Select(x => new
+                    {
+                        Id = x.Id,
+                        RequestIpAddress = x.RequestIpAddress,//TODO: Add loggic to add/remove ip from IpFilters
+                        RequestMethod = x.RequestMethod,
+                        RequestTimestamp = x.RequestTimestamp,
+                        RequestUri = x.RequestUri,
+                        AbsoluteUri = x.AbsoluteUri,
+                        ResponseStatusCode = x.ResponseStatusCode,
+                        ResponseTimestamp = x.ResponseTimestamp.Value.ToString("dd/MM/yyyy HH:mm:ss"),
+                        DetailUrl = string.Format("../Settings/ApiLogEntry/{0}", x.Id)
+                    }),
+                itemsCount = data.Count()
+            };
+
+            return Json(dataResult, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ApiLogEntry(int id)
+        {
+            var model = _apiLogService.GetLogEntry(id);
+            if (model == null)
+            {
+                throw new Exception("Not found!");
+            }
+
+            return View(model);
         }
 
         public ActionResult IPs(int page = 1)

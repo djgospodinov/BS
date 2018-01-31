@@ -10,6 +10,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AbsoluteUri" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Host" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="RequestUri" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="RequestMethod" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="RequestBody" Type="nvarchar(max)" />
@@ -454,6 +456,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="ResponseContentBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ResponseStatusCode" Type="Int32" />
           <Property Name="ResponseTimestamp" Type="DateTime" Precision="3" />
+          <Property Name="AbsoluteUri" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Host" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -579,6 +583,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySetMapping Name="ApiLogs">
             <EntityTypeMapping TypeName="LicenseDbModel.ApiLog">
               <MappingFragment StoreEntitySet="ApiLogs">
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="AbsoluteUri" ColumnName="AbsoluteUri" />
                 <ScalarProperty Name="ResponseTimestamp" ColumnName="ResponseTimestamp" />
                 <ScalarProperty Name="ResponseStatusCode" ColumnName="ResponseStatusCode" />
                 <ScalarProperty Name="ResponseContentBody" ColumnName="ResponseContentBody" />

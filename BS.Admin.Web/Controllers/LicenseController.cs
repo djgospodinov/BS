@@ -95,19 +95,20 @@ namespace BS.Admin.Web.Controllers
                 .Skip((filter.PageIndex - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .Select(x => new 
-            {
-                Id = string.Format("{0}...", x.Id.ToString().Substring(0, 20)),
-                ValidTo = x.ValidTo.ToShortDateString(),
-                Demo = x.IsDemo,
-                UserName = x.User.Name,
-                Created = x.Created.ToShortDateString(),
-                Activated = x.IsActivated,
-                Enabled = x.Enabled,
-                Type = (int)x.Type,
-                EditUrl = RolesManager.CanCreateLicense(User.Identity) 
-                    ? string.Format("../License/Edit/{0}", x.Id)
-                    : string.Empty
-            }).ToArray();
+                {
+                    Id = string.Format("{0}...", x.Id.ToString().Substring(0, 20)),
+                    ValidTo = x.ValidTo.ToShortDateString(),
+                    Demo = x.IsDemo,
+                    UserName = x.User.Name,
+                    Created = x.Created.ToShortDateString(),
+                    Activated = x.IsActivated,
+                    Enabled = x.Enabled,
+                    Type = (int)x.Type,
+                    EditUrl = RolesManager.CanCreateLicense(User.Identity) 
+                        ? string.Format("../License/Edit/{0}", x.Id)
+                        : string.Empty,
+                    DetailUrl = string.Format("../License/Details/{0}", x.Id)
+                }).ToArray();
 
             var dataResult = new {
                 data = data,

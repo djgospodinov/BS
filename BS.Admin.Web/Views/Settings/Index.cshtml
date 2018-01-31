@@ -1,5 +1,28 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Системни настройки";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
+
+<br />
+<br />
+<br />
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">API Заявки</a></li>
+        <li><a href="#tabs-2">Промени по лицензи</a></li>
+    </ul>
+    <div id="tabs-1">
+        @{ Html.RenderPartial("ApiLog"); }
+    </div>
+    <div id="tabs-2">
+        @{ Html.RenderPartial("LicenseLog"); }
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#tabs").tabs({ active: 0 });
+    });
+</script>

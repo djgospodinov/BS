@@ -7,6 +7,7 @@
 
 @using (Html.BeginForm("Edit", "Account", FormMethod.Post))
 {
+    @Html.ValidationSummary()
     @Html.HiddenFor(m => m.UserId);
 
     <span style="color:green">@ViewBag.Message</span>
@@ -26,7 +27,7 @@
         </tr>
         <tr>
             <td>Роля:</td>
-            <td>@Html.DropDownListFor(m => m.RoleId, BS.Admin.Web.DropdownHelper.Roles(), new { @class = "selectList"})</td>
+            <td>@Html.DropDownListFor(m => m.RoleId, BS.Admin.Web.DropdownHelper.Roles(), new { @class = "selectList" })</td>
         </tr>
 
     </table>
@@ -35,7 +36,7 @@
         <input type="submit" value="Редакция" />
 
         @Html.ActionLink("Отказ", "Cancel", null,
-                      new { @class = "link-button", onclick = "return confirmChanges();" })
+                           new { @class = "link-button", onclick = "return confirmChanges();" })
     </div>
 }
 

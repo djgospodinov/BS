@@ -8,6 +8,7 @@ namespace BS.Common.Models
 {
     public class ApiLogEntry
     {
+        public int Id { get; set; }
         public string Machine { get; set; }
         public string RequestIpAddress { get; set; }
         public string RequestContentType { get; set; }
@@ -21,5 +22,7 @@ namespace BS.Common.Models
         public int? ResponseStatusCode { get; set; } 
         public string ResponseHeaders { get; set; } 
         public DateTime? ResponseTimestamp { get; set; }
+        public string AbsoluteUri { get; set; }
+        public string Host { get; set; }
     }
 }

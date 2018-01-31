@@ -1,0 +1,105 @@
+﻿@model BS.Common.Models.ApiLogEntry
+@{
+    ViewBag.Title = "ApiLogEntry";
+}
+
+<h2>ApiLog Entry</h2>
+
+
+
+<table>
+    <tr>
+        <td>
+            Id:
+        </td>
+        <td>
+            @Html.EditorFor(m => m.Id)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Request Body:
+        </td>
+        <td>
+            @Html.TextAreaFor(m => m.RequestContentBody, 5, 50, null)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Request IpAddress:
+        </td>
+        <td>
+            @Html.EditorFor(m => m.RequestIpAddress)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Request Method:
+        </td>
+        <td>
+            @Html.EditorFor(m => m.RequestMethod)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Request Timestamp:
+        </td>
+        <td>
+            @Html.EditorFor(m => m.RequestTimestamp)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Request Uri:
+        </td>
+        <td>
+            @Html.EditorFor(m => m.RequestUri)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Response Body:
+        </td>
+        <td>
+            @Html.TextAreaFor(m => m.ResponseContentBody, 5, 50, null)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Status Code:
+        </td>
+        <td>
+            @Html.EditorFor(m => m.ResponseStatusCode)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Response Timestamp:
+        </td>
+        <td>
+            @Html.EditorFor(m => m.ResponseTimestamp)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Absolute Uri:
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.AbsoluteUri, new { style = "width:500px" })
+        </td>
+    </tr>
+</table>
+
+<div style="margin-left:50px;margin-top:20px;">
+
+    @Html.ActionLink("Отказ", "Cancel", null, new { @class = "link-button" })
+</div>
+
+<script>
+    $(function () { // will trigger when the document is ready
+        $('input').prop('disabled', true);
+        $('select').prop('disabled', true);
+        $('input').prop('readonly', true);
+        $('textarea').prop('readonly', true);
+    });
+</script>

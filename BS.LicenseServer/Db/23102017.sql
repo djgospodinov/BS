@@ -170,3 +170,26 @@ GO
 
 ALTER TABLE [dbo].[LicensesLog] ADD  DEFAULT ((0)) FOR [ChangedBy]
 GO
+
+-------------------------------------------------------------------31/01/2018
+DROP TABLE [dbo].[ApiLogs]
+GO
+
+CREATE TABLE [dbo].[ApiLogs](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[AbsoluteUri] [nvarchar](250) NOT NULL,
+	[Host] [nvarchar](250) NOT NULL,
+	[RequestUri] [nvarchar](250) NOT NULL,
+	[RequestMethod] [nvarchar](10) NOT NULL,
+	[RequestBody] [nvarchar](max) NULL,
+	[RequestIpAddress] [nvarchar](50) NOT NULL,
+	[RequestTimestamp] [datetime] NOT NULL,
+	[ResponseContentBody] [nvarchar](max) NULL,
+	[ResponseStatusCode] [int] NULL,
+	[ResponseTimestamp] [datetime] NULL,
+ CONSTRAINT [PK_ApiLogs] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO

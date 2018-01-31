@@ -39,7 +39,7 @@ namespace BS.Api
                     // Update the API log entry with response info
                     apiLogEntry.ResponseStatusCode = (int)response.StatusCode;
 
-                    if (request.RequestUri.AbsolutePath != "/")
+                    if (request.RequestUri.AbsolutePath != "/" && request.RequestUri.AbsolutePath != "/help")
                     {
                         apiLogEntry.ResponseTimestamp = DateTime.Now;
 
@@ -51,16 +51,11 @@ namespace BS.Api
                         }
 
                         // TODO: Save the API log entry to the database
-                        LogToDb(apiLogEntry);
+                        ApiLogService.Log(apiLogEntry);
                     }
 
                     return response;
                 }, cancellationToken);
-        }
-
-        private void LogToDb(ApiLogEntry apiLogEntry)
-        {
-            ApiLogService.Log(apiLogEntry);
         }
 
         private ApiLogEntry CreateApiLogEntryWithRequestData(HttpRequestMessage request)
@@ -76,7 +71,9 @@ namespace BS.Api
                 RequestMethod = request.Method.Method,
                 RequestHeaders = SerializeHeaders(request.Headers),
                 RequestTimestamp = DateTime.Now,
-                RequestUri = request.RequestUri.ToString()
+                AbsoluteUri = request.RequestUri.AbsolutePath,
+                Host = request.RequestUri.Host,
+                RequestUri = request.RequestUri.LocalPath.Substring(0, request.RequestUri.LocalPath.LastIndexOf('/'))
             };
         }
 

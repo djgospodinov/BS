@@ -227,6 +227,7 @@
     <Compile Include="Logic\DropdownHelper.cs" />
     <Compile Include="Filters\AuthorizeUserAttribute.cs" />
     <Compile Include="Filters\RequiredIf.cs" />
+    <Compile Include="Models\ApiLogFilterGridModel.cs" />
     <Compile Include="Models\CreateLicenseOwnerModel.cs" />
     <Compile Include="Controllers\LicenseController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -391,6 +392,9 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\ManageUsers.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Settings\ApiLog.cshtml" />
+    <Content Include="Views\Settings\LicenseLog.cshtml" />
+    <Content Include="Views\Settings\ApiLogEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
