@@ -44,10 +44,54 @@ namespace BS.Admin.Web.Controllers
                     && (!filter.ResponseStatusCode.HasValue || x.ResponseStatusCode == filter.ResponseStatusCode))
                 .ToList();
 
+            if (!string.IsNullOrEmpty(filter.SortField))
+            {
+                #region Sort
+                bool asc = filter.SortOrder.ToUpper() == "ASC";
+                switch (filter.SortField.ToUpper())
+                {
+                    case "REQUESTURI":
+                        data = asc
+                            ? data.OrderBy(x => x.RequestUri).ToList()
+                            : data.OrderByDescending(x => x.RequestUri).ToList();
+                        break;
+                    case "ABSOLUTEURI":
+                        data = asc
+                            ? data.OrderBy(x => x.AbsoluteUri).ToList()
+                            : data.OrderByDescending(x => x.AbsoluteUri).ToList();
+                        break;
+                    case "REQUESTMETHOD":
+                        data = asc
+                            ? data.OrderBy(x => x.RequestMethod).ToList()
+                            : data.OrderByDescending(x => x.RequestMethod).ToList();
+                        break;
+                    case "REQUESTIPADDRESS":
+                        data = asc
+                            ? data.OrderBy(x => x.RequestIpAddress).ToList()
+                            : data.OrderByDescending(x => x.RequestIpAddress).ToList();
+                        break;
+                    case "RESPONSETIMESTAMP":
+                        data = asc
+                            ? data.OrderBy(x => x.ResponseTimestamp).ToList()
+                            : data.OrderByDescending(x => x.ResponseTimestamp).ToList();
+                        break;
+                    case "RESPONSESTATUSCODE":
+                        data = asc
+                            ? data.OrderBy(x => x.ResponseStatusCode).ToList()
+                            : data.OrderByDescending(x => x.ResponseStatusCode).ToList();
+                        break;
+                    default:
+                        data = asc 
+                            ? data.OrderBy(x => x.ResponseTimestamp).ToList()
+                            : data.OrderByDescending(x => x.ResponseTimestamp).ToList();
+                        break;
+                }
+                #endregion
+            }
+
             var dataResult = new
             {
                 data = data
-                    .OrderByDescending(x => x.ResponseTimestamp)
                     .Skip((filter.PageIndex - 1) * filter.PageSize)
                     .Take(filter.PageSize)
                     .Select(x => new
