@@ -5,6 +5,20 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LicenseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ApiLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestUri" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="RequestMethod" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="RequestBody" Type="nvarchar(max)" />
+          <Property Name="RequestIpAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RequestTimestamp" Type="datetime" Nullable="false" />
+          <Property Name="ResponseContentBody" Type="nvarchar(max)" />
+          <Property Name="ResponseStatusCode" Type="int" />
+          <Property Name="ResponseTimestamp" Type="datetime" />
+        </EntityType>
         <EntityType Name="IpFilters">
           <Key>
             <PropertyRef Name="Id" />
@@ -175,6 +189,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="LicenseDbModelStoreContainer">
+          <EntitySet Name="ApiLogs" EntityType="Self.ApiLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IpFilters" EntityType="Self.IpFilters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseActivation" EntityType="Self.LicenseActivation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseModules" EntityType="Self.LicenseModules" Schema="dbo" store:Type="Tables" />
@@ -336,6 +351,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySet Name="IpFilters" EntityType="LicenseDbModel.IpFilter" />
           <EntitySet Name="Settings" EntityType="LicenseDbModel.Setting" />
           <EntitySet Name="LicensesLogs" EntityType="LicenseDbModel.LicensesLog" />
+          <EntitySet Name="ApiLogs" EntityType="LicenseDbModel.ApiLog" />
         </EntityContainer>
         <EntityType Name="lu_LicenseTypes">
           <Key>
@@ -424,6 +440,20 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="ChangedBy" Type="Int64" Nullable="false" />
           <Property Name="Old" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="New" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ApiLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestUri" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="RequestMethod" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="RequestBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RequestIpAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RequestTimestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ResponseContentBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ResponseStatusCode" Type="Int32" />
+          <Property Name="ResponseTimestamp" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -542,6 +572,21 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
                 <ScalarProperty Name="IsDemo" ColumnName="IsDemo" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="LicenseId" ColumnName="LicenseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApiLogs">
+            <EntityTypeMapping TypeName="LicenseDbModel.ApiLog">
+              <MappingFragment StoreEntitySet="ApiLogs">
+                <ScalarProperty Name="ResponseTimestamp" ColumnName="ResponseTimestamp" />
+                <ScalarProperty Name="ResponseStatusCode" ColumnName="ResponseStatusCode" />
+                <ScalarProperty Name="ResponseContentBody" ColumnName="ResponseContentBody" />
+                <ScalarProperty Name="RequestTimestamp" ColumnName="RequestTimestamp" />
+                <ScalarProperty Name="RequestIpAddress" ColumnName="RequestIpAddress" />
+                <ScalarProperty Name="RequestBody" ColumnName="RequestBody" />
+                <ScalarProperty Name="RequestMethod" ColumnName="RequestMethod" />
+                <ScalarProperty Name="RequestUri" ColumnName="RequestUri" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

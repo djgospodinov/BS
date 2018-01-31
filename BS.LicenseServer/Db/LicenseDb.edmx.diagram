@@ -20,6 +20,7 @@
         <EntityTypeShape EntityType="LicenseDbModel.IpFilter" Width="1.5" PointX="0.75" PointY="8.75" />
         <EntityTypeShape EntityType="LicenseDbModel.Setting" Width="1.5" PointX="7.375" PointY="8.75" />
         <EntityTypeShape EntityType="LicenseDbModel.LicensesLog" Width="1.5" PointX="9.375" PointY="8.75" />
+        <EntityTypeShape EntityType="LicenseDbModel.ApiLog" Width="1.5" PointX="10.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

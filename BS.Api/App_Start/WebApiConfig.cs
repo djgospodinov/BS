@@ -25,6 +25,8 @@ namespace BS.Api
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.MessageHandlers.Add(new ApiLogHandler());
         }
     }
 }
