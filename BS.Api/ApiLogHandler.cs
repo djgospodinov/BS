@@ -14,6 +14,9 @@ using BS.LicenseServer.Services;
 
 namespace BS.Api
 {
+    /// <summary>
+    /// http://arcware.net/logging-web-api-requests/
+    /// </summary>
     public class ApiLogHandler : DelegatingHandler
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -35,9 +38,8 @@ namespace BS.Api
 
                     // Update the API log entry with response info
                     apiLogEntry.ResponseStatusCode = (int)response.StatusCode;
-                    
-                    //TODO: find a better way
-                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+
+                    if (request.RequestUri.AbsolutePath != "/")
                     {
                         apiLogEntry.ResponseTimestamp = DateTime.Now;
 
