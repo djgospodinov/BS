@@ -28,7 +28,6 @@
 </hgroup>
 
 @using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
     @Html.ValidationSummary()
     
     if (!string.IsNullOrEmpty(ViewBag.Message)) 

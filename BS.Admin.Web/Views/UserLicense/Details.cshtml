@@ -81,6 +81,11 @@
     }
 </fieldset>
 
+<div style="margin-left:50px;margin-top:20px;">
+
+    @Html.ActionLink("Назад", "Cancel", null, new { @class = "link-button" })
+</div>
+
 <script>
     $(function () { // will trigger when the document is ready
         $('input').prop('disabled', true);
