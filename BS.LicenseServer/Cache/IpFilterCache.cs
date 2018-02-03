@@ -4,12 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 
-namespace BS.LicenseServer
+namespace BS.LicenseServer.Cache
 {
-    public class IpFilterCache
+    public class IpFilterCache : BaseCache
     {
         private bool _useIpFiltering = false;
         private List<IpAddressElement> _ipAddress;
@@ -18,18 +16,11 @@ namespace BS.LicenseServer
         public static readonly IpFilterCache Instance = new IpFilterCache();
 
         private IpFilterCache()
+            : base(new TimeSpan(0, 5, 0))
         {
-            Initiliaze();
-
-            var timer = new Timer();
-            timer.Interval = new TimeSpan(0, 5, 0).TotalMilliseconds;
-            timer.Elapsed += (s, e) =>
-            {
-                Initiliaze();
-            };
         }
 
-        private void Initiliaze()
+        protected override void Initiliaze()
         {
             using (var db = new LicenseDbEntities())
             {

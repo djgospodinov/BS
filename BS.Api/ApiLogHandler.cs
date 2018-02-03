@@ -19,6 +19,8 @@ namespace BS.Api
     /// </summary>
     public class ApiLogHandler : DelegatingHandler
     {
+        private readonly ApiLogService _logService = new ApiLogService();
+
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var apiLogEntry = CreateApiLogEntryWithRequestData(request);
@@ -51,7 +53,7 @@ namespace BS.Api
                         }
 
                         // TODO: Save the API log entry to the database
-                        ApiLogService.Log(apiLogEntry);
+                        _logService.Log(apiLogEntry);
                     }
 
                     return response;

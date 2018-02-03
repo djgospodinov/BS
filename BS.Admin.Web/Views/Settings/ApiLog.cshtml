@@ -4,12 +4,6 @@
     //https://github.com/tabalinas/jsgrid
 
     $(function () {
-        var countries = [
-            { Name: "", Id: 0 },
-            { Name: "За Компютър", Id: 1 },
-            { Name: "За Потребител", Id: 2 },
-            { Name: "За Сървър", Id: 3 },
-        ];
 
         $("#jsGrid-api-log").jsGrid({
             height: "550px",
@@ -41,12 +35,12 @@
 
             fields: [
                // { name: "Id", title: "Id", type: "text", width: 150, filtering: false },
-                { name: "RequestUri", title: "Uri", type: "text", width: 50 },
-                { name: "AbsoluteUri", title: "Absolute Uri", type: "text", width: 150 },
-                { name: "RequestMethod", title: "Method", type: "text", width: 50 },
-                { name: "RequestIpAddress", title: "IpAdress", type: "text", width: 50 },
-                { name: "ResponseTimestamp", title: "Timestamp", type: "date", width: 50 },
-                { name: "ResponseStatusCode", title: "StatusCode", type: "text", width: 50 },
+                { name: "RequestUri", title: "Заявка - път", type: "text", width: 50 },
+                { name: "AbsoluteUri", title: "Заявка - път с параметри", type: "text", width: 150 },
+                { name: "RequestMethod", title: "Метод", type: "text", width: 50 },
+                { name: "RequestIpAddress", title: "IP Адрес", type: "text", width: 50 },
+                { name: "ResponseTimestamp", title: "Дата", type: "date", width: 50 },
+                { name: "ResponseStatusCode", title: "Статус код - отговор", type: "text", width: 50 },
                 {
                     type: "control",
                     itemTemplate: function (value, item) {

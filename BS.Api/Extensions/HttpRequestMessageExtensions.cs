@@ -9,6 +9,7 @@ using BS.Common.Models;
 using BS.LicenseServer.Services;
 using BS.LicenseServer;
 using NLog;
+using BS.LicenseServer.Cache;
 
 namespace BS.Api.Extensions
 {

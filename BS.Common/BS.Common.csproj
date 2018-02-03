@@ -62,10 +62,11 @@
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Models\ApiLogEntry.cs" />
     <Compile Include="Models\IpFilter.cs" />
-    <Compile Include="Models\LicenseType.cs" />
+    <Compile Include="Models\LicenseLogModel.cs" />
+    <Compile Include="Models\LicenseTypeEnum.cs" />
     <Compile Include="Models\LicenseFilterModel.cs" />
     <Compile Include="Models\LicenseModel.cs" />
-    <Compile Include="Models\LicenseModules.cs" />
+    <Compile Include="Models\LicenseModuleModel.cs" />
     <Compile Include="Models\LicenserInfoModel.cs" />
     <Compile Include="Models\UpdateLicenseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

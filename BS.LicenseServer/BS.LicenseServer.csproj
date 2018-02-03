@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\BaseCache.cs" />
+    <Compile Include="Cache\LicenseLogCache.cs" />
     <Compile Include="Db\ApiLog.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
@@ -107,7 +109,7 @@
     </Compile>
     <Compile Include="EFContractResolver.cs" />
     <Compile Include="Helper\DbHelper.cs" />
-    <Compile Include="IpFilterCache.cs" />
+    <Compile Include="Cache\IpFilterCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApiLogService.cs" />
     <Compile Include="Services\DemoLicenseService.cs" />

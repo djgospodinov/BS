@@ -9,11 +9,13 @@ using BS.Admin.Web.Models;
 using BS.Common.Interfaces;
 using NLog;
 using BS.Common.Models;
+using BS.Admin.Web.Db;
 
 namespace BS.Admin.Web.Controllers
 {
     public class SettingsController : BaseController
     {
+        #region Initialize
         private readonly IIpFilterService _service;
         private readonly ApiLogService _apiLogService = new ApiLogService();
 
@@ -26,6 +28,7 @@ namespace BS.Admin.Web.Controllers
         {
             _service = service;
         }
+        #endregion
 
         public ActionResult Index()
         {
@@ -127,6 +130,91 @@ namespace BS.Admin.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public JsonResult LIcenseLogData(ApiLogFilterGridModel filter)
+        {
+            var dbModel = _apiLogService.GetLicenseLogs();
+            var data = dbModel
+                //.Where(x => (string.IsNullOrEmpty(filter.RequestUri.ToUpper()) || x.RequestUri.Contains(filter.RequestUri.ToUpper()))
+                //    && (string.IsNullOrEmpty(filter.AbsoluteUri) || x.AbsoluteUri.ToUpper().Contains(filter.AbsoluteUri.ToUpper()))
+                //    && (string.IsNullOrEmpty(filter.RequestMethod) || x.RequestMethod.ToUpper() == filter.RequestMethod.ToUpper())
+                //    && (string.IsNullOrEmpty(filter.RequestIpAddress) || x.RequestIpAddress.Contains(filter.RequestIpAddress))
+                //    && (!filter.ResponseStatusCode.HasValue || x.ResponseStatusCode == filter.ResponseStatusCode))
+                .ToList();
+
+            //if (!string.IsNullOrEmpty(filter.SortField))
+            //{
+            //    #region Sort
+            //    bool asc = filter.SortOrder.ToUpper() == "ASC";
+            //    switch (filter.SortField.ToUpper())
+            //    {
+            //        case "REQUESTURI":
+            //            data = asc
+            //                ? data.OrderBy(x => x.RequestUri).ToList()
+            //                : data.OrderByDescending(x => x.RequestUri).ToList();
+            //            break;
+            //        case "ABSOLUTEURI":
+            //            data = asc
+            //                ? data.OrderBy(x => x.AbsoluteUri).ToList()
+            //                : data.OrderByDescending(x => x.AbsoluteUri).ToList();
+            //            break;
+            //        case "REQUESTMETHOD":
+            //            data = asc
+            //                ? data.OrderBy(x => x.RequestMethod).ToList()
+            //                : data.OrderByDescending(x => x.RequestMethod).ToList();
+            //            break;
+            //        case "REQUESTIPADDRESS":
+            //            data = asc
+            //                ? data.OrderBy(x => x.RequestIpAddress).ToList()
+            //                : data.OrderByDescending(x => x.RequestIpAddress).ToList();
+            //            break;
+            //        case "RESPONSETIMESTAMP":
+            //            data = asc
+            //                ? data.OrderBy(x => x.ResponseTimestamp).ToList()
+            //                : data.OrderByDescending(x => x.ResponseTimestamp).ToList();
+            //            break;
+            //        case "RESPONSESTATUSCODE":
+            //            data = asc
+            //                ? data.OrderBy(x => x.ResponseStatusCode).ToList()
+            //                : data.OrderByDescending(x => x.ResponseStatusCode).ToList();
+            //            break;
+            //        default:
+            //            data = asc
+            //                ? data.OrderBy(x => x.ResponseTimestamp).ToList()
+            //                : data.OrderByDescending(x => x.ResponseTimestamp).ToList();
+            //            break;
+            //    }
+            //    #endregion
+            //}
+            //else
+            //{
+            //    data = data.OrderByDescending(x => x.ResponseTimestamp).ToList();
+            //}
+
+            using (var db = new BSAdminDbEntities())
+            {
+                var dataResult = new
+                {
+                    data = data
+                        .Skip((filter.PageIndex - 1) * filter.PageSize)
+                        .Take(filter.PageSize)
+                        .Select(x => new
+                        {
+                            Id = x.Id,
+                            LicenseId = x.LicenseId,
+                            IsDemo = x.IsDemo,
+                            ChangedBy = (db.UserProfiles.FirstOrDefault(up => up.UserId == x.ChangedBy) 
+                                    ?? new Db.UserProfile() { UserName = "BsApi" }).UserName,
+                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss")
+                        }).ToList(),
+                    itemsCount = data.Count()
+                };
+
+                return Json(dataResult, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #region Not Used
         public ActionResult IPs(int page = 1)
         {
             var result = new IpRestrictionModel()
@@ -275,5 +363,6 @@ namespace BS.Admin.Web.Controllers
 
             return RedirectToAction("IPs");
         }
+        #endregion
     }
 }

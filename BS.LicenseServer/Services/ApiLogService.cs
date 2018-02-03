@@ -1,5 +1,7 @@
 ﻿using BS.Common.Models;
+using BS.LicenseServer.Cache;
 using BS.LicenseServer.Db;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,27 +14,27 @@ namespace BS.LicenseServer.Services
     {
         private readonly LicenseDbEntities _db = new LicenseDbEntities();
 
-        public static void Log(ApiLogEntry logEntry)
-        {
-            using (var db = new LicenseDbEntities())
-            {
-                var result = new ApiLog()
-                {
-                    AbsoluteUri = logEntry.AbsoluteUri,
-                    Host = logEntry.Host,
-                    RequestBody = logEntry.RequestContentBody,
-                    RequestIpAddress = logEntry.RequestIpAddress,
-                    RequestMethod = logEntry.RequestMethod,
-                    RequestTimestamp = logEntry.RequestTimestamp.Value,
-                    RequestUri = logEntry.RequestUri,
-                    ResponseContentBody = logEntry.ResponseContentBody,
-                    ResponseStatusCode = logEntry.ResponseStatusCode,
-                    ResponseTimestamp = logEntry.ResponseTimestamp
-                };
+        private static LicenseLogCache _licenseCache = new LicenseLogCache();
 
-                db.ApiLogs.Add(result);
-                db.SaveChanges();
-            }
+        #region Api Log
+        public void Log(ApiLogEntry logEntry)
+        {
+            var result = new ApiLog()
+            {
+                AbsoluteUri = logEntry.AbsoluteUri,
+                Host = logEntry.Host,
+                RequestBody = logEntry.RequestContentBody,
+                RequestIpAddress = logEntry.RequestIpAddress,
+                RequestMethod = logEntry.RequestMethod,
+                RequestTimestamp = logEntry.RequestTimestamp.Value,
+                RequestUri = logEntry.RequestUri,
+                ResponseContentBody = logEntry.ResponseContentBody,
+                ResponseStatusCode = logEntry.ResponseStatusCode,
+                ResponseTimestamp = logEntry.ResponseTimestamp
+            };
+
+            _db.ApiLogs.Add(result);
+            _db.SaveChanges();
         }
 
         public IQueryable<ApiLogEntry> GetLogs()
@@ -69,6 +71,13 @@ namespace BS.LicenseServer.Services
                 ResponseTimestamp = result.ResponseTimestamp,
                 AbsoluteUri = result.AbsoluteUri
             };
+        }
+        #endregion
+
+        //TODO: LicenseLogCache
+        public List<LicenseLogModel> GetLicenseLogs()
+        {
+            return _licenseCache.GetLogs();
         }
 
         public void Dispose()

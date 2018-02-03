@@ -1,1 +1,59 @@
-﻿License Logs
+﻿<div id="jsGrid-license-log"></div>
+
+<script>
+    //https://github.com/tabalinas/jsgrid
+
+    $(function () {
+
+        $("#jsGrid-license-log").jsGrid({
+            height: "550px",
+            width: "100%",
+
+            filtering: true,
+            inserting: false,
+            editing: false,
+            sorting: true,
+            paging: true,
+            autoload: true,
+
+            pageLoading: true,
+
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            deleteConfirm: "Do you really want to delete client?",
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/settings/licenselogdata",
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+            },
+
+            fields: [
+                { name: "Id", title: "Id", type: "text", width: 20, filtering: false },
+                { name: "LicenseId", title: "Лицензе ID", type: "text", width: 150 },
+                { name: "IsDemo", title: "Промяна в демо", type: "checkbox", width: 80 },
+                { name: "ChangedBy", title: "Променен от", type: "text", width: 100 },               
+                { name: "Date", title: "Дата", type: "date", width: 100 },
+                {
+                    type: "control",
+                    itemTemplate: function (value, item) {
+                        var div = $("<div>");
+
+                        if (item.DetailUrl != undefined && item.DetailUrl != null && item.DetailUrl != '') {
+                            var $link = $("<a class='jsgrid-button jsgrid-search-button' style='padding-left:15px' href=" + item.DetailUrl + ">");
+                            div.append($link);
+                        }
+
+                        return div;
+                    }
+                }
+            ]
+        });
+
+    });
+</script>
