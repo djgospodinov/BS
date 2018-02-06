@@ -26,7 +26,7 @@
     </tr>
     <tr>
         <td>
-            Request IpAddress:
+            Заявка Ip Address:
         </td>
         <td>
             @Html.EditorFor(m => m.RequestIpAddress)
@@ -34,7 +34,7 @@
     </tr>
     <tr>
         <td>
-            Request Method:
+            Метод:
         </td>
         <td>
             @Html.EditorFor(m => m.RequestMethod)
@@ -42,7 +42,7 @@
     </tr>
     <tr>
         <td>
-            Request Timestamp:
+           Заявка дата:
         </td>
         <td>
             @Html.EditorFor(m => m.RequestTimestamp)
@@ -50,7 +50,7 @@
     </tr>
     <tr>
         <td>
-            Request Uri:
+            Заявка Uri:
         </td>
         <td>
             @Html.EditorFor(m => m.RequestUri)
@@ -58,7 +58,7 @@
     </tr>
     <tr>
         <td>
-            Response Body:
+            Отговор Body:
         </td>
         <td>
             @Html.TextAreaFor(m => m.ResponseContentBody, 5, 50, null)
@@ -66,7 +66,7 @@
     </tr>
     <tr>
         <td>
-            Status Code:
+            Статус код - отговор:
         </td>
         <td>
             @Html.EditorFor(m => m.ResponseStatusCode)
@@ -74,7 +74,7 @@
     </tr>
     <tr>
         <td>
-            Response Timestamp:
+            Отговор дата:
         </td>
         <td>
             @Html.EditorFor(m => m.ResponseTimestamp)
@@ -82,7 +82,7 @@
     </tr>
     <tr>
         <td>
-            Absolute Uri:
+            Абсолютен път:
         </td>
         <td>
             @Html.TextBoxFor(m => m.AbsoluteUri, new { style = "width:500px" })
@@ -92,7 +92,7 @@
 
 <div style="margin-left:50px;margin-top:20px;">
 
-    @Html.ActionLink("Назад", "Cancel", null, new { @class = "link-button" })
+    @Html.ActionLink("Назад", "Cancel", new { tabIndex = 0 }, new { @class = "link-button" })
 </div>
 
 <script>

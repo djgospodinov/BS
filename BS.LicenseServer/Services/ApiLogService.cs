@@ -74,10 +74,15 @@ namespace BS.LicenseServer.Services
         }
         #endregion
 
-        //TODO: LicenseLogCache
         public List<LicenseLogModel> GetLicenseLogs()
         {
             return _licenseCache.GetLogs();
+        }
+
+        public LicenseLogModel GetLicenseLog(int id)
+        {
+            return _licenseCache.GetLogs()
+                .FirstOrDefault(x => x.Id == id);
         }
 
         public void Dispose()

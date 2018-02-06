@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BS.Common;
 
 namespace BS.LicenseServer.Cache
 {
@@ -69,9 +70,11 @@ namespace BS.LicenseServer.Cache
                 {
                     if (!ignoreList.Contains(pi.Name))
                     {
-                        switch (pi.Name)
+                        var fieldName = GetFieldName(pi.Name);
+                        switch (pi.Name.ToLower())
                         {
-                            case "LicenseModules":
+                            case "licensemodules":
+                                #region 
                                 bool changed = false;
                                 var oldModules = oldObject.LicenseModules.Select(x => _modules[x.ModuleId])
                                     .ToList();
@@ -104,11 +107,43 @@ namespace BS.LicenseServer.Cache
 
                                 if (changed)
                                 {
-                                    result.Add(pi.Name, new LicenseLogChangeItem()
+                                    result.Add(fieldName, new LicenseLogChangeItem()
                                     {
                                         OldValue = string.Join(",", oldModules),
                                         NewValue = string.Join(",", newModules),
                                     });
+                                }
+                                break;
+                            #endregion
+                            case "type":
+                                #region
+                                var oldTypeValue = Convert.ToInt32(type.GetProperty(pi.Name).GetValue(oldObject, null));
+                                var newTypeValue = Convert.ToInt32(type.GetProperty(pi.Name).GetValue(newObject, null));
+
+                                if (oldTypeValue != newTypeValue && (oldTypeValue == null || !oldTypeValue.Equals(newTypeValue)))
+                                {
+                                    result.Add(fieldName, new LicenseLogChangeItem()
+                                    {
+                                        OldValue = ((LicenseTypeEnum)oldTypeValue).Description(),
+                                        NewValue = ((LicenseTypeEnum)newTypeValue).Description()
+                                    });
+                                }
+                                break;
+                            #endregion
+                            case "licenseownerid":
+                                object oldOwnerValue = type.GetProperty(pi.Name).GetValue(oldObject, null);
+                                object newOwnerValue = type.GetProperty(pi.Name).GetValue(newObject, null);
+
+                                if (oldOwnerValue != newOwnerValue && (oldOwnerValue == null || !oldOwnerValue.Equals(newOwnerValue)))
+                                {
+                                    using (var db = new LicenseDbEntities())
+                                    {
+                                        result.Add(fieldName, new LicenseLogChangeItem()
+                                        {
+                                            OldValue = db.LicenseOwners.First(x => x.Id == (int)oldOwnerValue).Name,
+                                            NewValue = db.LicenseOwners.First(x => x.Id == (int)newOwnerValue).Name
+                                        });
+                                    }
                                 }
                                 break;
                             default:
@@ -117,10 +152,10 @@ namespace BS.LicenseServer.Cache
 
                                 if (oldValue != newValue && (oldValue == null || !oldValue.Equals(newValue)))
                                 {
-                                    result.Add(pi.Name, new LicenseLogChangeItem()
+                                    result.Add(fieldName, new LicenseLogChangeItem()
                                     {
-                                        OldValue = oldValue,
-                                        NewValue = newValue
+                                        OldValue = GetValue(oldValue),
+                                        NewValue = GetValue(newValue)
                                     });
                                 }
                                 break;
@@ -130,6 +165,43 @@ namespace BS.LicenseServer.Cache
             }
 
             return result;
+        }
+        private static Dictionary<string, string> FieldNames = new Dictionary<string, string>()
+        {
+            { "enabled" , "Потвърден" },
+            { "validto", "Валиден до" },
+            { "subscribedto", "Абониран до" },
+            { "type", "Вид"},
+            { "workstationscount", "Брой компютри" },
+            { "isdemo", "Демо"},
+            { "licensemodules", "Модули"},
+            { "isactivated", "Активиран"},
+            { "licenseownerid", "Потребител/Фирма"}
+        };
+
+        private string GetFieldName(string name)
+        {
+            if (FieldNames.ContainsKey(name.ToLower()))
+            {
+                return FieldNames[name.ToLower()];
+            }
+
+            return name;
+        }
+
+        private object GetValue(object value)
+        {
+            var type = value.GetType();
+
+            switch (type.Name.ToLower())
+            {
+                case "datetime":
+                    return ((DateTime)value).ToString("dd/MM/yyyy HH:mm:ss");
+                case "boolean":
+                    return ((bool)value).ToBgString();
+                default:
+                    return value;
+            }
         }
     }
 }

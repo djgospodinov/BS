@@ -30,9 +30,9 @@ namespace BS.Admin.Web.Controllers
         }
         #endregion
 
-        public ActionResult Index()
+        public ActionResult Index(int tabIndex = 0)
         {
-            return View();
+            return View(tabIndex);
         }
 
         [HttpGet]
@@ -131,7 +131,7 @@ namespace BS.Admin.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult LIcenseLogData(ApiLogFilterGridModel filter)
+        public JsonResult LicenseLogData(ApiLogFilterGridModel filter)
         {
             var dbModel = _apiLogService.GetLicenseLogs();
             var data = dbModel
@@ -205,13 +205,26 @@ namespace BS.Admin.Web.Controllers
                             IsDemo = x.IsDemo,
                             ChangedBy = (db.UserProfiles.FirstOrDefault(up => up.UserId == x.ChangedBy) 
                                     ?? new Db.UserProfile() { UserName = "BsApi" }).UserName,
-                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss")
+                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                            DetailUrl = string.Format("../Settings/LicenseLogEntry/{0}", x.Id)
                         }).ToList(),
                     itemsCount = data.Count()
                 };
 
                 return Json(dataResult, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public ActionResult LicenseLogEntry(int id)
+        {
+            var model = _apiLogService.GetLicenseLog(id);
+            using (var db = new BSAdminDbEntities())
+            {
+                model.ChangedByName = (db.UserProfiles.FirstOrDefault(up => up.UserId == model.ChangedBy)
+                                    ?? new Db.UserProfile() { UserName = "BsApi" }).UserName;
+            }
+
+            return View(model);
         }
 
         #region Not Used

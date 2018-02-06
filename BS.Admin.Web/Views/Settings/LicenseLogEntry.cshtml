@@ -1,0 +1,133 @@
+﻿@model BS.Common.Models.LicenseLogModel
+@{
+    ViewBag.Title = "Промяна лиценз";
+}
+
+<style>
+    #log-table td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #log-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #log-table tr:hover {
+        background-color: #ddd;
+    }
+
+    #log-table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: lightgray;
+        color: white;
+    }
+    .change {
+        color: red;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+<br />
+
+<table>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.Id)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.Id)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.LicenseId)
+        </td>
+        <td>
+            @Html.TextBoxFor(m => m.LicenseId, new { style = "width: 350px"})
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.Date)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.Date)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.IsDemo)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.IsDemo)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.LabelFor(m => m.ChangedByName)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.ChangedByName)
+        </td>
+    </tr>
+</table>
+
+<br />
+<br />
+<section>
+    <fieldset style="width:900px">
+        <legend>@Html.LabelFor(m => m.Changes)</legend>
+        <table id="log-table">
+            <tr>
+                <th style="width:100px">
+                    Поле
+                </th>
+                <th style="width:300px">
+                    Стара стойност
+                </th>
+                <th style="width:300px">
+                    Нова стойност
+                </th>
+            </tr>
+            @foreach (var k in Model.Changes)
+            {
+                <tr>
+                    <td>
+                        @k.Key
+                    </td>
+                    <td>
+                        @k.Value.OldValue
+                    </td>
+                    <td class="change" style="font-weight:bold">
+                        @k.Value.NewValue
+                    </td>
+                </tr>
+            }
+        </table>
+        </fieldset>
+    </section>
+<br />
+<br />
+
+        <div style="margin-left:50px;margin-top:20px;">
+
+            @Html.ActionLink("Назад", "Cancel", new { tabIndex = 1 }, new { @class = "link-button" })
+        </div>
+
+        <script>
+            $(function () { // will trigger when the document is ready
+                $('input').prop('disabled', true);
+                $('select').prop('disabled', true);
+                $('input').prop('readonly', true);
+                $('textarea').prop('readonly', true);
+            });
+        </script>
+
+
+
+

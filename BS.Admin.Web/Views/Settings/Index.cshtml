@@ -1,4 +1,5 @@
-﻿@{
+﻿@model  int
+@{
     ViewBag.Title = "Системни настройки";
 }
 
@@ -23,6 +24,6 @@
 
 <script>
     $(function () {
-        $("#tabs").tabs({ active: 0 });
+        $("#tabs").tabs({ active: @Model });
     });
 </script>
