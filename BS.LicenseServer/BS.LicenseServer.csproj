@@ -143,7 +143,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Db\23102017.sql" />
+    <Content Include="Db\Changes.sql" />
     <Content Include="Db\LicenseDb.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LicenseDb.edmx</DependentUpon>
