@@ -15,6 +15,7 @@ namespace BS.LicenseServer.Services
         private readonly LicenseDbEntities _db = new LicenseDbEntities();
 
         private static LicenseLogCache _licenseCache = new LicenseLogCache();
+        private static ApiLogCache _apiCache = new ApiLogCache();
 
         #region Api Log
         public void Log(ApiLogEntry logEntry)
@@ -37,43 +38,18 @@ namespace BS.LicenseServer.Services
             _db.SaveChanges();
         }
 
-        public IQueryable<ApiLogEntry> GetLogs()
+        public List<ApiLogEntry> GetLogs()
         {
-            return _db.ApiLogs.Select(x => new ApiLogEntry()
-            {
-                Id = x.Id,
-                RequestContentBody = x.RequestBody,
-                RequestIpAddress = x.RequestIpAddress,
-                RequestMethod = x.RequestMethod,
-                RequestTimestamp = x.RequestTimestamp,
-                RequestUri = x.RequestUri,
-                ResponseContentBody = x.ResponseContentBody,
-                ResponseStatusCode = x.ResponseStatusCode,
-                ResponseTimestamp = x.ResponseTimestamp,
-                AbsoluteUri = x.AbsoluteUri
-            });
+            return _apiCache.GetLogs();
         }
 
         public ApiLogEntry GetLogEntry(int id)
         {
-            var result = _db.ApiLogs.FirstOrDefault(x => x.Id == id);
-
-            return new ApiLogEntry()
-            {
-                Id = result.Id,
-                RequestContentBody = result.RequestBody,
-                RequestIpAddress = result.RequestIpAddress,
-                RequestMethod = result.RequestMethod,
-                RequestTimestamp = result.RequestTimestamp,
-                RequestUri = result.RequestUri,
-                ResponseContentBody = result.ResponseContentBody,
-                ResponseStatusCode = result.ResponseStatusCode,
-                ResponseTimestamp = result.ResponseTimestamp,
-                AbsoluteUri = result.AbsoluteUri
-            };
+            return _apiCache.GetLogById(id);
         }
         #endregion
 
+        #region License Log
         public List<LicenseLogModel> GetLicenseLogs()
         {
             return _licenseCache.GetLogs();
@@ -84,6 +60,7 @@ namespace BS.LicenseServer.Services
             return _licenseCache.GetLogs()
                 .FirstOrDefault(x => x.Id == id);
         }
+        #endregion
 
         public void Dispose()
         {

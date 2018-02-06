@@ -17,7 +17,7 @@ namespace BS.LicenseServer.Cache
         private readonly object _lock = new object();
 
         public LicenseLogCache()
-            : base(new TimeSpan(0, 0, 30))
+            : base(new TimeSpan(0, 0, 15))
         {
            
         }
@@ -55,6 +55,7 @@ namespace BS.LicenseServer.Cache
             }
         }
 
+        #region Helper methods
         private Dictionary<string, LicenseLogChangeItem> CreateChanges(string oldString, string newString)
         {
             var oldObject = JsonConvert.DeserializeObject<License>(oldString);
@@ -166,6 +167,7 @@ namespace BS.LicenseServer.Cache
 
             return result;
         }
+
         private static Dictionary<string, string> FieldNames = new Dictionary<string, string>()
         {
             { "enabled" , "Потвърден" },
@@ -203,5 +205,6 @@ namespace BS.LicenseServer.Cache
                     return value;
             }
         }
+        #endregion
     }
 }

@@ -40,7 +40,7 @@ namespace BS.Admin.Web.Controllers
         {
             var dbModel = _apiLogService.GetLogs();
             var data = dbModel
-                .Where(x => (string.IsNullOrEmpty(filter.RequestUri.ToUpper()) || x.RequestUri.Contains(filter.RequestUri.ToUpper()))
+                .Where(x => (string.IsNullOrEmpty(filter.RequestUri) || x.RequestUri.ToUpper().Contains(filter.RequestUri.ToUpper()))
                     && (string.IsNullOrEmpty(filter.AbsoluteUri) || x.AbsoluteUri.ToUpper().Contains(filter.AbsoluteUri.ToUpper()))
                     && (string.IsNullOrEmpty(filter.RequestMethod) || x.RequestMethod.ToUpper() == filter.RequestMethod.ToUpper())
                     && (string.IsNullOrEmpty(filter.RequestIpAddress) || x.RequestIpAddress.Contains(filter.RequestIpAddress))
@@ -113,7 +113,7 @@ namespace BS.Admin.Web.Controllers
                         ResponseTimestamp = x.ResponseTimestamp.Value.ToString("dd/MM/yyyy HH:mm:ss"),
                         DetailUrl = string.Format("../Settings/ApiLogEntry/{0}", x.Id)
                     }),
-                itemsCount = data.Count()
+                itemsCount = data.Count
             };
 
             return Json(dataResult, JsonRequestBehavior.AllowGet);
@@ -131,88 +131,83 @@ namespace BS.Admin.Web.Controllers
         }
 
         [HttpGet]
-        public JsonResult LicenseLogData(ApiLogFilterGridModel filter)
+        public JsonResult LicenseLogData(LicenseLogFilterGridModel filter)
         {
             var dbModel = _apiLogService.GetLicenseLogs();
-            var data = dbModel
-                //.Where(x => (string.IsNullOrEmpty(filter.RequestUri.ToUpper()) || x.RequestUri.Contains(filter.RequestUri.ToUpper()))
-                //    && (string.IsNullOrEmpty(filter.AbsoluteUri) || x.AbsoluteUri.ToUpper().Contains(filter.AbsoluteUri.ToUpper()))
-                //    && (string.IsNullOrEmpty(filter.RequestMethod) || x.RequestMethod.ToUpper() == filter.RequestMethod.ToUpper())
-                //    && (string.IsNullOrEmpty(filter.RequestIpAddress) || x.RequestIpAddress.Contains(filter.RequestIpAddress))
-                //    && (!filter.ResponseStatusCode.HasValue || x.ResponseStatusCode == filter.ResponseStatusCode))
-                .ToList();
-
-            //if (!string.IsNullOrEmpty(filter.SortField))
-            //{
-            //    #region Sort
-            //    bool asc = filter.SortOrder.ToUpper() == "ASC";
-            //    switch (filter.SortField.ToUpper())
-            //    {
-            //        case "REQUESTURI":
-            //            data = asc
-            //                ? data.OrderBy(x => x.RequestUri).ToList()
-            //                : data.OrderByDescending(x => x.RequestUri).ToList();
-            //            break;
-            //        case "ABSOLUTEURI":
-            //            data = asc
-            //                ? data.OrderBy(x => x.AbsoluteUri).ToList()
-            //                : data.OrderByDescending(x => x.AbsoluteUri).ToList();
-            //            break;
-            //        case "REQUESTMETHOD":
-            //            data = asc
-            //                ? data.OrderBy(x => x.RequestMethod).ToList()
-            //                : data.OrderByDescending(x => x.RequestMethod).ToList();
-            //            break;
-            //        case "REQUESTIPADDRESS":
-            //            data = asc
-            //                ? data.OrderBy(x => x.RequestIpAddress).ToList()
-            //                : data.OrderByDescending(x => x.RequestIpAddress).ToList();
-            //            break;
-            //        case "RESPONSETIMESTAMP":
-            //            data = asc
-            //                ? data.OrderBy(x => x.ResponseTimestamp).ToList()
-            //                : data.OrderByDescending(x => x.ResponseTimestamp).ToList();
-            //            break;
-            //        case "RESPONSESTATUSCODE":
-            //            data = asc
-            //                ? data.OrderBy(x => x.ResponseStatusCode).ToList()
-            //                : data.OrderByDescending(x => x.ResponseStatusCode).ToList();
-            //            break;
-            //        default:
-            //            data = asc
-            //                ? data.OrderBy(x => x.ResponseTimestamp).ToList()
-            //                : data.OrderByDescending(x => x.ResponseTimestamp).ToList();
-            //            break;
-            //    }
-            //    #endregion
-            //}
-            //else
-            //{
-            //    data = data.OrderByDescending(x => x.ResponseTimestamp).ToList();
-            //}
 
             using (var db = new BSAdminDbEntities())
             {
-                var dataResult = new
+                foreach (var log in dbModel)
                 {
-                    data = data
-                        .Skip((filter.PageIndex - 1) * filter.PageSize)
-                        .Take(filter.PageSize)
-                        .Select(x => new
-                        {
-                            Id = x.Id,
-                            LicenseId = x.LicenseId,
-                            IsDemo = x.IsDemo,
-                            ChangedBy = (db.UserProfiles.FirstOrDefault(up => up.UserId == x.ChangedBy) 
-                                    ?? new Db.UserProfile() { UserName = "BsApi" }).UserName,
-                            Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
-                            DetailUrl = string.Format("../Settings/LicenseLogEntry/{0}", x.Id)
-                        }).ToList(),
-                    itemsCount = data.Count()
-                };
-
-                return Json(dataResult, JsonRequestBehavior.AllowGet);
+                    log.ChangedByName = (db.UserProfiles.FirstOrDefault(up => up.UserId == log.ChangedBy)
+                                        ?? new Db.UserProfile() { UserName = "BsApi" }).UserName;
+                }
             }
+
+            var data = dbModel
+                .Where(x => (string.IsNullOrEmpty(filter.ChangedBy)
+                        || x.ChangedByName.ToUpper().Contains(filter.ChangedBy.ToUpper()))
+                     && (!filter.IsDemo.HasValue || x.IsDemo == filter.IsDemo))
+                .ToList();
+
+            if (!string.IsNullOrEmpty(filter.SortField))
+            {
+                #region Sort
+                bool asc = filter.SortOrder.ToUpper() == "ASC";
+                switch (filter.SortField.ToUpper())
+                {
+                    case "ID":
+                        data = asc
+                            ? data.OrderBy(x => x.Id).ToList()
+                            : data.OrderByDescending(x => x.Id).ToList();
+                        break;
+                    case "LICENSEID":
+                        data = asc
+                            ? data.OrderBy(x => x.LicenseId).ToList()
+                            : data.OrderByDescending(x => x.LicenseId).ToList();
+                        break;
+                    case "ISDEMO":
+                        data = asc
+                            ? data.OrderBy(x => x.IsDemo).ToList()
+                            : data.OrderByDescending(x => x.IsDemo).ToList();
+                        break;
+                    case "CHANGEDBY":
+                        data = asc
+                            ? data.OrderBy(x => x.ChangedBy).ToList()
+                            : data.OrderByDescending(x => x.ChangedBy).ToList();
+                        break;
+                    default:
+                        data = asc
+                            ? data.OrderBy(x => x.Date).ToList()
+                            : data.OrderByDescending(x => x.Date).ToList();
+                        break;
+                }
+                #endregion
+            }
+            else
+            {
+                data = data.OrderByDescending(x => x.Date).ToList();
+            }
+
+
+            var dataResult = new
+            {
+                data = data
+                    .Skip((filter.PageIndex - 1) * filter.PageSize)
+                    .Take(filter.PageSize)
+                    .Select(x => new
+                    {
+                        Id = x.Id,
+                        LicenseId = x.LicenseId,
+                        IsDemo = x.IsDemo,
+                        ChangedBy = x.ChangedByName,
+                        Date = x.Date.ToString("dd/MM/yyyy HH:mm:ss"),
+                        DetailUrl = string.Format("../Settings/LicenseLogEntry/{0}", x.Id)
+                    }).ToList(),
+                itemsCount = data.Count()
+            };
+
+            return Json(dataResult, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult LicenseLogEntry(int id)
@@ -280,10 +275,10 @@ namespace BS.Admin.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = _service.Add(new IpAddressElement() 
+                    var result = _service.Add(new IpAddressElement()
                     {
-                       Address = model.IpAddress,
-                       Denied = model.IsDenied
+                        Address = model.IpAddress,
+                        Denied = model.IsDenied
                     });
 
                     if (result)
@@ -305,7 +300,7 @@ namespace BS.Admin.Web.Controllers
         public ActionResult Edit(int id)
         {
             var result = _service.Get(id);
-            return View(new IpModel() 
+            return View(new IpModel()
             {
                 Id = result.Id,
                 IpAddress = result.Address,
@@ -354,7 +349,7 @@ namespace BS.Admin.Web.Controllers
                     return RedirectToAction("IPs");
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex);
             }
@@ -363,7 +358,7 @@ namespace BS.Admin.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UseRestriction(bool useIpRestriction) 
+        public ActionResult UseRestriction(bool useIpRestriction)
         {
             try
             {

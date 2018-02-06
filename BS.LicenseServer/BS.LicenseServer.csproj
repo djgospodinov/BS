@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\ApiLogCache.cs" />
     <Compile Include="Cache\BaseCache.cs" />
     <Compile Include="Cache\LicenseLogCache.cs" />
     <Compile Include="Db\ApiLog.cs">
