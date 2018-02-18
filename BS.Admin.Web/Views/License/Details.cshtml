@@ -5,8 +5,12 @@
 
 <style>
     select {
-        width: 120px;
+        width: 300px;
         height: 25px;
+    }
+
+    fieldset {
+        width: 600px;
     }
 </style>
 
@@ -52,7 +56,7 @@
     </tr>
     <tr>
         <td>
-            Потребител/Фирма:
+            <span title="Потребителя или фирмата, която е закупила лиценза">Потребител/Фирма:</span>
         </td>
         <td>
             @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers())
@@ -63,7 +67,7 @@
             Вид:
         </td>
         <td>
-            @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseUsers())
+            @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseTypes())
         </td>
     </tr>
     <tr>
@@ -91,8 +95,9 @@
         </td>
     </tr>
 </table>
+
 <section>
-    <fieldset style="width:400px">
+    <fieldset>
         <legend>Модули</legend>
         <table>
             <tr>
@@ -130,6 +135,10 @@
         </table>
     </fieldset>
 </section>
+
+<div style="margin-top:20px;">
+    @{ Html.RenderAction("LicenseActivations", new { LicenseId = Model.Id }); }
+</div>
 
 <div style="margin-left:50px;margin-top:20px;">
 

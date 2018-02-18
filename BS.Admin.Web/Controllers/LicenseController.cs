@@ -120,6 +120,13 @@ namespace BS.Admin.Web.Controllers
 
         #region CRUD
 
+        public ActionResult LicenseActivations(string licenseId)
+        {
+            var result = _licenseService.LicenseActivations(licenseId);
+
+            return PartialView(result);
+        }
+
         [HttpGet]
         [AuthorizeUser(AccessLevel = Const.CreateLicence)]
         public ActionResult Create() 

@@ -11,6 +11,8 @@ namespace BS.Common
     {
         LicenseModel Get(string id);
 
+        List<LicenseActivationModel> LicenseActivations(string id);
+
         List<LicenseModel> GetByFilter(LicenseFilterModel filter);
 
         List<LicenseModel> GetAll();

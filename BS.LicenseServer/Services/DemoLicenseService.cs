@@ -101,5 +101,9 @@ namespace BS.Api.Services
             return false;
         }
 
+        public List<LicenseActivationModel> LicenseActivations(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

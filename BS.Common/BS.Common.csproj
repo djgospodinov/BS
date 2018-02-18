@@ -62,6 +62,7 @@
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Models\ApiLogEntry.cs" />
     <Compile Include="Models\IpFilter.cs" />
+    <Compile Include="Models\LicenseActivationsModel.cs" />
     <Compile Include="Models\LicenseLogModel.cs" />
     <Compile Include="Models\LicenseTypeEnum.cs" />
     <Compile Include="Models\LicenseFilterModel.cs" />

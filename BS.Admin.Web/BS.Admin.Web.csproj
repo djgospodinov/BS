@@ -397,6 +397,7 @@
     <Content Include="Views\Settings\LicenseLog.cshtml" />
     <Content Include="Views\Settings\ApiLogEntry.cshtml" />
     <Content Include="Views\Settings\LicenseLogEntry.cshtml" />
+    <Content Include="Views\License\LicenseActivations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

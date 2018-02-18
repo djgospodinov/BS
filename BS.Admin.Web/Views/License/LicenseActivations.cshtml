@@ -1,0 +1,45 @@
+﻿@model List<BS.Common.Models.LicenseActivationModel>
+
+<style>
+    #log-table td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #log-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #log-table tr:hover {
+        background-color: #ddd;
+    }
+
+    #log-table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: lightgray;
+        color: white;
+    }
+</style>
+
+<section>
+    <fieldset>
+        <legend>Активации на лиценз</legend>
+        <table id="log-table">
+            <tr>
+                <th style="width:230px">Компютър Id</th>
+                <th style="width:230px">Потребител Id</th>
+                <th style="width:230px">PC Name</th>
+            </tr>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.ComptuterId</td>
+                    <td>@x.UserId</td>
+                    <td>@x.PCName</td>
+                </tr>
+            }
+        </table>
+    </fieldset>
+</section>

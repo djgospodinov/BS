@@ -65,6 +65,27 @@ namespace BS.LicenseServer.Services
             return null;
         }
 
+        public List<LicenseActivationModel> LicenseActivations(string id)
+        {
+            using (var db = new LicenseDbEntities())
+            {
+                var guid = Guid.Parse(id);
+                var result = db.Licenses.FirstOrDefault(x => x.Id == guid);
+                if (result != null)
+                {
+
+                    return result.LicenseActivations.Select(x => new LicenseActivationModel()
+                    {
+                        ComptuterId = x.ComputerId,
+                        UserId = x.UserId,
+                        PCName = x.ComputerName
+                    }).ToList();
+                }
+            }
+
+            return null;
+        }
+
         public List<LicenseModel> GetByFilter(LicenseFilterModel filter)
         {
             using (var db = new LicenseDbEntities())
