@@ -5,7 +5,7 @@
 <h2>@ViewBag.Title</h2>
 
 <br />
-@if (BS.Admin.Web.RolesManager.IsAdministrator(User.Identity))
+@if (BS.Admin.Web.RolesManager.IsAdministrator())
 {
     @Html.ActionLink("Създай потребител", "Register", "Account")
 }
