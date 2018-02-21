@@ -33,23 +33,15 @@ namespace BS.Admin.Web
             _rolesPermissions.Add(Const.NormalUserRoleName,new List<string>());
         }
 
-        public static bool IsAdministrator(System.Security.Principal.IIdentity identity) 
+        public static bool IsAdministrator() 
         {
-            if (!identity.IsAuthenticated) 
-                return false;
-
-            string userName = identity.Name;
-            return Roles.IsUserInRole(userName, BS.Admin.Web.Const.AdministratorRoleName);
+            return Roles.IsUserInRole(Const.AdministratorRoleName);
         }
 
         public static bool CanCreateLicense(System.Security.Principal.IIdentity identity)
         {
-            if (!identity.IsAuthenticated)
-                return false;
-
-            string userName = identity.Name;
-            return Roles.IsUserInRole(userName, BS.Admin.Web.Const.AdministratorRoleName)
-                || Roles.IsUserInRole(userName, BS.Admin.Web.Const.SuperUserRoleName);
+            return Roles.IsUserInRole(Const.AdministratorRoleName)
+                || Roles.IsUserInRole(Const.SuperUserRoleName);
         }
 
         public static List<string> GetUserPermissions(string userName)

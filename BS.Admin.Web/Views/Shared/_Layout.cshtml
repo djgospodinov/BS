@@ -92,16 +92,14 @@
             <div class="float-left">
                 @Html.Partial("_LoginPartial")
             </div>
-            @if (User.Identity != null 
-                && User.Identity.IsAuthenticated 
-                && !string.IsNullOrEmpty(User.Identity.Name))
+            @if (WebSecurity.IsAuthenticated)
             {
                 <div class="float-right">
                     <nav>
                         <ul id="menu" style="text-align:center">
                             <li>@Html.ActionLink("Лицензи", "Index", "License")</li>
                             <li>@Html.ActionLink("Фирмени данни", "Index", "UserLicense")</li>
-                            @if (BS.Admin.Web.RolesManager.IsAdministrator(User.Identity))
+                            @if (BS.Admin.Web.RolesManager.IsAdministrator())
                             {
                                 <li>@Html.ActionLink("Системни настройки", "Index", "Settings")</li>
                                 <li>@Html.ActionLink("Потребители", "Index", "Account")</li>
