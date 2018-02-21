@@ -22,8 +22,8 @@ namespace BS.Admin.Web.Models
             IsCompany  = model.IsCompany;
             Phone  = model.Phone;
             Email  = model.Email;
-            CompanyId  = Convert.ToInt32(model.CompanyId);
-            EGN  = Convert.ToInt32(model.EGN);
+            CompanyId  = !string.IsNullOrWhiteSpace(model.CompanyId) ? (long?)Convert.ToInt64(model.CompanyId) : null;
+            EGN  = !string.IsNullOrWhiteSpace(model.EGN) ? (long?)Convert.ToInt64(model.EGN.Trim()) : null;
             PostCode  = model.PostCode;
             RegistrationAddress  = model.RegistrationAddress;
             PostAddress  = model.PostAddress;
@@ -44,7 +44,7 @@ namespace BS.Admin.Web.Models
                 Phone = this.Phone,
                 Email = this.Email,
                 CompanyId = this.CompanyId.ToString(),
-                EGN = this.EGN.ToString(),
+                EGN = this.EGN.HasValue ? this.EGN.ToString().Trim() : null,
                 PostCode = this.PostCode,
                 RegistrationAddress = this.RegistrationAddress,
                 PostAddress = this.PostAddress,
@@ -83,13 +83,13 @@ namespace BS.Admin.Web.Models
 
         [Display(Name = "Булстат")]
         [RequiredIf("IsCompany", true)]
-        [Range(0, 99999999999, ErrorMessage = "Въведете само цифри.")]
-        public int? CompanyId { get; set; }
+        [RangeIf("IsCompany", true, 9999999999999, 999999999999999, ErrorMessage = "Въведете само цифри.Полето трябва да е между 13 и 15 символа.")]
+        public long? CompanyId { get; set; }
 
         [Display(Name = "ЕГН")]
-        [Range(0, 99999999999, ErrorMessage = "Въведете само цифри.")]
+        [RangeIf("IsCompany", false, 1000000000, 9999999999, ErrorMessage = "Въведете само цифри.Полето трябва да е 10 символа.")]
         [RequiredIf("IsCompany", false)]
-        public int? EGN { get; set; }
+        public long? EGN { get; set; }
 
         [Display(Name = "Пощенски код")]
         public int PostCode { get; set; }

@@ -130,18 +130,27 @@ namespace BS.LicenseServer.Services
             {
                 using (var db = new LicenseDbEntities())
                 {
-                    var owner = db.LicenseOwners.FirstOrDefault(x => (x.IsCompany && x.CompanyId == model.User.CompanyId)
-                        || x.EGN == model.User.EGN)
-                                ?? new LicenseOwner()
-                                {
-                                    Name = model.User.Name,
-                                    IsCompany = model.User.IsCompany,
-                                    Email = model.User.Email,
-                                    Phone = model.User.Phone,
-                                    ContactPerson = model.User.ContactPerson,
-                                    CompanyId = model.User.CompanyId,
-                                    EGN = model.User.EGN
-                                };
+                    var owner = db.LicenseOwners.FirstOrDefault(x => x.Id == model.User.Id);
+                    if (owner == null)
+                    {
+                        owner = model.User.IsCompany 
+                            ? db.LicenseOwners.FirstOrDefault(x => x.CompanyId == model.User.CompanyId)
+                            : db.LicenseOwners.FirstOrDefault(x => x.UserId == model.User.EGN);
+                    }
+
+                    if (owner == null)
+                    {
+                        owner = new LicenseOwner()
+                        {
+                            Name = model.User.Name,
+                            IsCompany = model.User.IsCompany,
+                            Email = model.User.Email,
+                            Phone = model.User.Phone,
+                            ContactPerson = model.User.ContactPerson,
+                            CompanyId = model.User.CompanyId,
+                            EGN = model.User.EGN
+                        };
+                    }
 
                     var extraInfo = owner.LicenseOwnerExtraInfoes1 != null ? owner.LicenseOwnerExtraInfoes1.FirstOrDefault() : null;
                     if (extraInfo == null)
