@@ -219,6 +219,7 @@
     <Compile Include="Db\webpages_Roles.cs">
       <DependentUpon>BSAdminDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Filters\RangeIfAttribute.cs" />
     <Compile Include="Logic\Const.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -226,7 +227,7 @@
     <Compile Include="Logic\CustomDateBinder.cs" />
     <Compile Include="Logic\DropdownHelper.cs" />
     <Compile Include="Filters\AuthorizeUserAttribute.cs" />
-    <Compile Include="Filters\RequiredIf.cs" />
+    <Compile Include="Filters\RequiredIfAttribute.cs" />
     <Compile Include="Models\LicenseLogFilterGridModel.cs" />
     <Compile Include="Models\ApiLogFilterGridModel.cs" />
     <Compile Include="Models\CreateLicenseOwnerModel.cs" />
