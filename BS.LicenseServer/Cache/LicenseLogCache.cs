@@ -58,8 +58,8 @@ namespace BS.LicenseServer.Cache
         #region Helper methods
         private Dictionary<string, LicenseLogChangeItem> CreateChanges(string oldString, string newString)
         {
-            var oldObject = JsonConvert.DeserializeObject<License>(oldString);
-            var newObject = JsonConvert.DeserializeObject<License>(newString);
+            var oldObject = !string.IsNullOrEmpty(oldString) ? JsonConvert.DeserializeObject<License>(oldString) : new License();
+            var newObject = !string.IsNullOrEmpty(newString) ? JsonConvert.DeserializeObject<License>(newString) : new License();
 
             var result = new Dictionary<string, LicenseLogChangeItem>();
 
@@ -75,7 +75,7 @@ namespace BS.LicenseServer.Cache
                         switch (pi.Name.ToLower())
                         {
                             case "licensemodules":
-                                #region 
+                                #region licensemodules
                                 bool changed = false;
                                 var oldModules = oldObject.LicenseModules.Select(x => _modules[x.ModuleId])
                                     .ToList();
@@ -117,7 +117,7 @@ namespace BS.LicenseServer.Cache
                                 break;
                             #endregion
                             case "type":
-                                #region
+                                #region type
                                 var oldTypeValue = Convert.ToInt32(type.GetProperty(pi.Name).GetValue(oldObject, null));
                                 var newTypeValue = Convert.ToInt32(type.GetProperty(pi.Name).GetValue(newObject, null));
 
@@ -132,6 +132,7 @@ namespace BS.LicenseServer.Cache
                                 break;
                             #endregion
                             case "licenseownerid":
+                                #region licenseownerid
                                 object oldOwnerValue = type.GetProperty(pi.Name).GetValue(oldObject, null);
                                 object newOwnerValue = type.GetProperty(pi.Name).GetValue(newObject, null);
 
@@ -147,6 +148,7 @@ namespace BS.LicenseServer.Cache
                                     }
                                 }
                                 break;
+                            #endregion
                             default:
                                 object oldValue = type.GetProperty(pi.Name).GetValue(oldObject, null);
                                 object newValue = type.GetProperty(pi.Name).GetValue(newObject, null);
