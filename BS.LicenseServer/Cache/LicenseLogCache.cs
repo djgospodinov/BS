@@ -15,6 +15,7 @@ namespace BS.LicenseServer.Cache
         private List<LicenseLogModel> _licenseLogs;
         private Dictionary<short, string> _modules;
         private readonly object _lock = new object();
+        private static readonly List<string> _ignoreList = new List<string>() { "LicenseActivations", "LicenseOwner" };
 
         public LicenseLogCache()
             : base(new TimeSpan(0, 0, 15))
@@ -66,10 +67,9 @@ namespace BS.LicenseServer.Cache
             if (oldObject != null && newObject != null)
             {
                 Type type = typeof(License);
-                List<string> ignoreList = new List<string>() { "LicenseActivations" };
                 foreach (System.Reflection.PropertyInfo pi in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                 {
-                    if (!ignoreList.Contains(pi.Name))
+                    if (!_ignoreList.Contains(pi.Name))
                     {
                         var fieldName = GetFieldName(pi.Name);
                         switch (pi.Name.ToLower())
@@ -140,10 +140,13 @@ namespace BS.LicenseServer.Cache
                                 {
                                     using (var db = new LicenseDbEntities())
                                     {
+                                        var oldOwner = db.LicenseOwners.FirstOrDefault(x => x.Id == (int)oldOwnerValue);
+                                        var newOwner = db.LicenseOwners.FirstOrDefault(x => x.Id == (int)newOwnerValue);
+
                                         result.Add(fieldName, new LicenseLogChangeItem()
                                         {
-                                            OldValue = db.LicenseOwners.First(x => x.Id == (int)oldOwnerValue).Name,
-                                            NewValue = db.LicenseOwners.First(x => x.Id == (int)newOwnerValue).Name
+                                            OldValue = oldOwner != null ? oldOwner.Name : string.Empty,
+                                            NewValue = newOwner != null ? newOwner.Name : string.Empty
                                         });
                                     }
                                 }
@@ -195,6 +198,11 @@ namespace BS.LicenseServer.Cache
 
         private object GetValue(object value)
         {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
             var type = value.GetType();
 
             switch (type.Name.ToLower())
