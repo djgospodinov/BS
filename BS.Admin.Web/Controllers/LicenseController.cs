@@ -105,9 +105,9 @@ namespace BS.Admin.Web.Controllers
                     Enabled = x.Enabled,
                     Type = (int)x.Type,
                     EditUrl = RolesManager.CanCreateLicense(User.Identity) 
-                        ? string.Format("../License/Edit/{0}", x.Id)
+                        ? string.Format("/License/Edit/{0}", x.Id)
                         : string.Empty,
-                    DetailUrl = string.Format("../License/Details/{0}", x.Id)
+                    DetailUrl = string.Format("/License/Details/{0}", x.Id)
                 }).ToArray();
 
             var dataResult = new {
