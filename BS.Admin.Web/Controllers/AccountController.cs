@@ -64,7 +64,7 @@ namespace BS.Admin.Web.Controllers
         //[AllowAnonymous]
         public ActionResult Register()
         {
-            if (!RolesManager.IsAdministrator(User.Identity)) 
+            if (!RolesManager.IsAdministrator()) 
             {
                 return RedirectToAction("UnAuthorized", "Error");
             }
@@ -77,7 +77,7 @@ namespace BS.Admin.Web.Controllers
         [HttpPost]
         public ActionResult Register(RegisterModel model)
         {
-            if (!RolesManager.IsAdministrator(User.Identity))
+            if (!RolesManager.IsAdministrator())
             {
                 return RedirectToAction("UnAuthorized", "Error");
             }
@@ -127,7 +127,7 @@ namespace BS.Admin.Web.Controllers
         [HttpPost]
         public ActionResult Edit(EditAccountModel model)
         {
-            if (!RolesManager.IsAdministrator(User.Identity))
+            if (!RolesManager.IsAdministrator())
             {
                 return RedirectToAction("UnAuthorized", "Error");
             }
