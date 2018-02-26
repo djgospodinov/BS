@@ -47,7 +47,11 @@ namespace BS.Api
 
                         if (response.Content != null)
                         {
-                            apiLogEntry.ResponseContentBody = response.Content.ReadAsStringAsync().Result;
+                            var result = response.Content.ReadAsStringAsync();
+
+                            apiLogEntry.ResponseContentBody = result.Status != TaskStatus.Faulted
+                                ? result.Result 
+                                : string.Empty;
                             apiLogEntry.ResponseContentType = response.Content.Headers.ContentType.MediaType;
                             apiLogEntry.ResponseHeaders = SerializeHeaders(response.Content.Headers);
                         }

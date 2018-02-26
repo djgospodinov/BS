@@ -193,3 +193,53 @@ CREATE TABLE [dbo].[ApiLogs](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
+
+---------------------------------------------25/2/2018------------------------------------------
+DROP TABLE [dbo].[LicenseVariables]
+GO
+
+DROP TABLE [dbo].[lu_LicenseVariables]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[lu_LicenseVariables](
+	[Id] [int] IDENTITY NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Type] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_lu_LicenseVariables] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[LicenseVariables](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[LicenseId] [uniqueidentifier] NOT NULL,
+	[VariableId] [int] NOT NULL,
+	[Value] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_LicenseVariables] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[LicenseVariables]  WITH CHECK ADD  CONSTRAINT [FK_Licenses_LicenseVariables] FOREIGN KEY([LicenseId])
+REFERENCES [dbo].[Licenses] ([Id])
+GO
+
+ALTER TABLE [dbo].[LicenseVariables] CHECK CONSTRAINT [FK_Licenses_LicenseVariables]
+GO
+
+ALTER TABLE [dbo].[LicenseVariables]  WITH CHECK ADD  CONSTRAINT [FK_lu_LicenseVariables_LicenseVariables] FOREIGN KEY([VariableId])
+REFERENCES [dbo].[lu_LicenseVariables] ([Id])
+GO
+
+ALTER TABLE [dbo].[LicenseVariables] CHECK CONSTRAINT [FK_lu_LicenseVariables_LicenseVariables]
+GO

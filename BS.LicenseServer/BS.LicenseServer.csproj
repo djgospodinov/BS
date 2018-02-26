@@ -99,10 +99,16 @@
     <Compile Include="Db\LicensesLog.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Db\LicenseVariable.cs">
+      <DependentUpon>LicenseDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Db\lu_LicenseModules.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Db\lu_LicenseTypes.cs">
+      <DependentUpon>LicenseDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Db\lu_LicenseVariables.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Db\Setting.cs">
@@ -118,6 +124,7 @@
     <Compile Include="Services\LicenseService.cs" />
     <Compile Include="Services\Service.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\VariablesService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BS.Common\BS.Common.csproj">

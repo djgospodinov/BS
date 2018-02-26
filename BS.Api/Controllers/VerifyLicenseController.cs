@@ -37,7 +37,7 @@ namespace BS.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/verifylicense/{id}/encrypted")]
-        public IHttpActionResult GetEncrypted([FromUri]string id, [FromBody]VerifyLicenseRequest request)
+        public IHttpActionResult Encrypted([FromUri]string id, [FromBody]VerifyLicenseRequest request)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace BS.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("api/verifylicense/{id}")]
-        public IHttpActionResult GetNotEncrypted([FromUri]string id, [FromBody]VerifyLicenseRequest request)
+        public IHttpActionResult NotEncrypted([FromUri]string id, [FromBody]VerifyLicenseRequest request)
         {
             try
             {

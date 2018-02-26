@@ -199,6 +199,7 @@
     <Compile Include="AuthContext.cs" />
     <Compile Include="AuthRepository.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\VariableController.cs" />
     <Compile Include="Controllers\VerifyLicenseController.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Filters\IpFilterAttribute.cs" />

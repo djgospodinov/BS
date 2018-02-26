@@ -21,6 +21,10 @@
         <EntityTypeShape EntityType="LicenseDbModel.Setting" Width="1.5" PointX="7.375" PointY="8.75" />
         <EntityTypeShape EntityType="LicenseDbModel.LicensesLog" Width="1.5" PointX="9.375" PointY="8.75" />
         <EntityTypeShape EntityType="LicenseDbModel.ApiLog" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="LicenseDbModel.LicenseVariable" Width="1.5" PointX="10.5" PointY="5.25" />
+        <EntityTypeShape EntityType="LicenseDbModel.lu_LicenseVariables" Width="1.5" PointX="8.25" PointY="13.5" />
+        <AssociationConnector Association="LicenseDbModel.FK_Licenses_LicenseVariables" />
+        <AssociationConnector Association="LicenseDbModel.FK_lu_LicenseVariables_LicenseVariables" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

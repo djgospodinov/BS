@@ -103,6 +103,15 @@
           <Property Name="New" Type="ntext" Nullable="false" />
           <Property Name="ChangedBy" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="LicenseVariables">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LicenseId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="VariableId" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
             <PropertyRef Name="Id" />
@@ -122,6 +131,14 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="IsOnline" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="lu_LicenseVariables">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Settings">
           <Key>
@@ -166,6 +183,18 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Licenses_LicenseVariables">
+          <End Role="Licenses" Type="Self.Licenses" Multiplicity="1" />
+          <End Role="LicenseVariables" Type="Self.LicenseVariables" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Licenses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseVariables">
+              <PropertyRef Name="LicenseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_LicensesLicenseOwners">
           <End Role="LicenseOwners" Type="Self.LicenseOwners" Multiplicity="1" />
           <End Role="Licenses" Type="Self.Licenses" Multiplicity="*" />
@@ -190,6 +219,18 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_lu_LicenseVariables_LicenseVariables">
+          <End Role="lu_LicenseVariables" Type="Self.lu_LicenseVariables" Multiplicity="1" />
+          <End Role="LicenseVariables" Type="Self.LicenseVariables" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lu_LicenseVariables">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseVariables">
+              <PropertyRef Name="VariableId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="LicenseDbModelStoreContainer">
           <EntitySet Name="ApiLogs" EntityType="Self.ApiLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IpFilters" EntityType="Self.IpFilters" Schema="dbo" store:Type="Tables" />
@@ -199,7 +240,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySet Name="LicenseOwners" EntityType="Self.LicenseOwners" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Licenses" EntityType="Self.Licenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicensesLog" EntityType="Self.LicensesLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LicenseVariables" EntityType="Self.LicenseVariables" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lu_LicenseModules" EntityType="Self.lu_LicenseModules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="lu_LicenseVariables" EntityType="Self.lu_LicenseVariables" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Settings" EntityType="Self.Settings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="lu_LicenseTypes" EntityType="Self.lu_LicenseTypes" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -220,6 +263,10 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
             <End Role="LicenseOwners" EntitySet="LicenseOwners" />
             <End Role="LicenseOwnerExtraInfo" EntitySet="LicenseOwnerExtraInfo" />
           </AssociationSet>
+          <AssociationSet Name="FK_Licenses_LicenseVariables" Association="Self.FK_Licenses_LicenseVariables">
+            <End Role="Licenses" EntitySet="Licenses" />
+            <End Role="LicenseVariables" EntitySet="LicenseVariables" />
+          </AssociationSet>
           <AssociationSet Name="FK_LicensesLicenseOwners" Association="Self.FK_LicensesLicenseOwners">
             <End Role="LicenseOwners" EntitySet="LicenseOwners" />
             <End Role="Licenses" EntitySet="Licenses" />
@@ -227,6 +274,10 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <AssociationSet Name="FK_lu_LicenseModulesLicenseModules" Association="Self.FK_lu_LicenseModulesLicenseModules">
             <End Role="lu_LicenseModules" EntitySet="lu_LicenseModules" />
             <End Role="LicenseModules" EntitySet="LicenseModules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_lu_LicenseVariables_LicenseVariables" Association="Self.FK_lu_LicenseVariables_LicenseVariables">
+            <End Role="lu_LicenseVariables" EntitySet="lu_LicenseVariables" />
+            <End Role="LicenseVariables" EntitySet="LicenseVariables" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -276,6 +327,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="Type" Type="Byte" />
           <NavigationProperty Name="LicenseActivations" Relationship="LicenseDbModel.FK_LicenseActivation_Licenses" FromRole="License" ToRole="LicenseActivation" />
           <Property Name="WorkstationsCount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LicenseVariables" Relationship="LicenseDbModel.FK_Licenses_LicenseVariables" FromRole="License" ToRole="LicenseVariable" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -354,6 +406,16 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySet Name="Settings" EntityType="LicenseDbModel.Setting" />
           <EntitySet Name="LicensesLogs" EntityType="LicenseDbModel.LicensesLog" />
           <EntitySet Name="ApiLogs" EntityType="LicenseDbModel.ApiLog" />
+          <EntitySet Name="LicenseVariables" EntityType="LicenseDbModel.LicenseVariable" />
+          <EntitySet Name="lu_LicenseVariables" EntityType="LicenseDbModel.lu_LicenseVariables" />
+          <AssociationSet Name="FK_Licenses_LicenseVariables" Association="LicenseDbModel.FK_Licenses_LicenseVariables">
+            <End Role="License" EntitySet="Licenses" />
+            <End Role="LicenseVariable" EntitySet="LicenseVariables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_lu_LicenseVariables_LicenseVariables" Association="LicenseDbModel.FK_lu_LicenseVariables_LicenseVariables">
+            <End Role="lu_LicenseVariables" EntitySet="lu_LicenseVariables" />
+            <End Role="LicenseVariable" EntitySet="LicenseVariables" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="lu_LicenseTypes">
           <Key>
@@ -459,6 +521,50 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="AbsoluteUri" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Host" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="LicenseVariable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LicenseId" Type="Guid" Nullable="false" />
+          <Property Name="VariableId" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="License" Relationship="LicenseDbModel.FK_Licenses_LicenseVariables" FromRole="LicenseVariable" ToRole="License" />
+          <NavigationProperty Name="lu_LicenseVariables" Relationship="LicenseDbModel.FK_lu_LicenseVariables_LicenseVariables" FromRole="LicenseVariable" ToRole="lu_LicenseVariables" />
+        </EntityType>
+        <EntityType Name="lu_LicenseVariables">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LicenseVariables" Relationship="LicenseDbModel.FK_lu_LicenseVariables_LicenseVariables" FromRole="lu_LicenseVariables" ToRole="LicenseVariable" />
+        </EntityType>
+        <Association Name="FK_Licenses_LicenseVariables">
+          <End Type="LicenseDbModel.License" Role="License" Multiplicity="1" />
+          <End Type="LicenseDbModel.LicenseVariable" Role="LicenseVariable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="License">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseVariable">
+              <PropertyRef Name="LicenseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_lu_LicenseVariables_LicenseVariables">
+          <End Type="LicenseDbModel.lu_LicenseVariables" Role="lu_LicenseVariables" Multiplicity="1" />
+          <End Type="LicenseDbModel.LicenseVariable" Role="LicenseVariable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lu_LicenseVariables">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LicenseVariable">
+              <PropertyRef Name="VariableId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -593,6 +699,25 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
                 <ScalarProperty Name="RequestBody" ColumnName="RequestBody" />
                 <ScalarProperty Name="RequestMethod" ColumnName="RequestMethod" />
                 <ScalarProperty Name="RequestUri" ColumnName="RequestUri" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LicenseVariables">
+            <EntityTypeMapping TypeName="LicenseDbModel.LicenseVariable">
+              <MappingFragment StoreEntitySet="LicenseVariables">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="VariableId" ColumnName="VariableId" />
+                <ScalarProperty Name="LicenseId" ColumnName="LicenseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lu_LicenseVariables">
+            <EntityTypeMapping TypeName="LicenseDbModel.lu_LicenseVariables">
+              <MappingFragment StoreEntitySet="lu_LicenseVariables">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

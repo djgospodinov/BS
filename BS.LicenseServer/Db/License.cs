@@ -18,6 +18,7 @@ namespace BS.LicenseServer.Db
         {
             this.LicenseModules = new HashSet<LicenseModule>();
             this.LicenseActivations = new HashSet<LicenseActivation>();
+            this.LicenseVariables = new HashSet<LicenseVariable>();
         }
     
         public System.Guid Id { get; set; }
@@ -33,5 +34,6 @@ namespace BS.LicenseServer.Db
         public virtual ICollection<LicenseModule> LicenseModules { get; set; }
         public virtual LicenseOwner LicenseOwner { get; set; }
         public virtual ICollection<LicenseActivation> LicenseActivations { get; set; }
+        public virtual ICollection<LicenseVariable> LicenseVariables { get; set; }
     }
 }
