@@ -23,6 +23,11 @@ namespace BS.Api
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            if (request.RequestUri.AbsolutePath == "/" || request.RequestUri.AbsolutePath.ToLower().Contains("help"))
+            {
+                return await base.SendAsync(request, cancellationToken);
+            }
+
             var apiLogEntry = CreateApiLogEntryWithRequestData(request);
             if (request.Content != null)
             {
@@ -41,7 +46,7 @@ namespace BS.Api
                     // Update the API log entry with response info
                     apiLogEntry.ResponseStatusCode = (int)response.StatusCode;
 
-                    if (request.RequestUri.AbsolutePath != "/" && request.RequestUri.AbsolutePath.ToUpper() != "/HELP")
+                    if (request.RequestUri.AbsolutePath != "/" && !request.RequestUri.AbsolutePath.ToLower().Contains("help"))
                     {
                         apiLogEntry.ResponseTimestamp = DateTime.Now;
 
