@@ -11,7 +11,7 @@ namespace BS.LicenseServer.Services
 {
     public class VariablesService : IVariablesService
     {
-        public bool CreateVariable(string name, string type = null)
+        public bool CreateLookupVariable(string name, string type = null)
         {
             using (var db = new LicenseDbEntities())
             {
@@ -21,11 +21,31 @@ namespace BS.LicenseServer.Services
                     return false;
                 }
 
-                db.lu_LicenseVariables.Add(new lu_LicenseVariables() { Name = name, Type = type });
+                var result = new lu_LicenseVariables() { Name = name, Type = type };
+                db.lu_LicenseVariables.Add(result);
                 db.SaveChanges();
             }
 
             return true;
+        }
+
+        public VariableModel GetLookupVariable(int id)
+        {
+            using (var db = new LicenseDbEntities())
+            {
+                var variable = db.lu_LicenseVariables.FirstOrDefault(x => x.Id == id);
+                if (variable != null)
+                {
+                    return new VariableModel()
+                    {
+                        Id = variable.Id,
+                        Name = variable.Name,
+                        Type = variable.Type
+                    };
+                }
+            }
+
+            return null;
         }
 
         public void CreateVariables(string licenseId, Dictionary<string, object> values)
@@ -96,6 +116,23 @@ namespace BS.LicenseServer.Services
                     Value = x.Value
                 }).ToList<LicenseVariableModel>();
             }
+        }
+
+        public bool UpdateLookupVariable(VariableModel model)
+        {
+            using (var db = new LicenseDbEntities())
+            {
+                var variable = db.lu_LicenseVariables.FirstOrDefault(x => x.Id == model.Id);
+                if (variable == null)
+                {
+                    return false;
+                }
+
+                db.lu_LicenseVariables.Add(new lu_LicenseVariables() { Name = model.Name, Type = model.Type });
+                db.SaveChanges();
+            }
+
+            return true;
         }
 
         public void UpdateVariables(string licenseId, Dictionary<string, object> values)

@@ -11,7 +11,9 @@ namespace BS.Common.Interfaces
     {
         List<LicenseVariableModel> GetLookupVariables();
 
-        bool CreateVariable(string name, string type = null);
+        bool CreateLookupVariable(string name, string type = null);
+
+        bool UpdateLookupVariable(VariableModel model);
 
         List<LicenseVariableModel> GetVariables(string licenseId);
 

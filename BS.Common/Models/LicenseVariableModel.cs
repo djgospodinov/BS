@@ -8,6 +8,17 @@ using System.Threading.Tasks;
 namespace BS.Common.Models
 {
     [DataContract]
+    public class VariableModel
+    {
+        [DataMember]
+        public int Id { get; set; }
+        [DataMember]
+        public string Name { get; set; }
+        [DataMember]
+        public string Type { get; set; }
+    }
+
+    [DataContract]
     public class LicenseVariableModel
     {
         [DataMember]

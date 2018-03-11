@@ -1,0 +1,44 @@
+﻿@model BS.Common.Models.VariableModel
+@{
+    ViewBag.Title = "Редакция променлива";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<style>
+    fieldset {
+        width: 600px;
+    }
+</style>
+
+@using (Html.BeginForm("EditVariable", "Settings", FormMethod.Post))
+{
+    <span style="color:green">@ViewBag.Message</span>
+    <span style="color:red">@ViewBag.ErrorMessage</span>
+    <table>
+        <tr>
+            <td>
+                <span>Име:</span>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Name)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Тип:
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Type)
+            </td>
+        </tr>
+    </table>
+
+    <div style="margin-left:50px;margin-top:20px;">
+        <input type="submit" value="ОК" />
+
+        @Html.ActionLink("Отказ", "Cancel", null,
+                      new { @class = "link-button", onclick = "return confirmChanges();" })
+    </div>
+}

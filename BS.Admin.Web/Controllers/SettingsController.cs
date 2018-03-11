@@ -222,6 +222,8 @@ namespace BS.Admin.Web.Controllers
             return View(model);
         }
 
+        #region Variables
+
         [HttpGet]
         public JsonResult VariablesData(LicenseLogFilterGridModel filter)
         {
@@ -283,13 +285,38 @@ namespace BS.Admin.Web.Controllers
                     {
                         Id = x.Id,
                         x.Name,
-                        //DetailUrl = string.Format("../Settings/LicenseLogEntry/{0}", x.Id)
+                        EditUrl = string.Format("../Settings/EditVariable/{0}", x.Id)
                     }).ToList(),
                 itemsCount = data.Count()
             };
 
             return Json(dataResult, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public ActionResult CreateVariable()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult EditVariable(int id)
+        {
+            var model = new VariablesService().GetLookupVariable(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditVariable(VariableModel model)
+        {
+            var result = model.Id > 0 
+                ? new VariablesService().UpdateLookupVariable(model)
+                : new VariablesService().CreateLookupVariable(model.Name, model.Type);
+
+            return RedirectToAction("Index", new { tabIndex = 2 });
+        }
+
+        #endregion
 
         #region Not Used
         public ActionResult IPs(int page = 1)
