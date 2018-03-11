@@ -222,6 +222,75 @@ namespace BS.Admin.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public JsonResult VariablesData(LicenseLogFilterGridModel filter)
+        {
+            var service = new VariablesService();
+            var dbModel = service.GetLookupVariables();
+
+            var data = dbModel
+                //.Where(x => (string.IsNullOrEmpty(filter.ChangedBy)
+                //        || x.ChangedByName.ToUpper().Contains(filter.ChangedBy.ToUpper()))
+                //     && (!filter.IsDemo.HasValue || x.IsDemo == filter.IsDemo))
+                .ToList();
+
+            if (!string.IsNullOrEmpty(filter.SortField))
+            {
+                #region Sort
+                bool asc = filter.SortOrder.ToUpper() == "ASC";
+                //switch (filter.SortField.ToUpper())
+                //{
+                //    case "ID":
+                //        data = asc
+                //            ? data.OrderBy(x => x.Id).ToList()
+                //            : data.OrderByDescending(x => x.Id).ToList();
+                //        break;
+                //    case "LICENSEID":
+                //        data = asc
+                //            ? data.OrderBy(x => x.LicenseId).ToList()
+                //            : data.OrderByDescending(x => x.LicenseId).ToList();
+                //        break;
+                //    case "ISDEMO":
+                //        data = asc
+                //            ? data.OrderBy(x => x.IsDemo).ToList()
+                //            : data.OrderByDescending(x => x.IsDemo).ToList();
+                //        break;
+                //    case "CHANGEDBY":
+                //        data = asc
+                //            ? data.OrderBy(x => x.ChangedBy).ToList()
+                //            : data.OrderByDescending(x => x.ChangedBy).ToList();
+                //        break;
+                //    default:
+                //        data = asc
+                //            ? data.OrderBy(x => x.Date).ToList()
+                //            : data.OrderByDescending(x => x.Date).ToList();
+                //        break;
+                //}
+                #endregion
+            }
+            else
+            {
+                //data = data.OrderByDescending(x => x.Date).ToList();
+            }
+
+
+            var dataResult = new
+            {
+                data = data
+                    .Skip((filter.PageIndex - 1) * filter.PageSize)
+                    .Take(filter.PageSize)
+                    .Select(x => new
+                    {
+                        Id = x.Id,
+                        x.Name,
+                        //DetailUrl = string.Format("../Settings/LicenseLogEntry/{0}", x.Id)
+                    }).ToList(),
+                itemsCount = data.Count()
+            };
+
+            return Json(dataResult, JsonRequestBehavior.AllowGet);
+        }
+
         #region Not Used
         public ActionResult IPs(int page = 1)
         {

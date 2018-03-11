@@ -399,6 +399,7 @@
     <Content Include="Views\Settings\ApiLogEntry.cshtml" />
     <Content Include="Views\Settings\LicenseLogEntry.cshtml" />
     <Content Include="Views\License\LicenseActivations.cshtml" />
+    <Content Include="Views\Settings\Variables.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

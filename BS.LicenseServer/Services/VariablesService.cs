@@ -11,6 +11,23 @@ namespace BS.LicenseServer.Services
 {
     public class VariablesService : IVariablesService
     {
+        public bool CreateVariable(string name, string type = null)
+        {
+            using (var db = new LicenseDbEntities())
+            {
+                var variable = db.lu_LicenseVariables.FirstOrDefault(x => x.Name == name);
+                if (variable != null)
+                {
+                    return false;
+                }
+
+                db.lu_LicenseVariables.Add(new lu_LicenseVariables() { Name = name, Type = type });
+                db.SaveChanges();
+            }
+
+            return true;
+        }
+
         public void CreateVariables(string licenseId, Dictionary<string, object> values)
         {
             using (var db = new LicenseDbEntities())
@@ -52,11 +69,26 @@ namespace BS.LicenseServer.Services
             }
         }
 
-        public List<LicenseVariableModel> GetVariables(string licenseId)
+        public List<LicenseVariableModel> GetLookupVariables()
         {
             using (var db = new LicenseDbEntities())
             {
-                return db.LicenseVariables.Select(x => new LicenseVariableModel()
+                return db.lu_LicenseVariables
+                    .Select(x => new LicenseVariableModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    }).ToList<LicenseVariableModel>();
+            }
+        }
+
+        public List<LicenseVariableModel> GetVariables(string licenseId = null)
+        {
+            using (var db = new LicenseDbEntities())
+            {
+                return db.LicenseVariables
+                    .Where(x => licenseId == null || x.LicenseId == Guid.Parse(licenseId))
+                    .Select(x => new LicenseVariableModel()
                 {
                     Id = x.Id,
                     LicenseId = x.LicenseId,

@@ -1,0 +1,56 @@
+﻿<div id="jsGrid-variables-data"></div>
+
+<script>
+    //https://github.com/tabalinas/jsgrid
+
+    $(function () {
+
+        $("#jsGrid-variables-data").jsGrid({
+            height: "550px",
+            width: "100%",
+
+            filtering: true,
+            inserting: false,
+            editing: false,
+            sorting: true,
+            paging: true,
+            autoload: true,
+
+            pageLoading: true,
+
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            deleteConfirm: "Do you really want to delete client?",
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: "/settings/variablesdata",
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+            },
+
+            fields: [
+                { name: "Id", title: "Id", type: "text", width: 20, filtering: false },
+                { name: "Name", title: "Име", type: "text", width: 150, filtering: true },
+                {
+                    type: "control",
+                    itemTemplate: function (value, item) {
+                        var div = $("<div>");
+
+                        if (item.DetailUrl != undefined && item.DetailUrl != null && item.DetailUrl != '') {
+                            var $link = $("<a class='jsgrid-button jsgrid-search-button' style='padding-left:15px' href=" + item.DetailUrl + ">");
+                            div.append($link);
+                        }
+
+                        return div;
+                    }
+                }
+            ]
+        });
+
+    });
+</script>
