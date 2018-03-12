@@ -9,7 +9,7 @@
 
 <style>
     fieldset {
-        width:600px;
+        width: 600px;
     }
 </style>
 
@@ -134,17 +134,23 @@
                 </tr>
             </table>
         </fieldset>
-    </section> 
+    </section>
 
     <div style="margin-top:20px;">
         @{ Html.RenderAction("LicenseActivations", new { LicenseId = Model.Id }); }
     </div>
 
+    <div style="margin-top:20px;">
+        @{ Html.RenderAction("LicenseVariables", new { LicenseId = Model.Id }); }
+    </div>
+
+
+
     <div style="margin-left:50px;margin-top:20px;">
         <input type="submit" value="Редакция" />
 
         @Html.ActionLink("Отказ", "Cancel", null,
-                 new { @class = "link-button", onclick = "return confirmChanges();" })
+                      new { @class = "link-button", onclick = "return confirmChanges();" })
     </div>
 }
 

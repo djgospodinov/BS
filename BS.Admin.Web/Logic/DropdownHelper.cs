@@ -48,5 +48,19 @@ namespace BS.Admin.Web
 
             return result;
         }
+
+        private static List<object> Types = new List<object>()
+                {
+                    new { Id = 1, Name = "Integer" },
+                    new { Id = 2, Name = "String" },
+                    new { Id = 3, Name = "Anything" },
+                };
+
+        public static SelectList VariableTypes()
+        {
+            var result = new SelectList(Types, "Id", "Name");
+
+            return result;
+        }
     }
 }

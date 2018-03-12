@@ -402,6 +402,7 @@
     <Content Include="Views\Settings\Variables.cshtml" />
     <Content Include="Views\Settings\EditVariable.cshtml" />
     <Content Include="Views\Settings\CreateVariable.cshtml" />
+    <Content Include="Views\License\LicenseVariables.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

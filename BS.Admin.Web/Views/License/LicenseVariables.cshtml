@@ -1,0 +1,43 @@
+﻿@model List<BS.Common.Models.LicenseVariableModel>
+
+<style>
+    #log-table td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #log-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #log-table tr:hover {
+        background-color: #ddd;
+    }
+
+    #log-table th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: lightgray;
+        color: white;
+    }
+</style>
+
+<section>
+    <fieldset>
+        <legend>Допълнителни променливи</legend>
+        <table id="log-table">
+            <tr>
+                <th style="width:230px">Променлива</th>
+                <th style="width:230px">Данни</th>
+            </tr>
+            @foreach (var x in Model)
+            {
+                <tr>
+                    <td>@x.Name</td>
+                    <td>@x.Value</td>
+                </tr>
+            }
+        </table>
+    </fieldset>
+</section>

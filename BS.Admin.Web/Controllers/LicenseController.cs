@@ -127,6 +127,13 @@ namespace BS.Admin.Web.Controllers
             return PartialView(result);
         }
 
+        public ActionResult LicenseVariables(string licenseId)
+        {
+            var result = new VariablesService().GetVariables(licenseId);
+
+            return PartialView(result);
+        }
+
         [HttpGet]
         [AuthorizeUser(AccessLevel = Const.CreateLicence)]
         public ActionResult Create() 

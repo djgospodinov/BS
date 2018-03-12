@@ -1,6 +1,6 @@
 ﻿@model BS.Common.Models.VariableModel
 @{
-    ViewBag.Title = "Редакция променлива";
+    ViewBag.Title = "Добавяне променлива";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -30,7 +30,7 @@
                 Тип:
             </td>
             <td>
-                @Html.TextBoxFor(m => m.Type)
+                @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.VariableTypes(), new { @class = "selectList" })
             </td>
         </tr>
     </table>

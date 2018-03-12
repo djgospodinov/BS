@@ -58,12 +58,28 @@ namespace BS.LicenseServer.Services
                     var variable = db.lu_LicenseVariables.FirstOrDefault(x => x.Name == v.Key);
                     if (variable != null)
                     {
-                        db.LicenseVariables.Add(new LicenseVariable()
+                        int intValue;
+                        if (variable.Type == ((int)VariableTypeEnum.Integer).ToString() && v.Value != null
+                            && !int.TryParse(v.Value.ToString(), out intValue))
                         {
-                            LicenseId = licenseGuid,
-                            VariableId = variable.Id,
-                            Value = v.Value != null ? v.Value.ToString() : string.Empty
-                        });
+                            continue;
+                        }
+
+                        var licenseVariable = db.LicenseVariables.FirstOrDefault(x => x.lu_LicenseVariables.Id == variable.Id
+                            && x.LicenseId == licenseGuid);
+                        if (licenseVariable != null)
+                        {
+                            licenseVariable.Value = v.Value != null ? v.Value.ToString() : string.Empty;
+                        }
+                        else
+                        {
+                            db.LicenseVariables.Add(new LicenseVariable()
+                            {
+                                LicenseId = licenseGuid,
+                                VariableId = variable.Id,
+                                Value = v.Value != null ? v.Value.ToString() : string.Empty
+                            });
+                        }
                     }
                 }
 
@@ -106,8 +122,9 @@ namespace BS.LicenseServer.Services
         {
             using (var db = new LicenseDbEntities())
             {
+                var id = Guid.Parse(licenseId);
                 return db.LicenseVariables
-                    .Where(x => licenseId == null || x.LicenseId == Guid.Parse(licenseId))
+                    .Where(x => licenseId == null || x.LicenseId == id)
                     .Select(x => new LicenseVariableModel()
                 {
                     Id = x.Id,

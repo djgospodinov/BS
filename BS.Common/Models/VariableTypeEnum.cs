@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BS.Common.Models
+{
+    public enum VariableTypeEnum
+    {
+        Integer = 1,
+        String = 2,
+        Anything = 3
+    }
+}
