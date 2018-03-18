@@ -150,7 +150,10 @@
         <input type="submit" value="Редакция" />
 
         @Html.ActionLink("Отказ", "Cancel", null,
-                      new { @class = "link-button", onclick = "return confirmChanges();" })
+                         new { @class = "link-button", onclick = "return confirmChanges();" })
+
+        @Html.ActionLink("Свали лиценз", "DownloadAsFile", new { LicenseId = Model.Id },
+                         new { @class = "link-button" })
     </div>
 }
 

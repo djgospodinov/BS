@@ -11,6 +11,7 @@ using BS.Common.Interfaces;
 using BS.Admin.Web.Filters;
 using NLog;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace BS.Admin.Web.Controllers
 {
@@ -244,21 +245,25 @@ namespace BS.Admin.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult LicenseCode(string id)
+        public ActionResult DownloadAsFile(string licenseId)
         {
             try
             {
-                var license = _licenseService.Get(id.ToString());
+                var license = _licenseService.Get(licenseId);
 
                 var serializedObject = JsonConvert.SerializeObject(license, new JsonSerializerSettings()
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
 
-                return PartialView(new LIcenseCodeModel() 
-                {
-                    Code = StringCipher.Encrypt(serializedObject, Constants.PublicKey)
-                });
+                //return PartialView(new LIcenseCodeModel() 
+                //{
+                //    Code = StringCipher.Encrypt(serializedObject, Constants.PublicKey)
+                //});
+
+                var code = StringCipher.Encrypt(serializedObject, Constants.PublicKey);
+
+                return File(Encoding.UTF8.GetBytes(code), "text/plain", string.Format("{0}.lic", licenseId));
             }
             catch (Exception ex)
             {
