@@ -18,6 +18,7 @@ namespace BS.Admin.Web.Controllers
         #region Initialize
         private readonly IIpFilterService _service;
         private readonly ApiLogService _apiLogService = new ApiLogService();
+        private readonly VariablesService _variableService = new VariablesService();
 
         public SettingsController()
             : this(new IpFilterService())
@@ -227,8 +228,7 @@ namespace BS.Admin.Web.Controllers
         [HttpGet]
         public JsonResult VariablesData(LicenseLogFilterGridModel filter)
         {
-            var service = new VariablesService();
-            var dbModel = service.GetLookupVariables();
+            var dbModel = _variableService.GetLookupVariables();
 
             var data = dbModel
                 //.Where(x => (string.IsNullOrEmpty(filter.ChangedBy)
@@ -302,7 +302,7 @@ namespace BS.Admin.Web.Controllers
         [HttpGet]
         public ActionResult EditVariable(int id)
         {
-            var model = new VariablesService().GetLookupVariable(id);
+            var model = _variableService.GetLookupVariable(id);
             return View(model);
         }
 
@@ -310,8 +310,8 @@ namespace BS.Admin.Web.Controllers
         public ActionResult EditVariable(VariableModel model)
         {
             var result = model.Id > 0 
-                ? new VariablesService().UpdateLookupVariable(model)
-                : new VariablesService().CreateLookupVariable(model.Name, model.Type);
+                ? _variableService.UpdateLookupVariable(model)
+                : _variableService.CreateLookupVariable(model.Name, model.Type);
 
             return RedirectToAction("Index", new { tabIndex = 2 });
         }

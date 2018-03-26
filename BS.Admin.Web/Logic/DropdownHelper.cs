@@ -50,11 +50,11 @@ namespace BS.Admin.Web
         }
 
         private static List<object> Types = new List<object>()
-                {
-                    new { Id = 1, Name = "Integer" },
-                    new { Id = 2, Name = "String" },
-                    new { Id = 3, Name = "Anything" },
-                };
+        {
+            new { Id = 1, Name = "Число" },
+            new { Id = 2, Name = "Текст" },
+            new { Id = 3, Name = "Всичко" },
+        };
 
         public static SelectList VariableTypes()
         {

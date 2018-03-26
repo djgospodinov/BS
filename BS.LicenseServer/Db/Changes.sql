@@ -243,3 +243,6 @@ GO
 
 ALTER TABLE [dbo].[LicenseVariables] CHECK CONSTRAINT [FK_lu_LicenseVariables_LicenseVariables]
 GO
+-----------------------------------27/02/2018-------------------------------------------------------
+ALTER TABLE [dbo].[Licenses] ADD ExternalId NVARCHAR(50) NULL;
+GO

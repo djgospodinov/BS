@@ -15,7 +15,12 @@ namespace BS.LicenseServer.Cache
         private List<LicenseLogModel> _licenseLogs;
         private Dictionary<short, string> _modules;
         private readonly object _lock = new object();
-        private static readonly List<string> _ignoreList = new List<string>() { "LicenseActivations", "LicenseOwner" };
+        private static readonly List<string> _ignoreList = new List<string>()
+        {
+            "LicenseActivations",
+            "LicenseOwner",
+            "LicenseVariables"
+        };
 
         public LicenseLogCache()
             : base(new TimeSpan(0, 0, 15))

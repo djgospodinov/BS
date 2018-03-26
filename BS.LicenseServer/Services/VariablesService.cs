@@ -145,7 +145,8 @@ namespace BS.LicenseServer.Services
                     return false;
                 }
 
-                db.lu_LicenseVariables.Add(new lu_LicenseVariables() { Name = model.Name, Type = model.Type });
+                variable.Name = model.Name;
+                variable.Type = model.Type;
                 db.SaveChanges();
             }
 
