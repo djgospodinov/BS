@@ -22,5 +22,7 @@ namespace BS.Common.Interfaces
         void UpdateVariables(string licenseId, Dictionary<string, object> values);
 
         void DeleteVariables(string licenseId, List<string> variables);
+
+        VariableModel GetLookupVariable(int id);
     }
 }

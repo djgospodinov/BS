@@ -18,7 +18,7 @@ namespace BS.Admin.Web.Controllers
         #region Initialize
         private readonly IIpFilterService _service;
         private readonly ApiLogService _apiLogService = new ApiLogService();
-        private readonly VariablesService _variableService = new VariablesService();
+        private readonly IVariablesService _variableService = new VariablesService();
 
         public SettingsController()
             : this(new IpFilterService())

@@ -17,6 +17,17 @@ namespace BS.Admin.Web.Controllers
 {
     public class LicenseController : BaseController
     {
+        private readonly IVariablesService _variablesService;
+        public LicenseController()
+            :this(new VariablesService())
+        {
+        }
+
+        public LicenseController(IVariablesService variablesService)
+        {
+            _variablesService = variablesService;
+        }
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -130,7 +141,7 @@ namespace BS.Admin.Web.Controllers
 
         public ActionResult LicenseVariables(string licenseId)
         {
-            var result = new VariablesService().GetVariables(licenseId);
+            var result = _variablesService.GetVariables(licenseId);
 
             return PartialView(result);
         }
