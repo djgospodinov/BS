@@ -25,6 +25,7 @@
         <EntityTypeShape EntityType="LicenseDbModel.lu_LicenseVariables" Width="1.5" PointX="8.25" PointY="13.5" />
         <AssociationConnector Association="LicenseDbModel.FK_Licenses_LicenseVariables" />
         <AssociationConnector Association="LicenseDbModel.FK_lu_LicenseVariables_LicenseVariables" />
+        <EntityTypeShape EntityType="LicenseDbModel.LicenseOwnerServer" Width="1.5" PointX="0.75" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -20,6 +20,9 @@ namespace BS.LicenseServer.Db
         public string UserId { get; set; }
         public Nullable<int> ComputerCount { get; set; }
         public string ComputerName { get; set; }
+        public string DiskNumCr { get; set; }
+        public string RegUserNameCr { get; set; }
+        public Nullable<int> LicenseOwnerServerId { get; set; }
     
         public virtual License License { get; set; }
     }

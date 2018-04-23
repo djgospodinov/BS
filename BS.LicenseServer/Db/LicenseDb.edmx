@@ -39,6 +39,9 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="256" />
           <Property Name="ComputerCount" Type="int" />
           <Property Name="ComputerName" Type="nvarchar" MaxLength="256" />
+          <Property Name="DiskNumCr" Type="varchar" MaxLength="255" />
+          <Property Name="RegUserNameCr" Type="varchar" MaxLength="255" />
+          <Property Name="LicenseOwnerServerId" Type="int" />
         </EntityType>
         <EntityType Name="LicenseModules">
           <Key>
@@ -62,6 +65,8 @@
           <Property Name="ContactPerson" Type="nvarchar" MaxLength="250" />
           <Property Name="AccountingPerson" Type="nvarchar" MaxLength="250" />
           <Property Name="VatRegistration" Type="bit" />
+          <Property Name="IsVIP" Type="bit" Nullable="false" />
+          <Property Name="VIPComment" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="LicenseOwners">
           <Key>
@@ -76,6 +81,14 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="CompanyId" Type="nchar" MaxLength="15" />
           <Property Name="EGN" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="LicenseOwnerServer">
+          <Key>
+            <PropertyRef Name="LicenseOwnerID" />
+          </Key>
+          <Property Name="LicenseOwnerID" Type="int" Nullable="false" />
+          <Property Name="ServerName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Licenses">
           <Key>
@@ -119,6 +132,9 @@
           <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Code" Type="nvarchar" MaxLength="20" />
+          <Property Name="MasterID" Type="int" />
+          <Property Name="bActive" Type="bit" />
+          <Property Name="OrderNo" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -238,6 +254,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySet Name="LicenseModules" EntityType="Self.LicenseModules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseOwnerExtraInfo" EntityType="Self.LicenseOwnerExtraInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseOwners" EntityType="Self.LicenseOwners" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LicenseOwnerServer" EntityType="Self.LicenseOwnerServer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Licenses" EntityType="Self.Licenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicensesLog" EntityType="Self.LicensesLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseVariables" EntityType="Self.LicenseVariables" Schema="dbo" store:Type="Tables" />
@@ -337,6 +354,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="LicenseModules" Relationship="Self.FK_lu_LicenseModulesLicenseModules" FromRole="lu_LicenseModules" ToRole="LicenseModules" />
           <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="MasterID" Type="Int32" />
+          <Property Name="bActive" Type="Boolean" />
+          <Property Name="OrderNo" Type="Int32" />
         </EntityType>
         <Association Name="FK_LicenseModulesLicenses">
           <End Role="Licenses" Type="Self.License" Multiplicity="1" />
@@ -416,6 +436,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
             <End Role="lu_LicenseVariables" EntitySet="lu_LicenseVariables" />
             <End Role="LicenseVariable" EntitySet="LicenseVariables" />
           </AssociationSet>
+          <EntitySet Name="LicenseOwnerServers" EntityType="LicenseDbModel.LicenseOwnerServer" />
         </EntityContainer>
         <EntityType Name="lu_LicenseTypes">
           <Key>
@@ -441,6 +462,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="AccountingPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LicenseOwner" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwnerExtraInfo1" ToRole="LicenseOwner" />
           <Property Name="VatRegistration" Type="Boolean" />
+          <Property Name="IsVIP" Type="Boolean" Nullable="false" />
+          <Property Name="VIPComment" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_LicenseOwnerExtraInfo_LicenseOwners1">
           <End Type="LicenseDbModel.LicenseOwner" Role="LicenseOwner" Multiplicity="1" />
@@ -465,6 +488,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="ComputerCount" Type="Int32" />
           <NavigationProperty Name="License" Relationship="LicenseDbModel.FK_LicenseActivation_Licenses" FromRole="LicenseActivation" ToRole="License" />
           <Property Name="ComputerName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="DiskNumCr" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RegUserNameCr" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LicenseOwnerServerId" Type="Int32" />
         </EntityType>
         <Association Name="FK_LicenseActivation_Licenses">
           <End Type="LicenseDbModel.License" Role="License" Multiplicity="1" />
@@ -565,6 +591,14 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="LicenseOwnerServer">
+          <Key>
+            <PropertyRef Name="LicenseOwnerID" />
+          </Key>
+          <Property Name="LicenseOwnerID" Type="Int32" Nullable="false" />
+          <Property Name="ServerName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -614,7 +648,10 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
     <EntitySetMapping Name="lu_LicenseModules">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.lu_LicenseModules)">
         <MappingFragment StoreEntitySet="lu_LicenseModules">
-          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="bActive" ColumnName="bActive" />
+                <ScalarProperty Name="MasterID" ColumnName="MasterID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
         </MappingFragment>
@@ -632,6 +669,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySetMapping Name="LicenseOwnerExtraInfo1">
             <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwnerExtraInfo1">
               <MappingFragment StoreEntitySet="LicenseOwnerExtraInfo">
+                <ScalarProperty Name="VIPComment" ColumnName="VIPComment" />
+                <ScalarProperty Name="IsVIP" ColumnName="IsVIP" />
                 <ScalarProperty Name="VatRegistration" ColumnName="VatRegistration" />
                 <ScalarProperty Name="AccountingPerson" ColumnName="AccountingPerson" />
                 <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
@@ -647,6 +686,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySetMapping Name="LicenseActivations">
             <EntityTypeMapping TypeName="LicenseDbModel.LicenseActivation">
               <MappingFragment StoreEntitySet="LicenseActivation">
+                <ScalarProperty Name="LicenseOwnerServerId" ColumnName="LicenseOwnerServerId" />
+                <ScalarProperty Name="RegUserNameCr" ColumnName="RegUserNameCr" />
+                <ScalarProperty Name="DiskNumCr" ColumnName="DiskNumCr" />
                 <ScalarProperty Name="ComputerName" ColumnName="ComputerName" />
                 <ScalarProperty Name="ComputerCount" ColumnName="ComputerCount" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -719,6 +761,15 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LicenseOwnerServers">
+            <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwnerServer">
+              <MappingFragment StoreEntitySet="LicenseOwnerServer">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+                <ScalarProperty Name="LicenseOwnerID" ColumnName="LicenseOwnerID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

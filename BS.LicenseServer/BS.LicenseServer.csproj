@@ -96,6 +96,9 @@
     <Compile Include="Db\LicenseOwnerExtraInfo1.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Db\LicenseOwnerServer.cs">
+      <DependentUpon>LicenseDb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Db\LicensesLog.cs">
       <DependentUpon>LicenseDb.tt</DependentUpon>
     </Compile>

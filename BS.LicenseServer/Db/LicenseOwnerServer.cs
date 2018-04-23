@@ -12,20 +12,10 @@ namespace BS.LicenseServer.Db
     using System;
     using System.Collections.Generic;
     
-    public partial class lu_LicenseModules
+    public partial class LicenseOwnerServer
     {
-        public lu_LicenseModules()
-        {
-            this.LicenseModules = new HashSet<LicenseModule>();
-        }
-    
-        public short Id { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
-        public Nullable<int> MasterID { get; set; }
-        public Nullable<bool> bActive { get; set; }
-        public Nullable<int> OrderNo { get; set; }
-    
-        public virtual ICollection<LicenseModule> LicenseModules { get; set; }
+        public int LicenseOwnerID { get; set; }
+        public string ServerName { get; set; }
+        public System.DateTime CreateDate { get; set; }
     }
 }
