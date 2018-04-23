@@ -219,6 +219,8 @@
     <Compile Include="Db\webpages_Roles.cs">
       <DependentUpon>BSAdminDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Filters\CompanyIdValidationAttribute.cs" />
+    <Compile Include="Filters\PersonalIdValidationAttribute.cs" />
     <Compile Include="Filters\RangeIfAttribute.cs" />
     <Compile Include="Logic\Const.cs" />
     <Compile Include="Controllers\AccountController.cs" />

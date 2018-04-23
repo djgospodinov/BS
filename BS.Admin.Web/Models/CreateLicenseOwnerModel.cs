@@ -22,8 +22,8 @@ namespace BS.Admin.Web.Models
             IsCompany  = model.IsCompany;
             Phone  = model.Phone;
             Email  = model.Email;
-            CompanyId  = !string.IsNullOrWhiteSpace(model.CompanyId) ? (long?)Convert.ToInt64(model.CompanyId) : null;
-            EGN  = !string.IsNullOrWhiteSpace(model.EGN) ? (long?)Convert.ToInt64(model.EGN.Trim()) : null;
+            CompanyId  = model.CompanyId.Trim();
+            EGN  = model.EGN.Trim();
             PostCode  = model.PostCode;
             RegistrationAddress  = model.RegistrationAddress;
             PostAddress  = model.PostAddress;
@@ -43,8 +43,8 @@ namespace BS.Admin.Web.Models
                 IsCompany = this.IsCompany,
                 Phone = this.Phone,
                 Email = this.Email,
-                CompanyId = this.CompanyId.ToString(),
-                EGN = this.EGN.HasValue ? this.EGN.ToString().Trim() : null,
+                CompanyId = (this.CompanyId ?? string.Empty).ToString().Trim(),
+                EGN = (this.EGN ?? string.Empty).ToString().Trim(),
                 PostCode = this.PostCode,
                 RegistrationAddress = this.RegistrationAddress,
                 PostAddress = this.PostAddress,
@@ -87,13 +87,15 @@ namespace BS.Admin.Web.Models
         /// </summary>
         [Display(Name = "Булстат")]
         [RequiredIf("IsCompany", true)]
-        [RangeIf("IsCompany", true, 9999999999999, 999999999999999, ErrorMessage = "Въведете само цифри.Полето трябва да е между 13 и 15 символа.")]
-        public long? CompanyId { get; set; }
+        //[RangeIf("IsCompany", true, 9999999999999, 999999999999999, ErrorMessage = "Въведете само цифри.Полето трябва да е между 13 и 15 символа.")]
+        [CompanyIdValidation(ErrorMessage = "Невалиден Булстат номер")]
+        public string CompanyId { get; set; }
 
         [Display(Name = "ЕГН")]
-        [RangeIf("IsCompany", false, 1000000000, 9999999999, ErrorMessage = "Въведете само цифри.Полето трябва да е 10 символа.")]
+        //[RangeIf("IsCompany", false, 1000000000, 9999999999, ErrorMessage = "Въведете само цифри.Полето трябва да е 10 символа.")]
         [RequiredIf("IsCompany", false)]
-        public long? EGN { get; set; }
+        [PersonalIdValidation(ErrorMessage = "Невалиден ЕГН номер")]
+        public string EGN { get; set; }
 
         [Display(Name = "Пощенски код")]
         public int PostCode { get; set; }
