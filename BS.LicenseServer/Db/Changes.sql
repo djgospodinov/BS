@@ -243,3 +243,89 @@ GO
 
 ALTER TABLE [dbo].[LicenseVariables] CHECK CONSTRAINT [FK_lu_LicenseVariables_LicenseVariables]
 GO
+-----------------------------------27/02/2018-------------------------------------------------------
+ALTER TABLE [dbo].[Licenses] ADD ExternalId NVARCHAR(50) NULL;
+GO
+--------------------------------------From Petko----------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[LicenseOwnerServer]', 'U') IS NOT NULL
+DROP TABLE [dbo].[LicenseOwnerServer]
+GO
+
+CREATE TABLE LicenseOwnerServer
+( 
+	LicenseOwnerID       int  NOT NULL ,
+	ServerName           varchar(255)  NOT NULL ,
+	CreateDate           datetime  NOT NULL 
+)
+go
+
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[LicenseActivation]') 
+         AND name = 'DiskNumCr'
+)
+ALTER TABLE LicenseActivation ADD DiskNumCr varchar(255)
+GO
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[LicenseActivation]') 
+         AND name = 'RegUserNameCr'
+)
+ALTER TABLE LicenseActivation ADD RegUserNameCr varchar(255)
+GO
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[LicenseOwnerExtraInfo]') 
+         AND name = 'IsVIP'
+)
+ALTER TABLE LicenseOwnerExtraInfo ADD IsVIP bit NOT NULL DEFAULT 0
+GO
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[LicenseOwnerExtraInfo]') 
+         AND name = 'VIPComment'
+)
+ALTER TABLE LicenseOwnerExtraInfo ADD VIPComment varchar(255)
+GO
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[lu_LicenseModules]') 
+         AND name = 'MasterID'
+)
+ALTER TABLE lu_LicenseModules ADD MasterID int
+GO
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[lu_LicenseModules]') 
+         AND name = 'bActive'
+)
+ALTER TABLE lu_LicenseModules ADD bActive bit
+GO
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[lu_LicenseModules]') 
+         AND name = 'OrderNo'
+)
+ALTER TABLE lu_LicenseModules ADD OrderNo int
+GO
+
+ALTER TABLE LicenseOwnerServer
+	ADD CONSTRAINT XPKLicenseOwnersServer PRIMARY KEY  CLUSTERED (LicenseOwnerID ASC)
+go
+
+IF NOT EXISTS (
+  SELECT * 
+  FROM   sys.columns 
+  WHERE  object_id = OBJECT_ID(N'[dbo].[LicenseActivation]') 
+         AND name = 'LicenseOwnerServerId'
+)
+ALTER TABLE LicenseActivation ADD LicenseOwnerServerId int
+GO

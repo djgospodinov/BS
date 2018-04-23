@@ -23,6 +23,8 @@ namespace BS.LicenseServer.Db
         public string ContactPerson { get; set; }
         public string AccountingPerson { get; set; }
         public Nullable<bool> VatRegistration { get; set; }
+        public bool IsVIP { get; set; }
+        public string VIPComment { get; set; }
     
         public virtual LicenseOwner LicenseOwner { get; set; }
     }
