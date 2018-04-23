@@ -26,5 +26,7 @@ namespace BS.Common
         bool Delete(string id);
 
         bool CheckOrActivate(LicenseModel license, string activationKey, string computerName);
+
+        bool Activate(Guid id, LicenseActivateModel model);
     }
 }

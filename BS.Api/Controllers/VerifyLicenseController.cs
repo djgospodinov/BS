@@ -92,8 +92,8 @@ namespace BS.Api.Controllers
         }
 
         /// <summary>
-        /// Verifies if license is valid for the given activation rule and if so, 
-        /// returns a message containing the license information
+        /// Прави проверка дали дадена комбинация от лиценз и ключ за активиране е валидна,
+        /// При възможност активира лиценз, ако има свободни позиции за активация
         /// </summary>
         /// <param name="id">the id of the license</param>
         /// <param name="request"></param>
@@ -126,6 +126,61 @@ namespace BS.Api.Controllers
                 }
 
                 if (!_service.CheckOrActivate(license, request.ActivationKey, request.ComputerName))
+                {
+                    return BadRequestWithError(ApiErrorEnum.LicenseActivationFailed, "Cannot activate license.");
+                }
+                #endregion
+
+                return Ok<LicenseMessage>(new LicenseMessage(license));
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(NLog.LogLevel.Error, ex);
+
+                return BadRequestWithError(ApiErrorEnum.GeneralError);
+            }
+        }
+
+        /// <summary>
+        /// Прави проверка дали дадена комбинация от лиценз и ключ за активиране е валидна,
+        /// При възможност активира лиценз, ако има свободни позиции за активация
+        /// </summary>
+        /// <param name="id">the id of the license</param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/license/{id}/activate")]
+        public IHttpActionResult Acitvate([FromUri]string id, [FromBody]VerifyLicenseRequestEx request)
+        {
+            try
+            {
+                var license = _service.Get(id);
+
+                #region Validation
+                if (license == null)
+                {
+                    return BadRequestWithError(ApiErrorEnum.LicenseNotFound,
+                        string.Format("No such license with the given Id {0}.", id));
+                }
+
+                if (!license.Enabled)
+                {
+                    return BadRequestWithError(ApiErrorEnum.LicenseNotEnabled,
+                        string.Format("LIcense with Id {0} has not been enabled.", id));
+                }
+
+                if (request == null
+                    || string.IsNullOrEmpty(request.ActivationKey))
+                {
+                    return BadRequestWithError(ApiErrorEnum.NoActivationKey, "No activation key supplied.");
+                }
+
+                if (!_service.Activate(license.Id, new LicenseActivateModel()
+                {
+                    ActivationKey = request.ActivationKey,
+                    ComputerName = request.ComputerName,
+                    ServerName = request.ServerName
+                }))
                 {
                     return BadRequestWithError(ApiErrorEnum.LicenseActivationFailed, "Cannot activate license.");
                 }

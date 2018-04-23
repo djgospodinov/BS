@@ -417,6 +417,63 @@ namespace BS.LicenseServer.Services
             return result;
         }
 
+        public bool Activate(Guid id, LicenseActivateModel model)
+        {
+            bool result = false;
+            using (var db = new LicenseDbEntities())
+            {
+                var licenseDb = db.Licenses.FirstOrDefault(x => x.Id == id);
+                if (licenseDb == null)
+                    return false;
+                var server = db.LicenseOwnerServers.FirstOrDefault(x => x.LicenseOwnerID == licenseDb.LicenseOwnerId
+                    && x.ServerName == model.ServerName);
+                if (server == null)
+                {
+                    server = new LicenseOwnerServer()
+                    {
+                        LicenseOwnerID = licenseDb.LicenseOwnerId,
+                        ServerName = model.ServerName,
+                        CreateDate = DateTime.Now
+                    };
+                    db.LicenseOwnerServers.Add(server);
+                }
+
+                switch ((LicenseTypeEnum)licenseDb.Type)
+                {
+                    case LicenseTypeEnum.PerComputer:
+                       if (licenseDb.LicenseActivations.Count < licenseDb.WorkstationsCount)
+                        {
+                            licenseDb.LicenseActivations.Add(new LicenseActivation()
+                            {
+                                ComputerId = model.ActivationKey,
+                                ComputerName = model.ComputerName,
+                                LicenseOwnerServerId = server.LicenseOwnerID
+                            });
+                            result = true;
+                        }
+                        break;
+                    case LicenseTypeEnum.PerUser:
+                        if (licenseDb.LicenseActivations.Count == 0)
+                        {
+                            licenseDb.LicenseActivations.Add(new LicenseActivation()
+                            {
+                                UserId = model.ActivationKey,
+                                ComputerName = model.ComputerName,
+                                LicenseOwnerServerId = server.LicenseOwnerID
+                            });
+                        }
+                        break;
+                    case LicenseTypeEnum.PerServer:
+                        result = true;
+                        break;
+                }
+
+                db.SaveChanges();
+            }
+
+            return result;
+        }
+
         #region Helper methods
         private void LogLicenseChange(LicenseDbEntities db, 
             bool isDemo,

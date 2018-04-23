@@ -511,8 +511,17 @@
         </member>
         <member name="M:BS.Api.Controllers.VerifyLicenseController.NotEncrypted(System.String,BS.Api.Models.VerifyLicenseRequest)">
             <summary>
-            Verifies if license is valid for the given activation rule and if so, 
-            returns a message containing the license information
+            Прави проверка дали дадена комбинация от лиценз и ключ за активиране е валидна,
+            При възможност активира лиценз, ако има свободни позиции за активация
+            </summary>
+            <param name="id">the id of the license</param>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BS.Api.Controllers.VerifyLicenseController.Acitvate(System.String,BS.Api.Models.VerifyLicenseRequestEx)">
+            <summary>
+            Прави проверка дали дадена комбинация от лиценз и ключ за активиране е валидна,
+            При възможност активира лиценз, ако има свободни позиции за активация
             </summary>
             <param name="id">the id of the license</param>
             <param name="request"></param>
@@ -613,14 +622,24 @@
             <param name="id">the id of the license, it should guid</param>
             <returns></returns>
         </member>
+        <member name="T:BS.Api.Models.VerifyLicenseRequest">
+            <summary>
+            Параметри на заявката за проверка или активация на лиценз
+            </summary>
+        </member>
         <member name="P:BS.Api.Models.VerifyLicenseRequest.ActivationKey">
             <summary>
-            the activation key needed from the mirage, e.g. comptuer id or specific logged user
+            Стойност която отговаря на генериран идентификатор на компютър или на потребител, това зависи от вида лиценза
             </summary>
         </member>
         <member name="P:BS.Api.Models.VerifyLicenseRequest.ComputerName">
             <summary>
-            comptuter name where mirage is used
+            Името на работната станция, където се лицензира
+            </summary>
+        </member>
+        <member name="P:BS.Api.Models.VerifyLicenseRequestEx.ServerName">
+            <summary>
+            Сървъра, който използва Мираж
             </summary>
         </member>
         <member name="P:BS.Api.Models.LicenseMessage.Id">

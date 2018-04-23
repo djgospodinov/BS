@@ -122,7 +122,6 @@
     <Compile Include="Cache\IpFilterCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApiLogService.cs" />
-    <Compile Include="Services\DemoLicenseService.cs" />
     <Compile Include="Services\IpFilterService.cs" />
     <Compile Include="Services\LicenseService.cs" />
     <Compile Include="Services\Service.cs" />
