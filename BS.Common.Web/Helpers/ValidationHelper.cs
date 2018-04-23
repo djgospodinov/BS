@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.LicenseServer.Helper
+namespace BS.Common.Helper
 {
     public class ValidationHelper
     {

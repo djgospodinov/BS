@@ -1,11 +1,11 @@
-﻿using BS.LicenseServer.Helper;
+﻿using BS.Common.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace BS.Admin.Web.Filters
+namespace BS.Common.Web.Filters
 {
     public class PersonalIdValidationAttribute : ValidationAttribute
     {

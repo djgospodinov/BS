@@ -1,5 +1,7 @@
 ﻿using BS.Admin.Web.Filters;
 using BS.Common.Models;
+using BS.Common.Web;
+using BS.Common.Web.Filters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -81,10 +83,6 @@ namespace BS.Admin.Web.Models
         [Required]
         public string ContactPerson { get; set; }
 
-        /// <summary>
-        /// https://github.com/mirovit/eik-validator/blob/master/src/EIKValidator/EIKValidator.php
-        /// https://github.com/Dr4g0/MyProjects/blob/master/TestEGN_BUSLTAT/TestIDNumber.cs
-        /// </summary>
         [Display(Name = "Булстат")]
         [RequiredIf("IsCompany", true)]
         //[RangeIf("IsCompany", true, 9999999999999, 999999999999999, ErrorMessage = "Въведете само цифри.Полето трябва да е между 13 и 15 символа.")]

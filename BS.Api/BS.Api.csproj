@@ -236,6 +236,10 @@
     <Content Include="Content\Site.css" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BS.Common.Web\BS.Common.Web.csproj">
+      <Project>{406dafb4-3651-4e3e-a1e5-ee760a52df83}</Project>
+      <Name>BS.Common.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BS.Common\BS.Common.csproj">
       <Project>{5c6eac12-009b-4f53-9141-2c857e51ce55}</Project>
       <Name>BS.Common</Name>

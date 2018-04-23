@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace BS.Admin.Web.Filters
+namespace BS.Common.Web
 {
     public class RequiredIfAttribute : ValidationAttribute
     {

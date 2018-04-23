@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using BS.Common;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
+using BS.Common.Web.Filters;
+using BS.Common.Web;
 
 namespace BS.Common.Models
 {
@@ -44,7 +46,8 @@ namespace BS.Common.Models
         }
 
         [DataMember]
-        //[Required]
+        [RequiredIf("IsCompany", true)]
+        [CompanyIdValidation(ErrorMessage = "Невалиден Булстат номер")]
         public string CompanyId { get; set; }
 
         [DataMember]
