@@ -203,6 +203,7 @@
     <Compile Include="Controllers\VerifyLicenseController.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Filters\IpFilterAttribute.cs" />
+    <Compile Include="Models\ActivateLicenseMessage.cs" />
     <Compile Include="Models\VerifyLicenseRequest.cs" />
     <Compile Include="Models\LicenseMessage.cs" />
     <Compile Include="Models\VerifyLicenseMessage.cs" />
