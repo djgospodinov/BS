@@ -131,7 +131,7 @@ namespace BS.Api.Controllers
                 }
                 #endregion
 
-                return Ok<LicenseMessage>(new LicenseMessage(license));
+                return Ok(new LicenseMessage(license));
             }
             catch (Exception ex)
             {
@@ -186,7 +186,14 @@ namespace BS.Api.Controllers
                 }
                 #endregion
 
-                return Ok<LicenseMessage>(new LicenseMessage(license));
+                return Ok(new ActivateLicenseMessage()
+                {
+                    LicenseId = license.Id,
+                    ActivationKey = request.ActivationKey,
+                    ComputerName = request.ComputerName,
+                    ServerName = request.ServerName,
+                    Activated = true
+                });
             }
             catch (Exception ex)
             {
