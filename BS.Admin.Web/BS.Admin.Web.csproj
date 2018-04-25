@@ -226,6 +226,7 @@
     <Compile Include="Logic\CustomDateBinder.cs" />
     <Compile Include="Logic\DropdownHelper.cs" />
     <Compile Include="Filters\AuthorizeUserAttribute.cs" />
+    <Compile Include="Models\LicenseAndUsersInfoModel.cs" />
     <Compile Include="Models\LicenseLogFilterGridModel.cs" />
     <Compile Include="Models\ApiLogFilterGridModel.cs" />
     <Compile Include="Models\CreateLicenseOwnerModel.cs" />
@@ -401,6 +402,7 @@
     <Content Include="Views\Settings\EditVariable.cshtml" />
     <Content Include="Views\Settings\CreateVariable.cshtml" />
     <Content Include="Views\License\LicenseVariables.cshtml" />
+    <Content Include="Views\UserLicense\LicenseAndUsersInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

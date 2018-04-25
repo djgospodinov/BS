@@ -17,8 +17,8 @@ namespace BS.LicenseServer.Helper
             result.Phone = model.Phone;
             result.Email = model.Email;
             result.ContactPerson = model.ContactPerson;
-            result.CompanyId = model.CompanyId;
-            result.EGN = model.EGN;
+            result.CompanyId = model.IsCompany ? model.CompanyId.Trim() : null;
+            result.EGN = !model.IsCompany ? model.EGN.Trim() : null;
             result.IsCompany = model.IsCompany;
 
             if (!model.IsDemo)
@@ -52,9 +52,9 @@ namespace BS.LicenseServer.Helper
             result.Phone = model.Phone;
             result.Email = model.Email;
             result.ContactPerson = model.ContactPerson;
-            result.CompanyId = model.CompanyId;
+            result.CompanyId = (model.CompanyId ?? string.Empty).Trim();
             result.IsCompany = model.IsCompany;
-            result.EGN = model.EGN;
+            result.EGN = (model.EGN ?? string.Empty).Trim();
             result.IsDemo = model.Licenses.All(x => x.IsDemo);
 
             var extraInfo = model.LicenseOwnerExtraInfoes1.FirstOrDefault();

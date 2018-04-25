@@ -52,7 +52,8 @@ namespace BS.LicenseServer.Services
                             {
                                 Id = x.Id,
                                 Code = x.lu_LicenseModules.Code,
-                                ValidTo = x.ValidTo
+                                ValidTo = x.ValidTo,
+                                Type = (LicenseModulesEnum)x.lu_LicenseModules.Id
                             }).ToList(),
                         ActivationId = ((LicenseTypeEnum)result.Type) == LicenseTypeEnum.PerUser
                             ? activator != null ? activator.UserId : string.Empty
@@ -102,6 +103,7 @@ namespace BS.LicenseServer.Services
                         ValidTo = x.ValidTo,
                         Created = x.CreatedDate,
                         WorkstationsCount = x.WorkstationsCount,
+                        Type = (LicenseTypeEnum)x.Type,
                         User = new Common.Models.LicenserInfoModel()
                         {
                             Name = x.LicenseOwner.Name,

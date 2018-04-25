@@ -1,0 +1,20 @@
+﻿@model BS.Admin.Web.Models.LicenseAndUsersInfoModel
+
+<table>
+    <tr>
+        <td>@Html.LabelFor(m => m.ClientId)</td>
+        <td>@Model.ClientId</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(m => m.CompanyName)</td>
+        <td>@Model.CompanyName</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(m => m.LicenseType)</td>
+        <td>@Model.LicenseType</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(m => m.WorkStationsCount)</td>
+        <td>@Model.WorkStationsCount</td>
+    </tr>
+</table>

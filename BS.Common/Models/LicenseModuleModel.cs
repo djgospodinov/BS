@@ -40,5 +40,7 @@ namespace BS.Common.Models
         /// </summary>
         [DataMember]
         public DateTime ValidTo { get; set; }
+
+        public LicenseModulesEnum Type { get; set; }
     }
 }
