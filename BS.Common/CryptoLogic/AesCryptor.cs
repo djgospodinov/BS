@@ -41,10 +41,7 @@ namespace BS.Common
  
                     using (var encryptor = aesManaged.CreateEncryptor(keyBytes, ivBytes))
                     {
-                        MemoryStream memoryStream = null;
-                        CryptoStream cryptoStream = null;
- 
-                        return WriteMemoryStream(plainText, ref saltBytes, encryptor, ref memoryStream, ref cryptoStream);
+                        return WriteMemoryStream(plainText, ref saltBytes, encryptor);
                     }
                 }
             }
@@ -75,41 +72,24 @@ namespace BS.Common
             }
         }
  
-        private string WriteMemoryStream(string plainText, ref byte[] saltBytes, ICryptoTransform encryptor, ref MemoryStream memoryStream, ref CryptoStream cryptoStream)
+        private string WriteMemoryStream(string plainText, ref byte[] saltBytes, ICryptoTransform encryptor)
         {
-            try
+            using (var memoryStream = new MemoryStream())
             {
-                memoryStream = new MemoryStream();
- 
-                try
+                using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                 {
-                    cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
- 
                     using (var streamWriter = new StreamWriter(cryptoStream))
                     {
                         streamWriter.Write(plainText);
                     }
                 }
-                finally
-                {
-                    if (cryptoStream != null)
-                    {
-                        cryptoStream.Dispose();
-                    }
-                }
- 
+
+
                 var cipherTextBytes = memoryStream.ToArray();
                 Array.Resize(ref saltBytes, saltBytes.Length + cipherTextBytes.Length);
                 Array.Copy(cipherTextBytes, 0, saltBytes, _saltSize, cipherTextBytes.Length);
- 
+
                 return Convert.ToBase64String(saltBytes);
-            }
-            finally
-            {
-                if (memoryStream != null)
-                {
-                    memoryStream.Dispose();
-                }
             }
         }
  

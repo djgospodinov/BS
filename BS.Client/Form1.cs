@@ -102,6 +102,10 @@ namespace BS.Client
 
         private async void button2_Click(object sender, EventArgs e)
         {
+            var privateKey = StringCipher.Encrypt("hello", Common.Constants.PublicKey);
+            txtRequest.Text = privateKey;
+
+            txtRequest.Text += Environment.NewLine + StringCipher.Decrypt(privateKey, Common.Constants.PublicKey);
             await GetLicenseInfo();
         }
 

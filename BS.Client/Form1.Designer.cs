@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtError = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtRequest = new System.Windows.Forms.TextBox();
             this.txtCreatedLicenseId = new System.Windows.Forms.TextBox();
@@ -41,7 +42,6 @@
             this.txtLicenseId = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtError = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -71,6 +71,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Създаване";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // txtError
+            // 
+            this.txtError.Location = new System.Drawing.Point(13, 373);
+            this.txtError.Multiline = true;
+            this.txtError.Name = "txtError";
+            this.txtError.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtError.Size = new System.Drawing.Size(892, 124);
+            this.txtError.TabIndex = 8;
             // 
             // label1
             // 
@@ -105,7 +114,7 @@
             this.btnCreateLicense.TabIndex = 0;
             this.btnCreateLicense.Text = "Създай лиценз";
             this.btnCreateLicense.UseVisualStyleBackColor = true;
-            this.btnCreateLicense.Click += new System.EventHandler(this.btnCreateLicense_Click);
+            this.btnCreateLicense.Click += new System.EventHandler(this.button2_Click);
             // 
             // tabPage2
             // 
@@ -175,15 +184,6 @@
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Създаване";
-            // 
-            // txtError
-            // 
-            this.txtError.Location = new System.Drawing.Point(13, 373);
-            this.txtError.Multiline = true;
-            this.txtError.Name = "txtError";
-            this.txtError.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtError.Size = new System.Drawing.Size(892, 124);
-            this.txtError.TabIndex = 8;
             // 
             // Form1
             // 
