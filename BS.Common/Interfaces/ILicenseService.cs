@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BS.Common.Models.Requests;
 
 namespace BS.Common
 {
@@ -28,5 +29,7 @@ namespace BS.Common
         bool CheckOrActivate(LicenseModel license, string activationKey, string computerName);
 
         bool Activate(Guid id, LicenseActivateModel model);
+
+        bool AddServer(AddServerRequest request);
     }
 }

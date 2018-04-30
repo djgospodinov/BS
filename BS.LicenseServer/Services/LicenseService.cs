@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 using System.Transactions;
 using BS.LicenseServer.Helper;
 using Newtonsoft.Json;
+using BS.Common.Models.Requests;
 
 namespace BS.LicenseServer.Services
 {
-    public class LicenseService : Service, ILicenseService 
+    public class LicenseService : Service, ILicenseService
     {
         private static ILogger _logger = LogManager.GetCurrentClassLogger();
 
@@ -471,6 +472,35 @@ namespace BS.LicenseServer.Services
                 }
 
                 db.SaveChanges();
+            }
+
+            return result;
+        }
+
+        public bool AddServer(AddServerRequest request)
+        {
+            bool result = false;
+            using (var db = new LicenseDbEntities())
+            {
+                var owner = db.LicenseOwners.FirstOrDefault(x => x.RegNom == request.RegNom);
+                if (owner != null)
+                {
+                    foreach (var x in request.Servers)
+                    {
+                        db.LicenseOwnerServers.Add(new LicenseOwnerServer()
+                        {
+                            LicenseOwnerID = owner.Id,
+                            ServerName = x.ServerName,
+                            ServerIPAddress = x.ServerIPAddress,
+                            SendFromPC = request.ComputerName,
+                            SendFromPCIPAddress = request.ComputerIP,
+                            CreateDate = request.RequestDate,
+                            SystemUserName = request.SystemUserName
+                        });
+                    }
+
+                    return true;
+                }
             }
 
             return result;

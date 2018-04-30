@@ -81,6 +81,7 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="CompanyId" Type="nchar" MaxLength="15" />
           <Property Name="EGN" Type="nchar" MaxLength="10" />
+          <Property Name="RegNom" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="LicenseOwnerServer">
           <Key>
@@ -89,6 +90,10 @@
           <Property Name="LicenseOwnerID" Type="int" Nullable="false" />
           <Property Name="ServerName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="ServerIPAddress" Type="varchar" MaxLength="10" />
+          <Property Name="SendFromPC" Type="varchar" MaxLength="100" />
+          <Property Name="SendFromPCIPAddress" Type="varchar" MaxLength="20" />
+          <Property Name="SystemUserName" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Licenses">
           <Key>
@@ -327,6 +332,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LicenseOwnerExtraInfoes1" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwner" ToRole="LicenseOwnerExtraInfo1" />
           <Property Name="EGN" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="RegNom" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -598,6 +604,10 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="LicenseOwnerID" Type="Int32" Nullable="false" />
           <Property Name="ServerName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ServerIPAddress" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SendFromPC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SendFromPCIPAddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SystemUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -618,7 +628,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
     <EntitySetMapping Name="LicenseOwners">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.LicenseOwner)">
         <MappingFragment StoreEntitySet="LicenseOwners">
-          <ScalarProperty Name="EGN" ColumnName="EGN" />
+          <ScalarProperty Name="RegNom" ColumnName="RegNom" />
+                <ScalarProperty Name="EGN" ColumnName="EGN" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -767,6 +778,10 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <EntitySetMapping Name="LicenseOwnerServers">
             <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwnerServer">
               <MappingFragment StoreEntitySet="LicenseOwnerServer">
+                <ScalarProperty Name="SystemUserName" ColumnName="SystemUserName" />
+                <ScalarProperty Name="SendFromPCIPAddress" ColumnName="SendFromPCIPAddress" />
+                <ScalarProperty Name="SendFromPC" ColumnName="SendFromPC" />
+                <ScalarProperty Name="ServerIPAddress" ColumnName="ServerIPAddress" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="ServerName" ColumnName="ServerName" />
                 <ScalarProperty Name="LicenseOwnerID" ColumnName="LicenseOwnerID" />
