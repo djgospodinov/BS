@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BS.Api.Handlers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -26,7 +27,9 @@ namespace BS.Api
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            //Register handlers
             config.MessageHandlers.Add(new ApiLogHandler());
+            config.MessageHandlers.Add(new AuthorizationHeaderHandler());
         }
     }
 }

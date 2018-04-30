@@ -45,7 +45,7 @@ namespace BS.Api.Controllers
 
                 var result = _service.AddServer(request);
 
-                return Ok();
+                return Ok(new AddServerResponse() { AddedServer = result });
             }
             catch (Exception ex)
             {

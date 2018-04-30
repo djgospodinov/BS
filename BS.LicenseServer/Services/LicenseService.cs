@@ -429,13 +429,13 @@ namespace BS.LicenseServer.Services
                 if (licenseDb == null)
                     return false;
                 var server = db.LicenseOwnerServers.FirstOrDefault(x => x.LicenseOwnerID == licenseDb.LicenseOwnerId
-                    && x.ServerName == model.ServerName);
+                    && x.ServerInstance == model.ServerName);
                 if (server == null)
                 {
                     server = new LicenseOwnerServer()
                     {
                         LicenseOwnerID = licenseDb.LicenseOwnerId,
-                        ServerName = model.ServerName,
+                        ServerInstance = model.ServerName,
                         CreateDate = DateTime.Now
                     };
                     db.LicenseOwnerServers.Add(server);
@@ -479,31 +479,55 @@ namespace BS.LicenseServer.Services
 
         public bool AddServer(AddServerRequest request)
         {
-            bool result = false;
-            using (var db = new LicenseDbEntities())
+            try
             {
-                var owner = db.LicenseOwners.FirstOrDefault(x => x.RegNom == request.RegNom);
-                if (owner != null)
+                bool result = false;
+                using (var db = new LicenseDbEntities())
                 {
-                    foreach (var x in request.Servers)
+                    var owner = db.LicenseOwners.FirstOrDefault(x => x.RegNom == request.RegNom);
+                    if (owner != null)
                     {
-                        db.LicenseOwnerServers.Add(new LicenseOwnerServer()
+                        foreach (var x in request.Servers)
                         {
-                            LicenseOwnerID = owner.Id,
-                            ServerName = x.ServerName,
-                            ServerIPAddress = x.ServerIPAddress,
-                            SendFromPC = request.ComputerName,
-                            SendFromPCIPAddress = request.ComputerIP,
-                            CreateDate = request.RequestDate,
-                            SystemUserName = request.SystemUserName
-                        });
+                            var server = db.LicenseOwnerServers.FirstOrDefault(v => v.ServerInstance == x.ServerInstance && v.LicenseOwnerID == owner.Id);
+                            if (server == null)
+                            {
+                                db.LicenseOwnerServers.Add(new LicenseOwnerServer()
+                                {
+                                    LicenseOwnerID = owner.Id,
+                                    ServerInstance = x.ServerInstance,
+                                    ServerIPAddress = x.ServerIPAddress,
+                                    SendFromPC = request.ComputerName,
+                                    SendFromPCIPAddress = request.ComputerIP,
+                                    CreateDate = request.RequestDate,
+                                    SystemUserName = request.SystemUserName
+                                });
+                            }
+                            else
+                            {
+                                server.ServerIPAddress = x.ServerIPAddress;
+                                server.SendFromPC = request.ComputerName;
+                                server.SendFromPCIPAddress = request.ComputerIP;
+                                server.CreateDate = request.RequestDate;
+                                server.SystemUserName = request.SystemUserName;
+                            }
+                        }
+
+                        db.SaveChanges();
+
+                        return true;
                     }
-
-                    return true;
                 }
-            }
 
-            return result;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                var error = ((System.Data.Entity.Validation.DbEntityValidationException)ex).EntityValidationErrors;
+                _logger.Log(LogLevel.Error, ex);
+
+                throw;
+            }
         }
 
         #region Helper methods

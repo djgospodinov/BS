@@ -42,11 +42,16 @@ namespace BS.Common.Models.Requests
         /// <summary>
         ///  Име на SQL Server Instance – Записваме го в LicenseOwnerServer.ServerName
         /// </summary>
-        public string ServerName { get; set; }
+        public string ServerInstance { get; set; }
         [Required]
         /// <summary>
         ///  IP-то на SQL Server Instance, незадължително –Записваме го в LicenseOwnerServer.ServerIPAddress
         /// </summary>
         public string ServerIPAddress { get; set; }
+    }
+
+    public class AddServerResponse
+    {
+        public bool AddedServer { get; set; }
     }
 }

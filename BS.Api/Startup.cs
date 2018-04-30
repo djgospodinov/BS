@@ -16,28 +16,10 @@ namespace BS.Api
         {
             var config = new HttpConfiguration();
 
-            ConfigureOAuth(app);
-
             WebApiConfig.Register(config);
             
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(config);
         }
-
-        private static void ConfigureOAuth(IAppBuilder app)
-        {
-            var options = new OAuthAuthorizationServerOptions()
-            {
-                AllowInsecureHttp = true,
-                //AllowInsecureHttp = false,
-                TokenEndpointPath = new PathString("/api/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
-                Provider = new SimpleAuthorizationServerProvider()
-            };
-
-            // Token Generation
-            app.UseOAuthAuthorizationServer(options);
-            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
-        }   
     }
 }
