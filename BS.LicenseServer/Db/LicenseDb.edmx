@@ -108,7 +108,6 @@
           <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
           <Property Name="Enabled" Type="bit" />
           <Property Name="Type" Type="tinyint" />
-          <Property Name="WorkstationCount" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="SubscribedTo" Type="datetime" />
           <Property Name="WorkstationsCount" Type="int" />
@@ -357,7 +356,6 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
           <NavigationProperty Name="LicenseActivations" Relationship="LicenseDbModel.FK_LicenseActivation_Licenses" FromRole="License" ToRole="LicenseActivation" />
           <Property Name="WorkstationsCount" Type="Int32" />
           <NavigationProperty Name="LicenseVariables" Relationship="LicenseDbModel.FK_Licenses_LicenseVariables" FromRole="License" ToRole="LicenseVariable" />
-          <Property Name="WorkstationCount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -654,7 +652,6 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
     <EntitySetMapping Name="Licenses">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.License)">
         <MappingFragment StoreEntitySet="Licenses">
-          <ScalarProperty Name="WorkstationCount" ColumnName="WorkstationCount" />
                 <ScalarProperty Name="WorkstationsCount" ColumnName="WorkstationsCount" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
