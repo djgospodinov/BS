@@ -29,7 +29,7 @@ namespace BS.LicenseServer.Db
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> SubscribedTo { get; set; }
         public Nullable<byte> Type { get; set; }
-        public int WorkstationsCount { get; set; }
+        public Nullable<int> WorkstationsCount { get; set; }
     
         public virtual ICollection<LicenseModule> LicenseModules { get; set; }
         public virtual LicenseOwner LicenseOwner { get; set; }

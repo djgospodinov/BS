@@ -62,9 +62,9 @@
           <Property Name="RegistrationAddress" Type="nchar" MaxLength="250" />
           <Property Name="PostAddress" Type="nchar" MaxLength="250" />
           <Property Name="MOL" Type="nvarchar" MaxLength="250" />
-          <Property Name="ContactPerson" Type="nvarchar" MaxLength="250" />
           <Property Name="AccountingPerson" Type="nvarchar" MaxLength="250" />
           <Property Name="VatRegistration" Type="bit" />
+          <Property Name="ContactPerson" Type="varchar" MaxLength="250" />
           <Property Name="IsVIP" Type="bit" Nullable="false" />
           <Property Name="VIPComment" Type="varchar" MaxLength="255" />
         </EntityType>
@@ -81,7 +81,9 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" />
           <Property Name="CompanyId" Type="nchar" MaxLength="15" />
           <Property Name="EGN" Type="nchar" MaxLength="10" />
-          <Property Name="RegNom" Type="varchar" MaxLength="10" />
+          <Property Name="RegNom" Type="varchar" MaxLength="15" />
+          <Property Name="IsVIP" Type="bit" />
+          <Property Name="VipComment" Type="varchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="LicenseOwnerServer">
           <Key>
@@ -106,9 +108,10 @@
           <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
           <Property Name="Enabled" Type="bit" />
           <Property Name="Type" Type="tinyint" />
+          <Property Name="WorkstationCount" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="SubscribedTo" Type="datetime" />
-          <Property Name="WorkstationsCount" Type="int" Nullable="false" />
+          <Property Name="WorkstationsCount" Type="int" />
         </EntityType>
         <EntityType Name="LicensesLog">
           <Key>
@@ -143,7 +146,7 @@
           <Property Name="OrderNo" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="lu_LicenseTypes">
           <Key>
             <PropertyRef Name="Id" />
@@ -333,7 +336,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LicenseOwnerExtraInfoes1" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwner" ToRole="LicenseOwnerExtraInfo1" />
           <Property Name="EGN" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="RegNom" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RegNom" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="IsVIP" Type="Boolean" />
+          <Property Name="VipComment" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -350,8 +355,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="SubscribedTo" Type="DateTime" Precision="3" />
           <Property Name="Type" Type="Byte" />
           <NavigationProperty Name="LicenseActivations" Relationship="LicenseDbModel.FK_LicenseActivation_Licenses" FromRole="License" ToRole="LicenseActivation" />
-          <Property Name="WorkstationsCount" Type="Int32" Nullable="false" />
+          <Property Name="WorkstationsCount" Type="Int32" />
           <NavigationProperty Name="LicenseVariables" Relationship="LicenseDbModel.FK_Licenses_LicenseVariables" FromRole="License" ToRole="LicenseVariable" />
+          <Property Name="WorkstationCount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -465,7 +471,7 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
           <Property Name="RegistrationAddress" Type="String" MaxLength="250" FixedLength="true" Unicode="true" />
           <Property Name="PostAddress" Type="String" MaxLength="250" FixedLength="true" Unicode="true" />
           <Property Name="MOL" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ContactPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="AccountingPerson" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LicenseOwner" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwnerExtraInfo1" ToRole="LicenseOwner" />
           <Property Name="VatRegistration" Type="Boolean" />
@@ -630,7 +636,9 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
     <EntitySetMapping Name="LicenseOwners">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.LicenseOwner)">
         <MappingFragment StoreEntitySet="LicenseOwners">
-          <ScalarProperty Name="RegNom" ColumnName="RegNom" />
+          <ScalarProperty Name="VipComment" ColumnName="VipComment" />
+                <ScalarProperty Name="IsVIP" ColumnName="IsVIP" />
+                <ScalarProperty Name="RegNom" ColumnName="RegNom" />
                 <ScalarProperty Name="EGN" ColumnName="EGN" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -646,7 +654,8 @@ warning 6002: The table/view 'LicenseDb2.dbo.lu_LicenseTypes' does not have a pr
     <EntitySetMapping Name="Licenses">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.License)">
         <MappingFragment StoreEntitySet="Licenses">
-          <ScalarProperty Name="WorkstationsCount" ColumnName="WorkstationsCount" />
+          <ScalarProperty Name="WorkstationCount" ColumnName="WorkstationCount" />
+                <ScalarProperty Name="WorkstationsCount" ColumnName="WorkstationsCount" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />
           <ScalarProperty Name="IsDemo" ColumnName="IsDemo" />

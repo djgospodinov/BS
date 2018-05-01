@@ -24,6 +24,16 @@
             when the module can be used to
             </summary>
         </member>
+        <member name="P:BS.Common.Models.Requests.AddServerRequest.ComputerIP">
+            <summary>
+            IP-то, незадължително, ако го подадем , ще го записваме в  LicenseOwnerServer.SendFromPCIPAddress
+            </summary>
+        </member>
+        <member name="P:BS.Common.Models.Requests.AddServerRequest.SystemUserName">
+            <summary>
+            Windows User Name – записваме го в LicenseOwnerServer.SystemUserName
+            </summary>
+        </member>
         <member name="P:BS.Common.LicenseModel.Id">
             <summary>
             the id of the license
