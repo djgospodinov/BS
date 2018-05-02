@@ -108,6 +108,7 @@
           <Property Name="LicenseOwnerId" Type="int" Nullable="false" />
           <Property Name="Enabled" Type="bit" />
           <Property Name="Type" Type="tinyint" />
+          <Property Name="WorkstationCount" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="SubscribedTo" Type="datetime" />
           <Property Name="WorkstationsCount" Type="int" />
@@ -332,7 +333,6 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
           <Property Name="ContactPerson" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Licenses" Relationship="Self.FK_LicensesLicenseOwners" FromRole="LicenseOwners" ToRole="Licenses" />
           <Property Name="CompanyId" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LicenseOwnerExtraInfoes1" Relationship="LicenseDbModel.FK_LicenseOwnerExtraInfo_LicenseOwners1" FromRole="LicenseOwner" ToRole="LicenseOwnerExtraInfo1" />
           <Property Name="EGN" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="RegNom" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
@@ -356,6 +356,7 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
           <NavigationProperty Name="LicenseActivations" Relationship="LicenseDbModel.FK_LicenseActivation_Licenses" FromRole="License" ToRole="LicenseActivation" />
           <Property Name="WorkstationsCount" Type="Int32" />
           <NavigationProperty Name="LicenseVariables" Relationship="LicenseDbModel.FK_Licenses_LicenseVariables" FromRole="License" ToRole="LicenseVariable" />
+          <Property Name="WorkstationCount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="lu_LicenseModules">
           <Key>
@@ -638,7 +639,6 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
                 <ScalarProperty Name="IsVIP" ColumnName="IsVIP" />
                 <ScalarProperty Name="RegNom" ColumnName="RegNom" />
                 <ScalarProperty Name="EGN" ColumnName="EGN" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Email" ColumnName="Email" />
@@ -652,6 +652,7 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
     <EntitySetMapping Name="Licenses">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.License)">
         <MappingFragment StoreEntitySet="Licenses">
+                <ScalarProperty Name="WorkstationCount" ColumnName="WorkstationCount" />
                 <ScalarProperty Name="WorkstationsCount" ColumnName="WorkstationsCount" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ValidTo" ColumnName="ValidTo" />

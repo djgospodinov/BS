@@ -15,12 +15,12 @@ namespace BS.Api.Handlers
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            IEnumerable<string> apiKeyHeaderValues = null;
-            if (!request.RequestUri.AbsolutePath.Contains("api"))
+            if (!request.RequestUri.AbsolutePath.ToLower().StartsWith("/api/"))
             {
                 return base.SendAsync(request, cancellationToken);
             }
 
+            IEnumerable<string> apiKeyHeaderValues = null;
             if (request.Headers.TryGetValues("X-ApiKey", out apiKeyHeaderValues))
             {
                 var apiKeyHeaderValue = apiKeyHeaderValues.First();

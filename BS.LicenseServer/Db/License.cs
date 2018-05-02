@@ -30,6 +30,7 @@ namespace BS.LicenseServer.Db
         public Nullable<System.DateTime> SubscribedTo { get; set; }
         public Nullable<byte> Type { get; set; }
         public Nullable<int> WorkstationsCount { get; set; }
+        public int WorkstationCount { get; set; }
     
         public virtual ICollection<LicenseModule> LicenseModules { get; set; }
         public virtual LicenseOwner LicenseOwner { get; set; }

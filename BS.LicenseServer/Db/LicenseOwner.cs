@@ -27,7 +27,6 @@ namespace BS.LicenseServer.Db
         public bool IsCompany { get; set; }
         public string ContactPerson { get; set; }
         public string CompanyId { get; set; }
-        public string UserId { get; set; }
         public string EGN { get; set; }
         public string RegNom { get; set; }
         public Nullable<bool> IsVIP { get; set; }

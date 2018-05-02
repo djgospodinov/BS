@@ -9,6 +9,7 @@ namespace BS.Common.Models.Requests
 {
     public class AddServerRequest
     {
+        [MaxLength(15)]
         [Required]
         /// <summary>
         /// уникален наш код на клиента, съществува в таблица LicenseOwners и чрез него може да се вземе LicenseOwners.Id и да се запише в LicenseOwnerServer.LicenseOwnerID
@@ -27,6 +28,7 @@ namespace BS.Common.Models.Requests
         /// <summary>
         /// IP-то, незадължително, ако го подадем , ще го записваме в  LicenseOwnerServer.SendFromPCIPAddress
         /// </summary>
+        [MaxLength(15)]
         public string ComputerIP { get; set; }
         /// <summary>
         /// Windows User Name – записваме го в LicenseOwnerServer.SystemUserName

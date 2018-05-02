@@ -138,7 +138,7 @@ namespace BS.LicenseServer.Services
                     {
                         owner = model.User.IsCompany 
                             ? db.LicenseOwners.FirstOrDefault(x => x.CompanyId == model.User.CompanyId)
-                            : db.LicenseOwners.FirstOrDefault(x => x.UserId == model.User.EGN);
+                            : db.LicenseOwners.FirstOrDefault(x => x.EGN == model.User.EGN);
                     }
 
                     if (owner == null)

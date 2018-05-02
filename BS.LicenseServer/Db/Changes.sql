@@ -329,3 +329,18 @@ IF NOT EXISTS (
 )
 ALTER TABLE LicenseActivation ADD LicenseOwnerServerId int
 GO
+-------------------------Remove not needed tables
+DROP TABLE AspNetRoles
+GO
+
+DROP TABLE AspNetUserRoles
+GO
+
+DROP TABLE AspNetUserClaims
+GO
+
+DROP TABLE AspNetUsers
+GO
+
+DROP TABLE AspNetUserLogins
+GO
