@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Net;
 using System.Threading;
 using System.ComponentModel;
+using System.Web.Http.ModelBinding;
 
 namespace BS.Api.Controllers
 {
@@ -77,6 +78,19 @@ namespace BS.Api.Controllers
                 {
                     error = error,
                     message = message ?? ApiErrorMessages.BadRequest
+                });
+
+            return ResponseMessage(response);
+        }
+
+        protected IHttpActionResult BadRequestWithError(ApiErrorEnum generalError, ModelStateDictionary modelState)
+        {
+            var error = ModelState.Values.Where(x => x.Errors != null && x.Errors.Any()).First().Errors.First();
+            var response = Request.CreateResponse(HttpStatusCode.BadRequest,
+                new
+                {
+                    error = generalError,
+                    message = !string.IsNullOrEmpty(error.ErrorMessage) ? error.ErrorMessage : error.Exception != null ? error.Exception.Message : ApiErrorMessages.BadRequest
                 });
 
             return ResponseMessage(response);

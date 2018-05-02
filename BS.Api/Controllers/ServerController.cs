@@ -10,7 +10,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-
+using System.Web.Http.ModelBinding;
 
 namespace BS.Api.Controllers
 {
@@ -40,7 +40,7 @@ namespace BS.Api.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequestWithError(ApiErrorEnum.GeneralError);
+                    return BadRequestWithError(ApiErrorEnum.GeneralError, ModelState);
                 }
 
                 var result = _service.AddServer(request);
