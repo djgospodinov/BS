@@ -330,17 +330,32 @@ IF NOT EXISTS (
 ALTER TABLE LicenseActivation ADD LicenseOwnerServerId int
 GO
 -------------------------Remove not needed tables
-DROP TABLE AspNetRoles
+ALTER TABLE LicenseOwners DROP FK_LicenseOwners_AspNetUsers
+GO
+
+IF EXISTS(SELECT OBJECT_NAME(OBJECT_ID) AS NameofConstraint
+    FROM sys.objects
+    WHERE type_desc LIKE '%CONSTRAINT'
+        AND OBJECT_NAME(OBJECT_ID)='DF__LicenseOw__UserI__45F365D3')
+BEGIN
+	ALTER TABLE LicenseOwners DROP DF__LicenseOw__UserI__45F365D3
+END
+GO
+
+ALTER TABLE LicenseOwners DROP COLUMN UserId
 GO
 
 DROP TABLE AspNetUserRoles
 GO
 
+DROP TABLE AspNetRoles
+GO
+
 DROP TABLE AspNetUserClaims
 GO
 
-DROP TABLE AspNetUsers
+DROP TABLE AspNetUserLogins
 GO
 
-DROP TABLE AspNetUserLogins
+DROP TABLE AspNetUsers
 GO
