@@ -13,7 +13,7 @@ namespace BS.Api.Handlers
     {
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (!request.Content.Headers.ContentType.MediaType.Contains("bson"))
+            if (request.Content.Headers == null || !request.Content.Headers.Any() || !request.Content.Headers.ContentType.MediaType.Contains("bson"))
             {
                 return base.SendAsync(request, cancellationToken);
             }
