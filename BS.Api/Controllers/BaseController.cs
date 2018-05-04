@@ -11,6 +11,7 @@ using System.Net;
 using System.Threading;
 using System.ComponentModel;
 using System.Web.Http.ModelBinding;
+using BS.Api.Handlers;
 
 namespace BS.Api.Controllers
 {
@@ -66,6 +67,7 @@ namespace BS.Api.Controllers
         public const string BadRequest = "Api error: mallformed or incorrect request.";
     }
 
+    [DecryptContent]
     [IpFilter]
     public class BaseController : ApiController
     {

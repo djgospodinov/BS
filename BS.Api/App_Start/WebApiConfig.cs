@@ -30,6 +30,7 @@ namespace BS.Api
             //Register handlers
             config.MessageHandlers.Add(new ApiLogHandler());
             config.MessageHandlers.Add(new AuthorizationHeaderHandler());
+            config.MessageHandlers.Add(new EncryptHandler());
         }
     }
 }

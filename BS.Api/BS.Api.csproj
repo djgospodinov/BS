@@ -163,6 +163,7 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base64Helper.cs" />
     <Compile Include="Handlers\ApiLogHandler.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -203,6 +204,8 @@
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Filters\IpFilterAttribute.cs" />
     <Compile Include="Handlers\AuthorizationHeaderHandler.cs" />
+    <Compile Include="Filters\DecryptContent.cs" />
+    <Compile Include="Handlers\EncryptHandler.cs" />
     <Compile Include="Models\ActivateLicenseMessage.cs" />
     <Compile Include="Models\VerifyLicenseRequest.cs" />
     <Compile Include="Models\LicenseMessage.cs" />
