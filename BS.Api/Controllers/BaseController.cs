@@ -66,6 +66,7 @@ namespace BS.Api.Controllers
         public const string BadRequest = "Api error: mallformed or incorrect request.";
     }
 
+    //[RequireHttps]
     [IpFilter]
     public class BaseController : ApiController
     {
