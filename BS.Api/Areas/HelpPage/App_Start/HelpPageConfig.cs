@@ -4,6 +4,7 @@
 
 using BS.Api.Models;
 using BS.Common;
+using BS.Common.Models.Requests;
 using System;
 using System.Collections;
 using System.Collections.Generic;

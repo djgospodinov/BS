@@ -1,6 +1,7 @@
 ﻿using BS.Api.Models;
 using BS.Common;
 using BS.Common.Models;
+using BS.Common.Models.Requests;
 using BS.LicenseServer.Services;
 using Newtonsoft.Json;
 using System;
