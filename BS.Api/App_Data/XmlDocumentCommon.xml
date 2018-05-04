@@ -34,6 +34,26 @@
             Windows User Name – записваме го в LicenseOwnerServer.SystemUserName
             </summary>
         </member>
+        <member name="T:BS.Common.Models.Requests.VerifyLicenseRequest">
+            <summary>
+            Параметри на заявката за проверка или активация на лиценз
+            </summary>
+        </member>
+        <member name="P:BS.Common.Models.Requests.VerifyLicenseRequest.ActivationKey">
+            <summary>
+            Стойност която отговаря на генериран идентификатор на компютър или на потребител, това зависи от вида лиценза
+            </summary>
+        </member>
+        <member name="P:BS.Common.Models.Requests.VerifyLicenseRequest.ComputerName">
+            <summary>
+            Името на работната станция, където се лицензира
+            </summary>
+        </member>
+        <member name="P:BS.Common.Models.Requests.VerifyLicenseRequestEx.ServerName">
+            <summary>
+            Сървъра, който използва Мираж
+            </summary>
+        </member>
         <member name="P:BS.Common.LicenseModel.Id">
             <summary>
             the id of the license

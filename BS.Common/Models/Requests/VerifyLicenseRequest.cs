@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BS.Api.Models
+namespace BS.Common.Models.Requests
 {
     /// <summary>
     /// Параметри на заявката за проверка или активация на лиценз
