@@ -489,7 +489,11 @@ namespace BS.LicenseServer.Services
                     {
                         foreach (var x in request.Servers)
                         {
-                            var server = db.LicenseOwnerServers.FirstOrDefault(v => v.ServerInstance == x.ServerInstance && v.LicenseOwnerID == owner.Id);
+                            var server = db.LicenseOwnerServers
+                                .FirstOrDefault(v => v.ServerInstance == x.ServerInstance 
+                                    && v.LicenseOwnerID == owner.Id
+                                    && v.SendFromPC == request.ComputerName
+                                    && v.SystemUserName == request.SystemUserName);
                             if (server == null)
                             {
                                 db.LicenseOwnerServers.Add(new LicenseOwnerServer()
