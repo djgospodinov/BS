@@ -14,7 +14,7 @@ namespace BS.Api.Controllers
 {
     public class LicenseController : BaseController
     {
-        private readonly ILicenseService _service = new LicenseService(null);
+        private readonly ILicenseService _service = new LicenseService();
 
         /// <summary>
         /// Returns info for the licence by the given license id

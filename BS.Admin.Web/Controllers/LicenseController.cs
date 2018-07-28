@@ -168,7 +168,7 @@ namespace BS.Admin.Web.Controllers
                     return View(model);
                 }
 
-                var id = _licenseService.Create(model.ToDbModel(_userService));
+                var id = _licenseService.Create(model.ToDbModel(_userService), UserId);
                 if (!string.IsNullOrEmpty(id))
                 {
                     return Success();
@@ -218,7 +218,7 @@ namespace BS.Admin.Web.Controllers
                     return View(model);
                 }
 
-                if (_licenseService.Update(model.Id.ToString(), model.ToUpdateDbModel(_userService)))
+                if (_licenseService.Update(model.Id.ToString(), model.ToUpdateDbModel(_userService), UserId))
                 {
                     return Success();
                 }

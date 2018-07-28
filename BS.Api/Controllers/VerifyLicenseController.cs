@@ -20,7 +20,7 @@ namespace BS.Api.Controllers
         private readonly ILicenseService _service;
 
         public VerifyLicenseController()
-            :this(new LicenseService(null))
+            :this(new LicenseService())
         {
         }
 

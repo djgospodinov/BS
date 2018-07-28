@@ -18,11 +18,11 @@ namespace BS.Common
 
         List<LicenseModel> GetAll();
 
-        string Create(LicenseModel model);
+        string Create(LicenseModel model, long? userId = null);
 
-        string[] CreateMany(List<LicenseModel> model);
+        string[] CreateMany(List<LicenseModel> model, long? userId = null);
 
-        bool Update(string id, UpdateLicenseModel model);
+        bool Update(string id, UpdateLicenseModel model, long? userId = null);
 
         bool Delete(string id);
 

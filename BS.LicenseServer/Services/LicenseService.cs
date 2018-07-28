@@ -18,11 +18,6 @@ namespace BS.LicenseServer.Services
     {
         private static ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        public LicenseService(int? userId) 
-            : base(userId)
-        {
-        }
-
         public LicenseModel Get(string id)
         {
             using (var db = new LicenseDbEntities())
@@ -124,7 +119,7 @@ namespace BS.LicenseServer.Services
             }
         }
 
-        public string Create(LicenseModel model)
+        public string Create(LicenseModel model, long? userId = null)
         {
             try
             {
@@ -207,7 +202,7 @@ namespace BS.LicenseServer.Services
                     {
                         LogLicenseChange(db, result.IsDemo,
                             null,
-                            Serialize(result), id);
+                            Serialize(result), id, userId);
                     }
 
                     return id.ToString();
@@ -222,7 +217,7 @@ namespace BS.LicenseServer.Services
             }
         }
 
-        public bool Update(string id, UpdateLicenseModel model)
+        public bool Update(string id, UpdateLicenseModel model, long? userId = null)
         {
             using (var db = new LicenseDbEntities())
             {
@@ -281,7 +276,7 @@ namespace BS.LicenseServer.Services
 
                     LogLicenseChange(db, result.IsDemo,
                         beforeUpdate,
-                        Serialize(result), result.Id);
+                        Serialize(result), result.Id, userId);
 
                     return true;
                 }
@@ -307,14 +302,14 @@ namespace BS.LicenseServer.Services
             return false;
         }
 
-        public string[] CreateMany(List<LicenseModel> model)
+        public string[] CreateMany(List<LicenseModel> model, long? userId = null)
         {
             var result = new List<string>();
             using (var scope = new TransactionScope()) 
             {
                 foreach (var m in model) 
                 {
-                    var id = Create(m);
+                    var id = Create(m, userId);
                     result.Add(id);
                 }
 
@@ -524,7 +519,8 @@ namespace BS.LicenseServer.Services
             bool isDemo,
             string oldObject,
             string newObject, 
-            Guid id)
+            Guid id,
+            long? userId)
         {
             db.LicensesLogs.Add(new LicensesLog()
             {
@@ -533,7 +529,7 @@ namespace BS.LicenseServer.Services
                 IsDemo = isDemo,
                 Old = oldObject,
                 New = newObject,
-                ChangedBy = UserId ?? 0
+                ChangedBy = userId ?? 0
             });
 
             db.SaveChanges();

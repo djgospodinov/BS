@@ -19,7 +19,7 @@ namespace BS.Api.Controllers
         private readonly ILicenseService _service;
 
         public ServerController()
-            :this(new LicenseService(null))
+            :this(new LicenseService())
         {
         }
 

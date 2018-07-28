@@ -8,11 +8,5 @@ namespace BS.LicenseServer.Services
 {
     public abstract class BaseService
     {
-        public BaseService(int? userId)
-        {
-            UserId = userId;
-        }
-
-        public int? UserId { get; set; }
     }
 }
