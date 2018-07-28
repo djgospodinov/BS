@@ -162,10 +162,10 @@ namespace BS.Admin.Web.Controllers
             {
                 CompanyId = result.CompanyId
             }).Where(x => x.Type == (LicenseTypeEnum)type);
-
+            
             var model = new LicenseAndUsersInfoModel()
             {
-                ClientId = string.Empty,
+                ClientId = result.RegNom,
                 CompanyName = result.Name,
                 LicenseType = ((LicenseTypeEnum)type).Description(),
                 WorkStationsCount = licenses.Sum(x => x.WorkstationsCount ?? 0),

@@ -18,6 +18,7 @@ namespace BS.LicenseServer.Db
         {
             this.Licenses = new HashSet<License>();
             this.LicenseOwnerExtraInfoes1 = new HashSet<LicenseOwnerExtraInfo1>();
+            this.ApiKeys = new HashSet<ApiKey>();
         }
     
         public int Id { get; set; }
@@ -31,8 +32,10 @@ namespace BS.LicenseServer.Db
         public string RegNom { get; set; }
         public Nullable<bool> IsVIP { get; set; }
         public string VipComment { get; set; }
+        public string UserId { get; set; }
     
         public virtual ICollection<License> Licenses { get; set; }
         public virtual ICollection<LicenseOwnerExtraInfo1> LicenseOwnerExtraInfoes1 { get; set; }
+        public virtual ICollection<ApiKey> ApiKeys { get; set; }
     }
 }

@@ -16,10 +16,10 @@ namespace BS.LicenseServer.Db
     {
         public int LicenseOwnerID { get; set; }
         public System.DateTime CreateDate { get; set; }
+        public string ServerInstance { get; set; }
         public string ServerIPAddress { get; set; }
         public string SendFromPC { get; set; }
         public string SendFromPCIPAddress { get; set; }
         public string SystemUserName { get; set; }
-        public string ServerInstance { get; set; }
     }
 }

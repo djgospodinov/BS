@@ -50,6 +50,8 @@ namespace BS.Common.Models
         [CompanyIdValidation(ErrorMessage = "Невалиден Булстат номер")]
         public string CompanyId { get; set; }
 
+        public string RegNom { get; set; }
+
         [DataMember]
         //[Required]
         public string EGN { get; set; }

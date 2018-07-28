@@ -4,11 +4,6 @@
         <name>BS.Common</name>
     </assembly>
     <members>
-        <member name="T:BS.Common.AesCryptor">
-            <summary>
-            https://nciphers.com/aes/
-            </summary>
-        </member>
         <member name="P:BS.Common.Models.IpAddressElement.Denied">
             <summary>
             this will be used for blacklist/whitelist
@@ -77,11 +72,6 @@
         <member name="P:BS.Common.LicenseModel.User">
             <summary>
             information about the user that bought the license
-            </summary>
-        </member>
-        <member name="P:BS.Common.LicenseModel.Modules">
-            <summary>
-            what license modules have been bought
             </summary>
         </member>
         <member name="P:BS.Common.LicenseModel.Type">

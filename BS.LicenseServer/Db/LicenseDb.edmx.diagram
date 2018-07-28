@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7c40ea04fff9442695d9fbc1a32b457d" Name="Diagram1" ZoomLevel="94">
+      <Diagram DiagramId="7c40ea04fff9442695d9fbc1a32b457d" Name="Diagram1" ZoomLevel="79">
         <EntityTypeShape EntityType="LicenseDbModel.LicenseModule" Width="1.5" PointX="7.5" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="LicenseDbModel.LicenseOwner" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="LicenseDbModel.License" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
@@ -26,6 +26,8 @@
         <AssociationConnector Association="LicenseDbModel.FK_Licenses_LicenseVariables" />
         <AssociationConnector Association="LicenseDbModel.FK_lu_LicenseVariables_LicenseVariables" />
         <EntityTypeShape EntityType="LicenseDbModel.LicenseOwnerServer" Width="1.5" PointX="0.75" PointY="11.75" />
+        <EntityTypeShape EntityType="LicenseDbModel.ApiKey" Width="1.5" PointX="5.25" PointY="13.25" />
+        <AssociationConnector Association="LicenseDbModel.FK_ApiKeys_LicenseOwners" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -359,3 +359,29 @@ GO
 
 DROP TABLE AspNetUsers
 GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ApiKeys](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ApiKey] [nvarchar](256) NOT NULL,
+	[ClientId] [nvarchar](50) NULL,
+	[Enabled] [bit] NOT NULL,
+	[OwnerId] [int] NULL,
+ CONSTRAINT [PK_ApiKeys] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[ApiKeys]  WITH CHECK ADD  CONSTRAINT [FK_ApiKeys_LicenseOwners] FOREIGN KEY([OwnerId])
+REFERENCES [dbo].[LicenseOwners] ([Id])
+GO
+
+ALTER TABLE [dbo].[ApiKeys] CHECK CONSTRAINT [FK_ApiKeys_LicenseOwners]
+GO

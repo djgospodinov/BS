@@ -39,5 +39,6 @@ namespace BS.LicenseServer.Db
         public virtual DbSet<LicenseVariable> LicenseVariables { get; set; }
         public virtual DbSet<lu_LicenseVariables> lu_LicenseVariables { get; set; }
         public virtual DbSet<LicenseOwnerServer> LicenseOwnerServers { get; set; }
+        public virtual DbSet<ApiKey> ApiKeys { get; set; }
     }
 }

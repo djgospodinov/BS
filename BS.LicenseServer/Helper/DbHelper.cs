@@ -20,6 +20,7 @@ namespace BS.LicenseServer.Helper
             result.CompanyId = model.IsCompany ? model.CompanyId.Trim() : null;
             result.EGN = !model.IsCompany ? model.EGN.Trim() : null;
             result.IsCompany = model.IsCompany;
+            result.RegNom = model.RegNom;
 
             if (!model.IsDemo)
             {
@@ -56,6 +57,7 @@ namespace BS.LicenseServer.Helper
             result.IsCompany = model.IsCompany;
             result.EGN = (model.EGN ?? string.Empty).Trim();
             result.IsDemo = model.Licenses.All(x => x.IsDemo);
+            result.RegNom = model.RegNom;
 
             var extraInfo = model.LicenseOwnerExtraInfoes1.FirstOrDefault();
             if (extraInfo != null)

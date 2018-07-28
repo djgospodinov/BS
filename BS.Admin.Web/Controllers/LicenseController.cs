@@ -267,14 +267,7 @@ namespace BS.Admin.Web.Controllers
                     NullValueHandling = NullValueHandling.Ignore
                 });
 
-                //return PartialView(new LIcenseCodeModel() 
-                //{
-                //    Code = StringCipher.Encrypt(serializedObject, Constants.PublicKey)
-                //});
-
-                var code = StringCipher.Encrypt(serializedObject, Constants.PublicKey);
-
-                return File(Encoding.UTF8.GetBytes(code), "text/plain", string.Format("{0}.lic", licenseId));
+                return File(Encoding.UTF8.GetBytes(serializedObject), "text/plain", string.Format("{0}.lic", licenseId));
             }
             catch (Exception ex)
             {

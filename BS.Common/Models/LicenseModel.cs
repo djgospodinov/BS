@@ -44,13 +44,14 @@ namespace BS.Common
         [Required]
         public LicenserInfoModel User { get; set; }
 
-        [Required]
+        //[DataMember]
         public List<LicenseModulesEnum> LicenseModules { get; set; }
 
+        [Required]
         /// <summary>
         /// what license modules have been bought
         /// </summary>
-        [DataMember]
+        //[DataMember]
         public List<LicenseModuleModel> Modules { get; set; }
 
         /// <summary>

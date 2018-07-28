@@ -14,7 +14,7 @@ using BS.Common.Models.Requests;
 
 namespace BS.LicenseServer.Services
 {
-    public class LicenseService : Service, ILicenseService
+    public class LicenseService : BaseService, ILicenseService
     {
         private static ILogger _logger = LogManager.GetCurrentClassLogger();
 
@@ -56,9 +56,6 @@ namespace BS.LicenseServer.Services
                                 ValidTo = x.ValidTo,
                                 Type = (LicenseModulesEnum)x.lu_LicenseModules.Id
                             }).ToList(),
-                        ActivationId = ((LicenseTypeEnum)result.Type) == LicenseTypeEnum.PerUser
-                            ? activator != null ? activator.UserId : string.Empty
-                            : activator != null ? activator.ComputerId : string.Empty,
                         IsActivated = activator != null
                     };
                 }
@@ -291,18 +288,6 @@ namespace BS.LicenseServer.Services
             }
 
             return false;
-        }
-
-        private static string Serialize(License result)
-        {
-            var settings = new JsonSerializerSettings();
-            settings.ContractResolver = new EFContractResolver();
-            settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
-            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            settings.Formatting = Formatting.Indented;
-
-            var beforeUpdate = JsonConvert.SerializeObject(result, settings);
-            return beforeUpdate;
         }
 
         public bool Delete(string id)
@@ -552,6 +537,18 @@ namespace BS.LicenseServer.Services
             });
 
             db.SaveChanges();
+        }
+
+        private static string Serialize(License result)
+        {
+            var settings = new JsonSerializerSettings();
+            settings.ContractResolver = new EFContractResolver();
+            settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+            settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            settings.Formatting = Formatting.Indented;
+
+            var beforeUpdate = JsonConvert.SerializeObject(result, settings);
+            return beforeUpdate;
         }
         #endregion
     }

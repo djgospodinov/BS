@@ -4,11 +4,6 @@
         <name>BS.Api</name>
     </assembly>
     <members>
-        <member name="T:BS.Api.Base64Helper">
-            <summary>
-            https://www.base64decode.org/
-            </summary>
-        </member>
         <member name="T:BS.Api.ApiLogHandler">
             <summary>
             http://arcware.net/logging-web-api-requests/
@@ -511,16 +506,7 @@
             <param name="values"></param>
             <returns></returns>
         </member>
-        <member name="M:BS.Api.Controllers.VerifyLicenseController.Encrypted(System.String,BS.Common.Models.Requests.VerifyLicenseRequest)">
-            <summary>
-            Verifies if license is valid for the given activation rule and if so, 
-            returns a message containing the encrypted license
-            </summary>
-            <param name="id">the id of the license</param>
-            <param name="request"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BS.Api.Controllers.VerifyLicenseController.NotEncrypted(System.String,BS.Common.Models.Requests.VerifyLicenseRequest)">
+        <member name="M:BS.Api.Controllers.VerifyLicenseController.Post(System.String,BS.Common.Models.Requests.VerifyLicenseRequest)">
             <summary>
             Прави проверка дали дадена комбинация от лиценз и ключ за активиране е валидна,
             При възможност активира лиценз, ако има свободни позиции за активация
@@ -529,7 +515,7 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:BS.Api.Controllers.VerifyLicenseController.Acitvate(System.String,BS.Common.Models.Requests.VerifyLicenseRequestEx)">
+        <member name="M:BS.Api.Controllers.VerifyLicenseController.Activate(System.String,BS.Common.Models.Requests.VerifyLicenseRequestEx)">
             <summary>
             Прави проверка дали дадена комбинация от лиценз и ключ за активиране е валидна,
             При възможност активира лиценз, ако има свободни позиции за активация

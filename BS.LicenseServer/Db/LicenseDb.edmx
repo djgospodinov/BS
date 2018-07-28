@@ -5,6 +5,16 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LicenseDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ApiKeys">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApiKey" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ClientId" Type="nvarchar" MaxLength="50" />
+          <Property Name="Enabled" Type="bit" Nullable="false" />
+          <Property Name="OwnerId" Type="int" />
+        </EntityType>
         <EntityType Name="ApiLogs">
           <Key>
             <PropertyRef Name="Id" />
@@ -172,6 +182,18 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UseIPFilter" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_ApiKeys_LicenseOwners">
+          <End Role="LicenseOwners" Type="Self.LicenseOwners" Multiplicity="0..1" />
+          <End Role="ApiKeys" Type="Self.ApiKeys" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseOwners">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApiKeys">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_LicenseActivation_Licenses">
           <End Role="Licenses" Type="Self.Licenses" Multiplicity="1" />
           <End Role="LicenseActivation" Type="Self.LicenseActivation" Multiplicity="*" />
@@ -257,6 +279,7 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="LicenseDbModelStoreContainer">
+          <EntitySet Name="ApiKeys" EntityType="Self.ApiKeys" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApiLogs" EntityType="Self.ApiLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IpFilters" EntityType="Self.IpFilters" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseActivation" EntityType="Self.LicenseActivation" Schema="dbo" store:Type="Tables" />
@@ -277,6 +300,10 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
     [lu_LicenseTypes].[IsOnline] AS [IsOnline]
     FROM [dbo].[lu_LicenseTypes] AS [lu_LicenseTypes]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_ApiKeys_LicenseOwners" Association="Self.FK_ApiKeys_LicenseOwners">
+            <End Role="LicenseOwners" EntitySet="LicenseOwners" />
+            <End Role="ApiKeys" EntitySet="ApiKeys" />
+          </AssociationSet>
           <AssociationSet Name="FK_LicenseActivation_Licenses" Association="Self.FK_LicenseActivation_Licenses">
             <End Role="Licenses" EntitySet="Licenses" />
             <End Role="LicenseActivation" EntitySet="LicenseActivation" />
@@ -338,6 +365,8 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
           <Property Name="RegNom" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="IsVIP" Type="Boolean" />
           <Property Name="VipComment" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApiKeys" Relationship="LicenseDbModel.FK_ApiKeys_LicenseOwners" FromRole="LicenseOwner" ToRole="ApiKey" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -449,6 +478,11 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
             <End Role="LicenseVariable" EntitySet="LicenseVariables" />
           </AssociationSet>
           <EntitySet Name="LicenseOwnerServers" EntityType="LicenseDbModel.LicenseOwnerServer" />
+          <EntitySet Name="ApiKeys" EntityType="LicenseDbModel.ApiKey" />
+          <AssociationSet Name="FK_ApiKeys_LicenseOwners" Association="LicenseDbModel.FK_ApiKeys_LicenseOwners">
+            <End Role="LicenseOwner" EntitySet="LicenseOwners" />
+            <End Role="ApiKey" EntitySet="ApiKeys" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="lu_LicenseTypes">
           <Key>
@@ -610,12 +644,35 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
           </Key>
           <Property Name="LicenseOwnerID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ServerInstance" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ServerIPAddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SendFromPC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="SendFromPCIPAddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SystemUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ServerInstance" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="ApiKey">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApiKey1" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ClientId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="OwnerId" Type="Int32" />
+          <NavigationProperty Name="LicenseOwner" Relationship="LicenseDbModel.FK_ApiKeys_LicenseOwners" FromRole="ApiKey" ToRole="LicenseOwner" />
+        </EntityType>
+        <Association Name="FK_ApiKeys_LicenseOwners">
+          <End Type="LicenseDbModel.LicenseOwner" Role="LicenseOwner" Multiplicity="0..1" />
+          <End Type="LicenseDbModel.ApiKey" Role="ApiKey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LicenseOwner">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApiKey">
+              <PropertyRef Name="OwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -635,7 +692,8 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
     <EntitySetMapping Name="LicenseOwners">
       <EntityTypeMapping TypeName="IsTypeOf(LicenseDbModel.LicenseOwner)">
         <MappingFragment StoreEntitySet="LicenseOwners">
-          <ScalarProperty Name="VipComment" ColumnName="VipComment" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="VipComment" ColumnName="VipComment" />
                 <ScalarProperty Name="IsVIP" ColumnName="IsVIP" />
                 <ScalarProperty Name="RegNom" ColumnName="RegNom" />
                 <ScalarProperty Name="EGN" ColumnName="EGN" />
@@ -787,13 +845,24 @@ warning 6002: The table/view 'LicenseDb.dbo.lu_LicenseTypes' does not have a pri
           <EntitySetMapping Name="LicenseOwnerServers">
             <EntityTypeMapping TypeName="LicenseDbModel.LicenseOwnerServer">
               <MappingFragment StoreEntitySet="LicenseOwnerServer">
-                <ScalarProperty Name="ServerInstance" ColumnName="ServerInstance" />
                 <ScalarProperty Name="SystemUserName" ColumnName="SystemUserName" />
                 <ScalarProperty Name="SendFromPCIPAddress" ColumnName="SendFromPCIPAddress" />
                 <ScalarProperty Name="SendFromPC" ColumnName="SendFromPC" />
                 <ScalarProperty Name="ServerIPAddress" ColumnName="ServerIPAddress" />
+                <ScalarProperty Name="ServerInstance" ColumnName="ServerInstance" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="LicenseOwnerID" ColumnName="LicenseOwnerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApiKeys">
+            <EntityTypeMapping TypeName="LicenseDbModel.ApiKey">
+              <MappingFragment StoreEntitySet="ApiKeys">
+                <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="ApiKey1" ColumnName="ApiKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
