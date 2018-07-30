@@ -21,7 +21,10 @@ namespace BS.Common.Models
         Store = 3,
 
         [Description("Графици на работа")]
-        Schedule = 4
+        Schedule = 4,
+
+        [Description("Производство")]
+        Production = 5,
     }
 
     [DataContract]

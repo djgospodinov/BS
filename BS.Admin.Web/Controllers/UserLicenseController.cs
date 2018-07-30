@@ -154,43 +154,6 @@ namespace BS.Admin.Web.Controllers
             return Content("Потребителят не е намерен!");
         }
 
-        [HttpGet]
-        public ActionResult LicenseAndUsersInfo(int id, int type)
-        {
-            var result = _userService.Get(id);
-            var licenses = _licenseService.GetByFilter(new LicenseFilterModel()
-            {
-                CompanyId = result.CompanyId
-            }).Where(x => x.Type == (LicenseTypeEnum)type);
-            
-            var model = new LicenseAndUsersInfoModel()
-            {
-                ClientId = result.RegNom,
-                CompanyName = result.Name,
-                LicenseType = ((LicenseTypeEnum)type).Description(),
-                WorkStationsCount = licenses.Sum(x => x.WorkstationsCount ?? 0),
-            };
-
-            model.LicenseActivationsInfo = new List<LicenseActivationsInfoModel>();
-            foreach (var license in licenses)
-            {
-                var licenseActivations = _licenseService.LicenseActivations(license.Id.ToString());
-                model.LicenseActivationsInfo.AddRange(licenseActivations
-                    .Select(x => new LicenseActivationsInfoModel()
-                    {
-                        ComputerName = x.PCName,
-                        LicenseId = license.Id,
-                        Enabled = license.Enabled,
-                        IsActivated = license.IsActivated,
-                        UpdatedTo = license.SubscribedTo,
-                        ValidTo = license.ValidTo,
-                        Modules = license.LicenseModules
-                    }));
-            }
-
-            return View(model);
-        }
-
         #endregion
     }
 }

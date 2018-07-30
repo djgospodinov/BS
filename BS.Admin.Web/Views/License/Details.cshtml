@@ -1,155 +1,326 @@
-﻿@model BS.Admin.Web.Models.CreateLicenseModel
-@{
-    ViewBag.Title = "Информация за лиценз";
-}
-
-<style>
-    select {
-        width: 300px;
-        height: 25px;
+﻿@*@model BS.Admin.Web.Models.CreateLicenseModel
+    @{
+        ViewBag.Title = "Информация за лиценз";
     }
 
-    fieldset {
-        width: 600px;
-    }
-</style>
+    <style>
+        select {
+            width: 300px;
+            height: 25px;
+        }
 
-<h2>@ViewBag.Title</h2>
-<br />
-<br />
+        fieldset {
+            width: 600px;
+        }
+    </style>
 
-<table>
-    @if (Model != null && Model.Id != Guid.Empty)
-    {
+    <h2>@ViewBag.Title</h2>
+    <br />
+    <br />
+
+    <table>
+        @if (Model != null && Model.Id != Guid.Empty)
+        {
+            <tr>
+                <td>
+                    <span>Идентификатор:</span>
+                </td>
+                <td>
+                    <strong>@Html.Raw(Model.Id)</strong>
+                </td>
+            </tr>
+        }
         <tr>
             <td>
-                <span>Идентификатор:</span>
+                <span>Валиден до:</span>
             </td>
             <td>
-                <strong>@Html.Raw(Model.Id)</strong>
+                @Html.TextBoxFor(m => m.ValidTo, new { @Value = Model.ValidTo.ToString("yyyy/MM/dd"), @class = "datepicker" })
             </td>
         </tr>
-    }
+        <tr>
+            <td>
+                <span>Абониран до:</span>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.SubscribedTo, new { @Value = Model.SubscribedTo.HasValue ? Model.SubscribedTo.Value.ToString("yyyy/MM/dd") : "", @class = "datepicker" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Демо:
+            </td>
+            <td>
+                @Html.CheckBoxFor(m => m.IsDemo)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span title="Потребителя или фирмата, която е закупила лиценза">Потребител/Фирма:</span>
+            </td>
+            <td>
+                @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers())
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Вид:
+            </td>
+            <td>
+                @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseTypes())
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Брой компютри:
+            </td>
+            <td>
+                @Html.EditorFor(m => m.WorkstationsCount)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Потвърден:
+            </td>
+            <td>
+                @Html.CheckBoxFor(m => m.Enabled)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Активиран:
+            </td>
+            <td>
+                @Html.CheckBoxFor(m => m.IsActivated, new { @disabled = "disabled" })
+            </td>
+        </tr>
+    </table>
+
+    <section>
+        <fieldset>
+            <legend>Модули</legend>
+            <table>
+                <tr>
+                    <td>
+                        Счетоводство:
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Accounting)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Склад:
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Warehouse)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        ТРЗ:
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Salary)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Графици:
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.Schedules)
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </section>
+
+    <div style="margin-top:20px;">
+        @{ Html.RenderAction("LicenseActivations", new { LicenseId = Model.Id }); }
+    </div>
+
+    <div style="margin-left:50px;margin-top:20px;">
+
+        @Html.ActionLink("Назад", "Cancel", null, new { @class = "link-button" })
+    </div>
+
+    <script>
+        $(function () { // will trigger when the document is ready
+            $('input').prop('disabled', true);
+            $('select').prop('disabled', true);
+            $('input').prop('readonly', true);
+            $('select').prop('readonly', true);
+        });
+    </script>*@
+
+@model BS.Admin.Web.Models.LicenseAndUsersInfoModel
+
+<table>
     <tr>
         <td>
-            <span>Валиден до:</span>
-        </td>
-        <td>
-            @Html.TextBoxFor(m => m.ValidTo, new { @Value = Model.ValidTo.ToString("yyyy/MM/dd"), @class = "datepicker" })
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <span>Абониран до:</span>
-        </td>
-        <td>
-            @Html.TextBoxFor(m => m.SubscribedTo, new { @Value = Model.SubscribedTo.HasValue ? Model.SubscribedTo.Value.ToString("yyyy/MM/dd") : "", @class = "datepicker" })
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Демо:
+            @Html.LabelFor(m => m.IsDemo)
         </td>
         <td>
             @Html.CheckBoxFor(m => m.IsDemo)
         </td>
     </tr>
     <tr>
-        <td>
-            <span title="Потребителя или фирмата, която е закупила лиценза">Потребител/Фирма:</span>
-        </td>
-        <td>
-            @Html.DropDownListFor(m => m.UserId, BS.Admin.Web.DropdownHelper.LicenseUsers())
-        </td>
+        <td>@Html.LabelFor(m => m.ClientId)</td>
+        <td>@Model.ClientId</td>
     </tr>
     <tr>
-        <td>
-            Вид:
-        </td>
-        <td>
-            @Html.DropDownListFor(m => m.Type, BS.Admin.Web.DropdownHelper.LicenseTypes())
-        </td>
+        <td>@Html.LabelFor(m => m.CompanyName)</td>
+        <td>@Model.CompanyName</td>
     </tr>
     <tr>
-        <td>
-            Брой компютри:
-        </td>
-        <td>
-            @Html.EditorFor(m => m.WorkstationsCount)
-        </td>
+        <td>@Html.LabelFor(m => m.LicenseType)</td>
+        <td>@Model.LicenseType</td>
     </tr>
     <tr>
-        <td>
-            Потвърден:
-        </td>
-        <td>
-            @Html.CheckBoxFor(m => m.Enabled)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Активиран:
-        </td>
-        <td>
-            @Html.CheckBoxFor(m => m.IsActivated, new { @disabled = "disabled" })
-        </td>
+        <td>@Html.LabelFor(m => m.WorkStationsCount)</td>
+        <td>@Model.WorkStationsCount</td>
     </tr>
 </table>
+<br />
 
-<section>
-    <fieldset>
-        <legend>Модули</legend>
-        <table>
-            <tr>
-                <td>
-                    Счетоводство:
-                </td>
-                <td>
-                    @Html.EditorFor(m => m.Accounting)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Склад:
-                </td>
-                <td>
-                    @Html.EditorFor(m => m.Warehouse)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    ТРЗ:
-                </td>
-                <td>
-                    @Html.EditorFor(m => m.Salary)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Графици:
-                </td>
-                <td>
-                    @Html.EditorFor(m => m.Schedules)
-                </td>
-            </tr>
-        </table>
-    </fieldset>
-</section>
-
-<div style="margin-top:20px;">
-    @{ Html.RenderAction("LicenseActivations", new { LicenseId = Model.Id }); }
-</div>
-
-<div style="margin-left:50px;margin-top:20px;">
-
-    @Html.ActionLink("Назад", "Cancel", null, new { @class = "link-button" })
-</div>
+<div id="jsGrid1"></div>
 
 <script>
-    $(function () { // will trigger when the document is ready
-        $('input').prop('disabled', true);
-        $('select').prop('disabled', true);
-        $('input').prop('readonly', true);
-        $('select').prop('readonly', true);
+    var loadUrl = "/license/detailsdata/@Model.Id";
+
+    $(function () {
+
+        $("#jsGrid1").jsGrid({
+            height: "250px",
+            width: "100%",
+
+            filtering: false,
+            inserting: false,
+            editing: false,
+            sorting: true,
+            paging: false,
+            autoload: true,
+
+            pageLoading: true,
+
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: loadUrl,
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+            },
+
+            fields: [
+                { name: "ComputerName", title: "PC", type: "text", width: 80, filtering: false },
+                { name: "Accounting", title: "Счетоводство", type: "checkbox", width: 70 },
+                { name: "Payroll", title: "ТРЗ", type: "checkbox", width: 50 },
+                { name: "Store", title: "Склад", type: "checkbox", width: 50 },
+                { name: "Schedule", title: "Графици", type: "checkbox", width: 50 },
+                { name: "Production", title: "Производство", type: "checkbox", width: 70 },
+                { name: "LicenseId", title: "Идентификатор", type: "text", width: 100 },
+                { name: "ValidTo", title: "Валиден до", type: "date", width: 50 },
+                { name: "Created", title: "Абониран до", type: "date", width: 50 },
+                { name: "Activated", title: "Активиран", type: "checkbox", width: 60 },
+                { name: "Enabled", title: "Потвърден", type: "checkbox", width: 60 }
+            ]
+        });
+
+    });
+</script>
+
+<div id="jsGrid2"></div>
+
+<script>
+    var loadUrl = "/license/detailsvariablesdata/@Model.Id";
+
+    $(function () {
+
+        $("#jsGrid2").jsGrid({
+            height: "250px",
+            width: "50%",
+
+            filtering: false,
+            inserting: false,
+            editing: false,
+            sorting: true,
+            paging: false,
+            autoload: true,
+
+            pageLoading: true,
+
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: loadUrl,
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+            },
+
+            fields: [
+                { name: "Name", title: "Инфо полета", type: "text", width: 80, filtering: false },
+                { name: "Value", title: "Брой", type: "checkbox", width: 70 },
+                { name: "Date", title: "Дата на актуалицация", type: "checkbox", width: 50 },
+            ]
+        });
+
+    });
+</script>
+
+<div id="jsGrid3"></div>
+
+<script>
+    var loadUrl = "/license/mewmodulesdata/@Model.Id";
+
+    $(function () {
+
+        $("#jsGrid3").jsGrid({
+            height: "auto",
+            width: "70%",
+
+            filtering: false,
+            inserting: false,
+            editing: false,
+            sorting: true,
+            paging: false,
+            autoload: true,
+
+            pageLoading: true,
+
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: loadUrl,
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+            },
+
+            fields: [
+                { name: "Name", title: "Нови модули", type: "text", width: 80, filtering: false },
+                { name: "Trial", title: "trial period/months", type: "text", width: 70 },
+                { name: "Activated", title: "Активиран на", type: "date", width: 50 },
+                { name: "ValidTo", title: "Валиден до", type: "date", width: 50 },
+            ]
+        });
+
     });
 </script>

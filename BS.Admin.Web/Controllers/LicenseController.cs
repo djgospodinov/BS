@@ -130,6 +130,55 @@ namespace BS.Admin.Web.Controllers
             return Json(dataResult, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult DetailsData(string id)
+        {
+            var license = _licenseService.Get(id);
+            var licenseActivations = _licenseService.LicenseActivations(license.Id.ToString());
+
+            var data = licenseActivations
+                .Select(x => new LicenseActivationsInfoModel()
+                {
+                    ComputerName = x.PCName,
+                    LicenseId = license.Id,
+                    Enabled = license.Enabled,
+                    IsActivated = license.IsActivated,
+                    UpdatedTo = license.SubscribedTo.HasValue ? license.SubscribedTo.Value.ToShortDateString() : string.Empty,
+                    ValidTo = license.ValidTo.ToShortDateString(),
+                    Accounting = license.LicenseModules.Any(v => v == LicenseModulesEnum.Accounting),
+                    Payroll = license.LicenseModules.Any(v => v == LicenseModulesEnum.Payroll),
+                    Schedule = license.LicenseModules.Any(v => v == LicenseModulesEnum.Schedule),
+                    Store = license.LicenseModules.Any(v => v == LicenseModulesEnum.Store),
+                    Production = license.LicenseModules.Any(v => v == LicenseModulesEnum.Production),
+                }).ToList();
+
+            var result = new
+            {
+                data = data,
+                itemsCount = data.Count
+            };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult DetailsVariablesData(string id)
+        {
+            var variables = _variablesService.GetVariables(id);
+            return Json(variables.Select(x => new
+            {
+                Name = x.Name,
+                Value = x.Value,
+                Date = DateTime.Now
+            }), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult NewModulesData(string id)
+        {
+            return Json(new List<object>(0), JsonRequestBehavior.AllowGet);
+        }
+
         #region CRUD
 
         public ActionResult LicenseActivations(string licenseId)
@@ -237,15 +286,30 @@ namespace BS.Admin.Web.Controllers
         {
             try
             {
-                var dbModel = _licenseService.Get(id.ToString());
-                if (dbModel != null)
+                //var dbModel = _licenseService.Get(id.ToString());
+                //if (dbModel != null)
+                //{
+                //    var result = new CreateLicenseModel(dbModel);
+                //    if (result != null)
+                //    {
+                //        return View(result);
+                //    }
+                //}
+
+                var license = _licenseService.Get(id);
+                var result = _userService.Get(license.User.Id);
+
+                var model = new LicenseAndUsersInfoModel()
                 {
-                    var result = new CreateLicenseModel(dbModel);
-                    if (result != null)
-                    {
-                        return View(result);
-                    }
-                }
+                    Id = license.Id.ToString(),
+                    IsDemo = license.IsDemo,
+                    ClientId = result.RegNom ?? "0",
+                    CompanyName = result.Name,
+                    LicenseType = license.Type.Description(),
+                    WorkStationsCount = license.WorkstationsCount ?? 0,
+                };
+
+                return View(model);
             }
             catch (Exception ex)
             {

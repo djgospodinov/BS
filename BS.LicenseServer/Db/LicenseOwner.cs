@@ -32,7 +32,6 @@ namespace BS.LicenseServer.Db
         public string RegNom { get; set; }
         public Nullable<bool> IsVIP { get; set; }
         public string VipComment { get; set; }
-        public string UserId { get; set; }
     
         public virtual ICollection<License> Licenses { get; set; }
         public virtual ICollection<LicenseOwnerExtraInfo1> LicenseOwnerExtraInfoes1 { get; set; }

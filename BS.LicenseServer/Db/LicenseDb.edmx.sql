@@ -84,7 +84,7 @@ CREATE TABLE [dbo].[Licenses] (
     [IsDemo] bit  NOT NULL,
     [LicenseOwnerId] int  NOT NULL,
     [Enabled] bit  NULL,
-    [WorkstationCount] int  NOT NULL,
+    [WorkstationsCount] int  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
     [SubscribedTo] datetime  NULL,
     [Type] tinyint  NULL
