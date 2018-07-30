@@ -1,4 +1,6 @@
 ﻿using BS.Common;
+using BS.Common.Interfaces;
+using BS.LicenseServer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,18 @@ namespace BS.Api.Handlers
 {
     public class AuthorizationHeaderHandler : DelegatingHandler
     {
+        private readonly IAuthorizationService _service;
+
+        public AuthorizationHeaderHandler()
+            : this(new AuthorizationService())
+        {
+        }
+
+        public AuthorizationHeaderHandler(IAuthorizationService service)
+        {
+            _service = service;
+        }
+
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (!request.RequestUri.AbsolutePath.ToLower().StartsWith("/api/"))
@@ -25,7 +39,8 @@ namespace BS.Api.Handlers
             {
                 var apiKeyHeaderValue = apiKeyHeaderValues.First();
 
-                if (!string.IsNullOrEmpty(apiKeyHeaderValue) && apiKeyHeaderValue == Constants.ApiKeyValue)
+                if (!string.IsNullOrEmpty(apiKeyHeaderValue) 
+                    && _service.Authorize(apiKeyHeaderValue))
                 {
                     return base.SendAsync(request, cancellationToken);
                 }
