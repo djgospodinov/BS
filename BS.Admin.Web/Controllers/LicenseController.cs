@@ -165,18 +165,31 @@ namespace BS.Admin.Web.Controllers
         public ActionResult DetailsVariablesData(string id)
         {
             var variables = _variablesService.GetVariables(id);
-            return Json(variables.Select(x => new
+            var data = variables.Select(x => new
             {
                 Name = x.Name,
                 Value = x.Value,
                 Date = DateTime.Now
-            }), JsonRequestBehavior.AllowGet);
+            }).ToList();
+
+            var result = new
+            {
+                data = data,
+                itemsCount = data.Count
+            };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult NewModulesData(string id)
         {
-            return Json(new List<object>(0), JsonRequestBehavior.AllowGet);
+            var result = new
+            {
+                data = new List<object>(0),
+                itemsCount = 0
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         #region CRUD

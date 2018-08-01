@@ -385,3 +385,15 @@ GO
 
 ALTER TABLE [dbo].[ApiKeys] CHECK CONSTRAINT [FK_ApiKeys_LicenseOwners]
 GO
+
+INSERT INTO [dbo].[ApiKeys]
+           ([ApiKey]
+           ,[ClientId]
+           ,[Enabled]
+           ,[OwnerId])
+     VALUES
+           ('a4ffaf8ac92e4ffcb8edbdcb459bcef1'
+           ,'default'
+           ,1
+           ,null)
+GO

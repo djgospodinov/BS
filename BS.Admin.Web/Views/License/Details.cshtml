@@ -185,14 +185,19 @@
 <br />
 
 <div id="jsGrid1"></div>
+<br />
+<div id="jsGrid2"></div>
+<br />
+<div id="jsGrid3"></div>
+
 
 <script>
-    var loadUrl = "/license/detailsdata/@Model.Id";
+    var loadUrl1 = "/license/detailsdata/@Model.Id";
 
     $(function () {
 
         $("#jsGrid1").jsGrid({
-            height: "250px",
+            height: "auto",
             width: "100%",
 
             filtering: false,
@@ -211,7 +216,7 @@
                 loadData: function (filter) {
                     return $.ajax({
                         type: "GET",
-                        url: loadUrl,
+                        url: loadUrl1,
                         data: filter,
                         dataType: "json"
                     });
@@ -236,15 +241,14 @@
     });
 </script>
 
-<div id="jsGrid2"></div>
 
 <script>
-    var loadUrl = "/license/detailsvariablesdata/@Model.Id";
+    var loadUrl2 = "/license/detailsvariablesdata/@Model.Id";
 
     $(function () {
 
         $("#jsGrid2").jsGrid({
-            height: "250px",
+            height: "auto",
             width: "50%",
 
             filtering: false,
@@ -263,7 +267,7 @@
                 loadData: function (filter) {
                     return $.ajax({
                         type: "GET",
-                        url: loadUrl,
+                        url: loadUrl2,
                         data: filter,
                         dataType: "json"
                     });
@@ -280,10 +284,8 @@
     });
 </script>
 
-<div id="jsGrid3"></div>
-
 <script>
-    var loadUrl = "/license/mewmodulesdata/@Model.Id";
+    var loadUrl3 = "/license/NewModulesData/@Model.Id";
 
     $(function () {
 
@@ -307,7 +309,7 @@
                 loadData: function (filter) {
                     return $.ajax({
                         type: "GET",
-                        url: loadUrl,
+                        url: loadUrl3,
                         data: filter,
                         dataType: "json"
                     });
